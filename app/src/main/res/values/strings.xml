@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">EirsAgentPoc</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="assets_title">Manage Assets</string>
+    <string name="business_title">Business</string>
+    <string name="building_title">Buildings</string>
+    <string name="tax_payer_title">Tax Payers</string>
+    <string name="individuals_title">Individuals</string>
+    <string name="companies_title">Companies</string>
+    <string name="payment_title">Payment</string>
+    <string name="lorem_ipsum_short">Lorem ipsum dolor</string>
+    <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, eu interdum curabitur magna et sed, sed lectus feugiat ultrices. Curae ultricies vestibulum, sit phasellus consequat, in mi laoreet nullam quam pede eu.</string>
+    <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, eu interdum curabitur magna et sed, sed lectus feugiat ultrices. Curae ultricies vestibulum, sit phasellus consequat, in mi laoreet nullam quam pede eu, tempus justo ad tortor nullam. Est et vel, suscipit in purus accumsan dis faucibus, adipiscing arcu venenatis orci sodales elit, non lobortis aenean pellentesque vestibulum consectetuer lectus, cras donec.</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
