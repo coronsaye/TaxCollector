@@ -8,8 +8,12 @@
     <string name="individuals_title">Individuals</string>
     <string name="companies_title">Companies</string>
     <string name="payment_title">Payment</string>
+    <string name="no_business_all">No businesses yet</string>
+    <string name="no_business_add">Add a business + </string>
     <string name="lorem_ipsum_short">Lorem ipsum dolor</string>
     <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, eu interdum curabitur magna et sed, sed lectus feugiat ultrices. Curae ultricies vestibulum, sit phasellus consequat, in mi laoreet nullam quam pede eu.</string>
     <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, eu interdum curabitur magna et sed, sed lectus feugiat ultrices. Curae ultricies vestibulum, sit phasellus consequat, in mi laoreet nullam quam pede eu, tempus justo ad tortor nullam. Est et vel, suscipit in purus accumsan dis faucibus, adipiscing arcu venenatis orci sodales elit, non lobortis aenean pellentesque vestibulum consectetuer lectus, cras donec.</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_business_success_message">Business Successfully Added</string>
+    <string name="load_business_errors">Error While Loading Businesses</string>
 </resources>

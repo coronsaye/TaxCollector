@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.diegodobelo.expandingview.ExpandingItem;
 import com.diegodobelo.expandingview.ExpandingList;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,17 +68,33 @@ public class DashboardFragment extends Fragment {
                     configureSubItem(item, view, submenuItems[i]);
                 }
             } else {
+                if (!isAdded()) {
+                    return;
+                }
                 //do something when item is clicked
+
+                item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                    }
+                });
+
             }
         }
     }
 
     private void configureSubItem(final ExpandingItem item, final View view, String subTitle) {
-        TextView subItemTextView = (TextView) view.findViewById(R.id.subItemTextView);
+        final TextView subItemTextView = (TextView) view.findViewById(R.id.subItemTextView);
         subItemTextView.setText(subTitle);
+
+
         subItemTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (subItemTextView.getText().equals(getString(R.string.business_title)))
+                    FlowController.launchBusinessActivity(getContext());
+
                 //go to respective View
             }
         });
@@ -85,6 +102,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //addItem
+
             }
         });
     }
