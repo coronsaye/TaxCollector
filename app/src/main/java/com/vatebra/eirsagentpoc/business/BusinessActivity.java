@@ -19,7 +19,6 @@ public class BusinessActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private BusinessPresenter mBusinessPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class BusinessActivity extends AppCompatActivity {
         }
 
         //create the presenter
-        mBusinessPresenter = new BusinessPresenter(Injection.provideUseCaseHandler(), businessFragment, Injection.provideGetBusinesses(this));
+        new BusinessPresenter(Injection.provideUseCaseHandler(), businessFragment, Injection.provideGetBusinesses(this));
 
     }
 

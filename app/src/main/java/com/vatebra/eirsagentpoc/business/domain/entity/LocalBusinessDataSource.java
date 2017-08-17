@@ -57,10 +57,25 @@ public class LocalBusinessDataSource implements BusinessDataSource {
         }
     }
 
+    @SuppressWarnings("TryFinallyCanBeTryWithResources")
     @Override
-    public void getBusiness(@NonNull LoadBusinessCallback callback) {
+    public void getBusiness(@NonNull String mBusinessRin, @NonNull GetBusinessCallback callback) {
+        Realm realm = Realm.getDefaultInstance();
 
+        try {
+            Business business = realm.where(Business.class).equalTo("rin", mBusinessRin).findFirst();
+            if (business != null) {
+                callback.onBusinessLoaded(business);
+            } else {
+                callback.onDataNotAvailable();
+            }
+        } catch (Exception ex) {
+            Log.e(TAG, "getBusiness: ", ex);
+        } finally {
+            realm.close();
+        }
     }
+
 
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
     @Override
@@ -81,8 +96,22 @@ public class LocalBusinessDataSource implements BusinessDataSource {
         }
     }
 
+    @SuppressWarnings("TryFinallyCanBeTryWithResources")
     @Override
-    public void addBusiness(@NonNull Business business) {
-
+    public void addBusiness(@NonNull final Business business) {
+        checkNotNull(business);
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            realm.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.insertOrUpdate(business);
+                }
+            });
+        } catch (Exception ex) {
+            Log.e(TAG, "saveBusinesses: ", ex);
+        } finally {
+            realm.close();
+        }
     }
 }

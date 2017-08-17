@@ -10,7 +10,6 @@ import io.realm.annotations.PrimaryKey;
 public class Business extends RealmObject {
 
     @PrimaryKey
-    private int id;
     private String rin;
     private String assetType;
     private String name;
@@ -26,19 +25,12 @@ public class Business extends RealmObject {
 
     }
 
-    public Business(String name, int id, String lga) {
+    public Business(String name, String rin, String lga) {
         this.name = name;
-        this.id = id;
+        this.rin = rin;
         this.lga = lga;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getRin() {
         return rin;

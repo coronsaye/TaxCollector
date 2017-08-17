@@ -3,6 +3,7 @@ package com.vatebra.eirsagentpoc.business;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.business.domain.entity.Business;
+import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,8 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
     @BindView(R.id.refresh_layout)
     ScrollChildSwipeRefreshLayout swipeRefreshLayout;
 
+    FloatingActionButton floatingActionButton;
+
     public BusinessFragment() {
         // Required empty public constructor
     }
@@ -93,6 +97,14 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
             @Override
             public void onClick(View view) {
                 showAddBusiness();
+            }
+        });
+        floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_business);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.addNewBusiness();
             }
         });
         swipeRefreshLayout.setColorSchemeColors(
@@ -140,7 +152,7 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
 
     @Override
     public void showAddBusiness() {
-        // TODO: 17/08/2017 START ADD BUSINESS ACTIVITY
+        FlowController.launchAddBusinessActivity(getContext());
     }
 
     @Override

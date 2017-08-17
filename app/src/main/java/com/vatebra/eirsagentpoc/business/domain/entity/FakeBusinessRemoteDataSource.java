@@ -31,21 +31,21 @@ public class FakeBusinessRemoteDataSource implements BusinessDataSource {
     @Override
     public void getBusinesses(@NonNull LoadBusinessesCallback callback) {
         if (TASK_SERVICE_DATA.isEmpty()) {
-            TASK_SERVICE_DATA.add(new Business("Vatebra", 1, "Victoria Island"));
-            TASK_SERVICE_DATA.add(new Business("Andela", 2, "Yaba"));
-            TASK_SERVICE_DATA.add(new Business("UBA", 3, "Victoria Island"));
-            TASK_SERVICE_DATA.add(new Business("First Bank", 4, "Victoria Island"));
-            TASK_SERVICE_DATA.add(new Business("Dangote Cement", 5, "Egbeda"));
-            TASK_SERVICE_DATA.add(new Business("Dangote Sugars", 6, "Yaba"));
-            TASK_SERVICE_DATA.add(new Business("Iya Basira Canteen", 7, "Surulere"));
-            TASK_SERVICE_DATA.add(new Business("Interswitch", 8, "Victoria Island"));
-            TASK_SERVICE_DATA.add(new Business("Lacic Learning", 9, "Victoria Island"));
+            TASK_SERVICE_DATA.add(new Business("Vatebra", "1", "Victoria Island"));
+            TASK_SERVICE_DATA.add(new Business("Andela", "2", "Yaba"));
+            TASK_SERVICE_DATA.add(new Business("UBA", "3", "Victoria Island"));
+            TASK_SERVICE_DATA.add(new Business("First Bank", "4", "Victoria Island"));
+            TASK_SERVICE_DATA.add(new Business("Dangote Cement", "5", "Egbeda"));
+            TASK_SERVICE_DATA.add(new Business("Dangote Sugars", "6", "Yaba"));
+            TASK_SERVICE_DATA.add(new Business("Iya Basira Canteen", "7", "Surulere"));
+            TASK_SERVICE_DATA.add(new Business("Interswitch", "8", "Victoria Island"));
+            TASK_SERVICE_DATA.add(new Business("Lacic Learning", "9", "Victoria Island"));
         }
         callback.onBusinessesLoaded(TASK_SERVICE_DATA);
     }
 
     @Override
-    public void getBusiness(@NonNull LoadBusinessCallback callback) {
+    public void getBusiness(@NonNull String mBusinessRin, @NonNull GetBusinessCallback callback) {
 
     }
 
@@ -56,6 +56,6 @@ public class FakeBusinessRemoteDataSource implements BusinessDataSource {
 
     @Override
     public void addBusiness(@NonNull Business business) {
-
+        // TODO: 17/08/2017 Send business to remote
     }
 }

@@ -40,7 +40,7 @@ public class BusinessPresenter implements BusinessContract.Presenter {
 
     @Override
     public void addNewBusiness() {
-
+        mBusinessView.showAddBusiness();
     }
 
     @Override

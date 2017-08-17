@@ -1,14 +1,9 @@
 package com.vatebra.eirsagentpoc.business.domain.entity;
 
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-
-import com.vatebra.eirsagentpoc.App;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -77,8 +72,21 @@ public class BusinessRepository implements BusinessDataSource {
     }
 
     @Override
-    public void getBusiness(@NonNull LoadBusinessCallback callback) {
+    public void getBusiness(@NonNull String mBusinessRin, @NonNull final GetBusinessCallback callback) {
+        checkNotNull(mBusinessRin);
+        checkNotNull(callback);
+        // Is the task in the local data source? If not, query the network.
+        mBusinessLocalDataSource.getBusiness(mBusinessRin, new GetBusinessCallback() {
+            @Override
+            public void onBusinessLoaded(Business business) {
+                callback.onBusinessLoaded(business);
+            }
 
+            @Override
+            public void onDataNotAvailable() {
+                callback.onDataNotAvailable();
+            }
+        });
     }
 
     @Override
@@ -94,7 +102,13 @@ public class BusinessRepository implements BusinessDataSource {
 
     @Override
     public void addBusiness(@NonNull Business business) {
-        //add business to remote
+        // TODO: 17/08/2017 Add business to remote or (Add business to database, then sync to remote) ?? sync adapter
+        mBusinessRemoteDataSource.addBusiness(business);
+        mBusinessLocalDataSource.addBusiness(business);
+        if (cachedBusinesses == null) {
+            cachedBusinesses = new ArrayList<>();
+        }
+        cachedBusinesses.add(business);
     }
 
     private void getBusinessesFromRemoteDataSource(@NonNull final LoadBusinessesCallback callback) {
