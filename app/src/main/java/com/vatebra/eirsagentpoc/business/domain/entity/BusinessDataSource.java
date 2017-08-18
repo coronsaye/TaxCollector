@@ -28,7 +28,7 @@ public interface BusinessDataSource {
 
     void getBusinesses(@NonNull LoadBusinessesCallback callback);
 
-    void getBusiness(@NonNull String mBusinessRin,@NonNull GetBusinessCallback callback);
+    void getBusiness(@NonNull String mBusinessRin, @NonNull GetBusinessCallback callback);
 
     void saveBusinesses(@NonNull List<Business> businesses);
 

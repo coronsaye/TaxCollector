@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.businesses;
 
 import android.support.annotation.NonNull;
 
@@ -45,7 +45,7 @@ public class BusinessPresenter implements BusinessContract.Presenter {
 
     @Override
     public void openBusinessDetail(@NonNull Business business) {
-
+        mBusinessView.showBusinessDetailUi(business.getRin());
     }
 
     @Override

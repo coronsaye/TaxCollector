@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.addeditbusinesses;
 
 import com.vatebra.eirsagentpoc.BasePresenter;
 import com.vatebra.eirsagentpoc.BaseView;
@@ -19,6 +19,9 @@ public class AddBusinessContract {
         void showAddBusinessError();
 
         void showAddSuccessMessage();
+
+        void showEditBusinessMessageSuccess();
+
         void showEditBusinessError();
 
         void showCannotGetBusinessError();
@@ -27,6 +30,7 @@ public class AddBusinessContract {
     }
 
     interface Presenter extends BasePresenter {
+
         void saveBusiness(String name, String lga);
 
         void populateBusiness();

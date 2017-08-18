@@ -21,4 +21,17 @@
     <string name="business_name_hint">Business Name</string>
     <string name="add_business_error">Could not add business, ensure all fields are filled</string>
     <string name="business_success_message">Business Successfully Added</string>
+    <string name="empty_string_text">none</string>
+    <string name="edit_business_error">Cannot Edit Business</string>
+    <string name="font_family_condensed">sans-serif-condensed</string>
+    <string name="font_family_light">sans-serif-light</string>
+    <string name="font_family_regular">sans-serif-regular</string>
+    <string name="font_family_medium">sans-serif-medium</string>
+    <string name="sector_hint">Sector</string>
+    <string name="sub_sector_hint">Sub Sector</string>
+    <string name="lga_hint">LGA</string>
+    <string name="category_hint">Category</string>
+    <string name="operations_hint">Operations</string>
+    <string name="structure_hint">Structure</string>
+    <string name="edit_business_success">Business Edited Successfully</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.businesses;
 
 import android.view.LayoutInflater;
 import android.view.View;

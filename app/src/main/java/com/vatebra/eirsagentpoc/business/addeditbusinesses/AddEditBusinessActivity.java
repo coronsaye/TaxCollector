@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.addeditbusinesses;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

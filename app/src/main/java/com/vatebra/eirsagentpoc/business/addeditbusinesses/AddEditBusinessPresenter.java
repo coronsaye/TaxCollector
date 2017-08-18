@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.addeditbusinesses;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -43,6 +43,7 @@ public class AddEditBusinessPresenter implements AddBusinessContract.Presenter {
 
     private void showBusiness(Business business) {
         if (mAddBusinessView.isActive()) {
+
             mAddBusinessView.setBusiness(business);
         }
     }
@@ -51,15 +52,16 @@ public class AddEditBusinessPresenter implements AddBusinessContract.Presenter {
     @Override
     public void saveBusiness(String name, String lga) {
 
-        Random random = new Random();
-        int rin = random.nextInt();
-        String stringRin = String.valueOf(rin);
-        Business business = new Business(name, stringRin, lga);
 
         // TODO: 17/08/2017 Validate The Fields at this point
         if (isNewBusiness()) {
+            Random random = new Random();
+            int rin = random.nextInt();
+            String stringRin = String.valueOf(rin);
+            Business business = new Business(name, stringRin, lga);
             createBusiness(business);
         } else {
+            Business business = new Business(name, mBusinessRin, lga);
             updateBusiness(business);
         }
     }
@@ -149,7 +151,7 @@ public class AddEditBusinessPresenter implements AddBusinessContract.Presenter {
                 if (!mAddBusinessView.isActive()) {
                     return;
                 }
-
+                mAddBusinessView.showEditBusinessMessageSuccess();
                 //return to list after edit
                 mAddBusinessView.showBusinessList();
             }

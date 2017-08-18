@@ -46,7 +46,7 @@ public class GetBusiness extends UseCase<GetBusiness.RequestValues, GetBusiness.
         private final String mBusinessRin;
 
         public RequestValues(@NonNull String businessRin) {
-            mBusinessRin = checkNotNull(businessRin, "taskId cannot be null!");
+            mBusinessRin = checkNotNull(businessRin, "businessRin cannot be null!");
         }
 
         public String getBusinessRin() {
@@ -59,7 +59,7 @@ public class GetBusiness extends UseCase<GetBusiness.RequestValues, GetBusiness.
         private Business mBusiness;
 
         public ResponseValue(@NonNull Business business) {
-            mBusiness = checkNotNull(business, "task cannot be null!");
+            mBusiness = checkNotNull(business, "business cannot be null!");
         }
 
         public Business getBusiness() {

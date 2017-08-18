@@ -3,10 +3,14 @@ package com.vatebra.eirsagentpoc.business.domain.entity;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.google.common.base.Objects;
+import com.google.common.base.Strings;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
 import io.realm.RealmResults;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -17,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LocalBusinessDataSource implements BusinessDataSource {
 
-    private static LocalBusinessDataSource INSTANCE;
+//    private static LocalBusinessDataSource INSTANCE;
 
     private static String TAG = LocalBusinessDataSource.class.getSimpleName();
 
@@ -26,16 +30,15 @@ public class LocalBusinessDataSource implements BusinessDataSource {
     }
 
     public static LocalBusinessDataSource getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new LocalBusinessDataSource();
-        }
-        return INSTANCE;
+        //not using static instance because realm keeps storing old references leading to crash
+        return new LocalBusinessDataSource();
     }
 
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
     @Override
-    public void getBusinesses(@NonNull LoadBusinessesCallback callback) {
+    public void getBusinesses(@NonNull final LoadBusinessesCallback callback) {
         List<Business> businesses = new ArrayList<>();
+
         Realm realm = Realm.getDefaultInstance();
         try {
             RealmResults<Business> results = realm.where(Business.class).findAll();
@@ -43,36 +46,42 @@ public class LocalBusinessDataSource implements BusinessDataSource {
             if (results != null)
                 businesses = realm.copyFromRealm(results);
 
-            if (businesses.isEmpty()) {
-                // This will be called if the table is new or just empty.
-                callback.onDataNotAvailable();
-            } else {
-                callback.onBusinessesLoaded(businesses);
-            }
-
         } catch (Exception ex) {
             Log.e(TAG, "getBusinesses: ", ex);
         } finally {
             realm.close();
         }
+
+        if (businesses.isEmpty()) {
+            // This will be called if the table is new or just empty.
+            callback.onDataNotAvailable();
+        } else {
+            callback.onBusinessesLoaded(businesses);
+        }
     }
 
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
     @Override
-    public void getBusiness(@NonNull String mBusinessRin, @NonNull GetBusinessCallback callback) {
+    public void getBusiness(@NonNull final String mBusinessRin, @NonNull final GetBusinessCallback callback) {
         Realm realm = Realm.getDefaultInstance();
-
+        RealmResults<Business> results;
+        Business business = new Business();
         try {
-            Business business = realm.where(Business.class).equalTo("rin", mBusinessRin).findFirst();
-            if (business != null) {
-                callback.onBusinessLoaded(business);
-            } else {
-                callback.onDataNotAvailable();
-            }
+            results = realm.where(Business.class).findAll();
+            Business newBusiness = results.where().equalTo("rin", mBusinessRin).findFirst();
+            //FIXES REALM ISSUE : This Realm instance has already been closed, making it unusable
+            business = realm.copyFromRealm(newBusiness);
+
         } catch (Exception ex) {
             Log.e(TAG, "getBusiness: ", ex);
         } finally {
             realm.close();
+        }
+
+        if (!Strings.isNullOrEmpty(business.getRin())) {
+            callback.onBusinessLoaded(business);
+        } else {
+            callback.onDataNotAvailable();
         }
     }
 

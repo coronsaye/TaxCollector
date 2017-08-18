@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.businesses;
 
 
 import android.os.Bundle;
@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
 import com.vatebra.eirsagentpoc.business.domain.entity.Business;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 
@@ -152,12 +153,13 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
 
     @Override
     public void showAddBusiness() {
-        FlowController.launchAddBusinessActivity(getContext());
+        FlowController.launchAddEditBusinessActivity(getContext());
     }
 
     @Override
-    public void showBusinessDetailUi() {
-        // TODO: 17/08/2017 NAVIGATE TO DETAILS PAGE
+    public void showBusinessDetailUi(String businessRin) {
+
+        FlowController.launchBusinessDetailsActivity(getContext(), businessRin);
     }
 
     @Override
@@ -199,7 +201,7 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
     BusinessAdapter.BusinessItemListener businessItemListener = new BusinessAdapter.BusinessItemListener() {
         @Override
         public void onBusinessClick(Business clickedBusiness) {
-            // TODO: 17/08/2017 OPEN BUSINESS DETAILS PAGE FROM PRESENTER
+            presenter.openBusinessDetail(clickedBusiness);
         }
     };
 }

@@ -1,11 +1,10 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.businesses;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.util.ActivityUtils;

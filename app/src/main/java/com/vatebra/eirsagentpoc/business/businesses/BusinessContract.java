@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.businesses;
 
 import android.support.annotation.NonNull;
 
@@ -22,7 +22,7 @@ public interface BusinessContract {
 
         void showAddBusiness();
 
-        void showBusinessDetailUi();
+        void showBusinessDetailUi(String businessRin);
 
         void showNoBusinesses();
 

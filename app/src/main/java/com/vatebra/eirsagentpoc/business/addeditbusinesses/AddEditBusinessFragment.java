@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.business.addeditbusinesses;
 
 
 import android.app.Activity;
@@ -91,7 +91,13 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
 
     @Override
     public void showAddSuccessMessage() {
-        Toast.makeText(getContext(),R.string.business_success_message, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), R.string.business_success_message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void showEditBusinessMessageSuccess() {
+        Toast.makeText(getContext(), R.string.edit_business_success, Toast.LENGTH_LONG).show();
+
     }
 
     @Override
@@ -107,6 +113,7 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
     @Override
     public void setBusiness(Business business) {
         // TODO: 17/08/2017 Populate fields on edit
+        businessNameTextView.setText(business.getName());
     }
 
     @Override

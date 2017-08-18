@@ -12,7 +12,23 @@
     <color name="green">#49CC56</color>
     <color name="white">#FFFFFF</color>
     <color name="divider">#BDBDBD</color>
+    <color name="text_dark_300">#2d384a</color>
+    <color name="text_dark_200">#212a38</color>
     <drawable name="completedTaskBackground">#CCCCCC</drawable>
 
     <drawable name="touchFeedback">#CFD8DC</drawable>
+
+    <color name="medium_green_200">#ebf1ed</color>
+    <color name="medium_green_300">#e4ede7</color>
+    <color name="medium_green_400">#dee8e2</color>
+    <color name="medium_green_500">#d9e4dd</color>
+    <color name="medium_green_600">#c0cbc4</color>
+    <color name="medium_green_700">#a7b0aa</color>
+    <color name="medium_green_800">#8e948f</color>
+    <color name="medium_green_900">#626763</color>
+    <color name="medium_teal_500">#2fc3c1</color>
+
+
+    <color name="pale_red">#ff3658</color>
+
 </resources>

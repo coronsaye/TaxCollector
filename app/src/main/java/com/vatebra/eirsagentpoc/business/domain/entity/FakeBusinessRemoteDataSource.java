@@ -27,7 +27,6 @@ public class FakeBusinessRemoteDataSource implements BusinessDataSource {
         return INSTANCE;
     }
 
-
     @Override
     public void getBusinesses(@NonNull LoadBusinessesCallback callback) {
         if (TASK_SERVICE_DATA.isEmpty()) {

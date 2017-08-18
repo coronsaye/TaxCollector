@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.vatebra.eirsagentpoc.business;
+package com.vatebra.eirsagentpoc.util;
 
 import android.content.Context;
 import android.support.v4.view.ViewCompat;

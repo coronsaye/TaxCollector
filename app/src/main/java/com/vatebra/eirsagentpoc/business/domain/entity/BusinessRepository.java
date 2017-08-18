@@ -1,8 +1,10 @@
 package com.vatebra.eirsagentpoc.business.domain.entity;
 
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -75,7 +77,6 @@ public class BusinessRepository implements BusinessDataSource {
     public void getBusiness(@NonNull String mBusinessRin, @NonNull final GetBusinessCallback callback) {
         checkNotNull(mBusinessRin);
         checkNotNull(callback);
-        // Is the task in the local data source? If not, query the network.
         mBusinessLocalDataSource.getBusiness(mBusinessRin, new GetBusinessCallback() {
             @Override
             public void onBusinessLoaded(Business business) {
@@ -128,4 +129,5 @@ public class BusinessRepository implements BusinessDataSource {
     private void refreshLocalDataSource(List<Business> businesses) {
         mBusinessLocalDataSource.saveBusinesses(businesses);
     }
+
 }
