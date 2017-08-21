@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class LocalBusinessDataSource implements BusinessDataSource {
 
-//    private static LocalBusinessDataSource INSTANCE;
+    private static LocalBusinessDataSource INSTANCE;
 
     private static String TAG = LocalBusinessDataSource.class.getSimpleName();
 
@@ -30,8 +30,10 @@ public class LocalBusinessDataSource implements BusinessDataSource {
     }
 
     public static LocalBusinessDataSource getInstance() {
-        //not using static instance because realm keeps storing old references leading to crash
-        return new LocalBusinessDataSource();
+        if (INSTANCE == null) {
+            INSTANCE = new LocalBusinessDataSource();
+        }
+        return INSTANCE;
     }
 
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
@@ -118,7 +120,7 @@ public class LocalBusinessDataSource implements BusinessDataSource {
                 }
             });
         } catch (Exception ex) {
-            Log.e(TAG, "saveBusinesses: ", ex);
+            Log.e(TAG, "addBusiness: ", ex);
         } finally {
             realm.close();
         }
