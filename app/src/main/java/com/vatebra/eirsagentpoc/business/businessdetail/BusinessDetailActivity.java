@@ -40,11 +40,10 @@ public class BusinessDetailActivity extends AppCompatActivity {
 
         if (businessDetailFragment == null) {
             businessDetailFragment = BusinessDetailFragment.newInstance(businessRin);
-
+            ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
+                    businessDetailFragment, R.id.contentFrame);
         }
 
-        ActivityUtils.addFragmentToActivity(getSupportFragmentManager(),
-                businessDetailFragment, R.id.contentFrame);
 
         new BusinessDetailPresenter(Injection.provideUseCaseHandler(), businessDetailFragment, Injection.provideGetBusiness(this), businessRin);
     }

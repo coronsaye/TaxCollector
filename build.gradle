@@ -37,6 +37,6 @@ ext {
     espressoVersion = '2.2.2'
     butterKnifeVersion ='8.8.1'
     guavaVersion = '18.0'
-
+    retrofitVersion = '2.3.0'
 
 }

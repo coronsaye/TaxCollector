@@ -7,14 +7,28 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessCategory;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessSector;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessStruture;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessSubSector;
+import com.vatebra.eirsagentpoc.domain.entity.Lga;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,8 +45,25 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
     @BindView(R.id.add_business_name)
     public TextView businessNameTextView;
 
-    public FloatingActionButton fabDone;
+    @BindView(R.id.lga_spinner)
+    public Spinner lgaSpinner;
 
+    @BindView(R.id.category_spinner)
+    public Spinner categorySpinner;
+
+    @BindView(R.id.sector_spinner)
+    public Spinner sectorSpinner;
+
+    @BindView(R.id.sub_sector_spinner)
+    public Spinner subSectorSpinner;
+
+    @BindView(R.id.structure_spinner)
+    public Spinner structureSpinner;
+
+    public FloatingActionButton fabDone;
+    BusinessRepository businessRepository;
+
+    Business business;
 
     private AddBusinessContract.Presenter mPresenter;
 
@@ -57,9 +88,60 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
         fabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mPresenter.saveBusiness(businessNameTextView.getText().toString(), "Lekki");
+                saveBusiness();
             }
         });
+    }
+
+
+    private void saveBusiness() {
+
+        if (TextUtils.isEmpty(businessNameTextView.getText())) {
+            showAddBusinessError();
+            return;
+        }
+
+        if (this.business == null) {
+            this.business = new Business();
+        }
+        Lga lga = (Lga) lgaSpinner.getSelectedItem();
+        BusinessCategory category = (BusinessCategory) categorySpinner.getSelectedItem();
+        BusinessSector sector = (BusinessSector) sectorSpinner.getSelectedItem();
+        BusinessSubSector subSector = (BusinessSubSector) subSectorSpinner.getSelectedItem();
+        BusinessStruture struture = (BusinessStruture) structureSpinner.getSelectedItem();
+        business.setCreateName(businessNameTextView.getText().toString());
+        business.setName(businessNameTextView.getText().toString());
+
+        if (lga != null) {
+            business.setLGAID(lga.getID());
+            business.setLga(lga.getName());
+        }
+
+        if (category != null) {
+            business.setBusinessCategoryId(category.getID());
+            business.setBusinessCategory(category.getName());
+        }
+
+        if (sector != null) {
+            business.setBusinessSectorId(sector.getID());
+            business.setBusinessSector(sector.getName());
+
+        }
+
+        if (subSector != null) {
+            business.setBusinessSubSectorId(subSector.getID());
+            business.setBusinessSubSector(subSector.getName());
+
+        }
+
+        if (struture != null) {
+            business.setBusinessStructureId(struture.getID());
+            business.setBusinessStructure(struture.getName());
+
+        }
+
+        mPresenter.saveBusiness(business);
+
     }
 
     @Override
@@ -68,6 +150,9 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add_business, container, false);
         ButterKnife.bind(this, root);
+        businessRepository = Injection.providesBusinessRepository(getContext());
+
+        populateSpinners();
         setRetainInstance(true);
         return root;
     }
@@ -85,35 +170,184 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
 
     @Override
     public void showAddBusinessError() {
+
         Snackbar.make(businessNameTextView, R.string.add_business_error, Snackbar.LENGTH_LONG).show();
 
     }
 
     @Override
-    public void showAddSuccessMessage() {
-        Toast.makeText(getContext(), R.string.business_success_message, Toast.LENGTH_LONG).show();
+    public void showAddSuccessMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 
     @Override
-    public void showEditBusinessMessageSuccess() {
-        Toast.makeText(getContext(), R.string.edit_business_success, Toast.LENGTH_LONG).show();
+    public void showEditBusinessMessageSuccess(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void showEditBusinessError() {
+        Toast.makeText(getContext(), "Failed Could not add Business", Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void showCannotGetBusinessError() {
+        Toast.makeText(getContext(), "Cannot Get Business", Toast.LENGTH_LONG).show();
 
     }
 
     @Override
     public void setBusiness(Business business) {
+        this.business = business;
         // TODO: 17/08/2017 Populate fields on edit
         businessNameTextView.setText(business.getName());
+    }
+
+    @Override
+    public void clearFields() {
+        businessNameTextView.setText("");
+    }
+
+    @Override
+    public void setLgas(List<Lga> lgas) {
+
+
+    }
+
+    private void populateSpinners() {
+
+
+        businessRepository.getLgas(new BusinessDataSource.GetObjectCallback<Lga>() {
+            @Override
+            public void onObjectsLoaded(List<Lga> objects) {
+                ArrayAdapter<Lga> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                lgaSpinner.setAdapter(dataAdapter);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+        businessRepository.getCategories(new BusinessDataSource.GetObjectCallback<BusinessCategory>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessCategory> objects) {
+                ArrayAdapter<BusinessCategory> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                categorySpinner.setAdapter(dataAdapter);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+        businessRepository.getSectors(new BusinessDataSource.GetObjectCallback<BusinessSector>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessSector> objects) {
+                ArrayAdapter<BusinessSector> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                sectorSpinner.setAdapter(dataAdapter);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+        businessRepository.getSubSectors(new BusinessDataSource.GetObjectCallback<BusinessSubSector>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessSubSector> objects) {
+                ArrayAdapter<BusinessSubSector> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                subSectorSpinner.setAdapter(dataAdapter);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+        businessRepository.getStructures(new BusinessDataSource.GetObjectCallback<BusinessStruture>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessStruture> objects) {
+                ArrayAdapter<BusinessStruture> dataAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+                structureSpinner.setAdapter(dataAdapter);
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    @Override
+    public void setCategoties(List<BusinessCategory> categories) {
+        businessRepository.getCategories(new BusinessDataSource.GetObjectCallback<BusinessCategory>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessCategory> objects) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    @Override
+    public void setSectors(List<BusinessSector> sectors) {
+        businessRepository.getSectors(new BusinessDataSource.GetObjectCallback<BusinessSector>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessSector> objects) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    @Override
+    public void setSubSectors(List<BusinessSubSector> subSectors) {
+        businessRepository.getSubSectors(new BusinessDataSource.GetObjectCallback<BusinessSubSector>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessSubSector> objects) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    @Override
+    public void setStructures(List<BusinessStruture> structures) {
+        businessRepository.getStructures(new BusinessDataSource.GetObjectCallback<BusinessStruture>() {
+            @Override
+            public void onObjectsLoaded(List<BusinessStruture> objects) {
+
+            }
+
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
     }
 
     @Override

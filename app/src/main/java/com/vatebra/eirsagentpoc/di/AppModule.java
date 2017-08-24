@@ -4,8 +4,6 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import com.vatebra.eirsagentpoc.business.domain.entity.LocalBusinessDataSource;
-
 import javax.inject.Singleton;
 
 import dagger.Module;

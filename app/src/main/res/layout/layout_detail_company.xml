@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/details_company_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="64dp"
+                android:fontFamily="sans-serif"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/text_dark_200"
+                tools:text="Company Name" />
+
+            <TextView
+                android:id="@+id/details_company_rin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@string/font_family_medium"
+                android:textColor="@color/pale_red"
+                android:textSize="14sp"
+                tools:text="COMPANY_RIN" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="96dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/medium_green_600" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/drawable_details_content_bg"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/company_phone_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Mobile Number 1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/company_phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_phone_hint"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+
+                <TextView
+                    android:id="@+id/details_company_phone_two_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/company_phone"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Mobile Number 2"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/details_company_phone_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/details_company_phone_two_hint"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+
+                <TextView
+                    android:id="@+id/details_company_email_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Email 1"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/details_company_email"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/details_company_email_hint"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+
+                <TextView
+                    android:id="@+id/details_company_email_two_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/details_company_phone_two_hint"
+                    android:layout_below="@id/details_company_email"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Email 2"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/details_company_email_two"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/details_company_email_two_hint"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="96dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/medium_green_600" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/drawable_details_content_bg"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/details_company_taxoffice_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Tax Office"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/details_company_taxoffice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_company_taxoffice_hint"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/details_company_tin_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_company_taxoffice"
+                android:fontFamily="@string/font_family_medium"
+                android:text="TIN"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/details_company_tin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_company_tin_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/details_company_status_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Tax Payer Status"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/details_company_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/details_company_status_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/details_company_tax_notify_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@id/details_company_tin_hint"
+                android:layout_below="@id/details_company_status"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Notification Method"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/details_company_tax_notify"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/details_company_tax_notify_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="96dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/medium_green_600"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/drawable_details_content_bg"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/details_company_economic_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Economic Activity"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/details_company_economic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/details_company_economic_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

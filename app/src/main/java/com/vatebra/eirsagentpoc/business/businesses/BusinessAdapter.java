@@ -7,9 +7,11 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -19,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public class BusinessAdapter extends BaseAdapter {
     private List<Business> mBusinesses;
-
+    private List<Business> searchBusinessList = new ArrayList<>();
     private BusinessItemListener businessItemListener;
 
     public BusinessAdapter(List<Business> businesses, BusinessItemListener itemListener) {
@@ -30,6 +32,8 @@ public class BusinessAdapter extends BaseAdapter {
 
     private void setList(List<Business> businesses) {
         mBusinesses = checkNotNull(businesses);
+        searchBusinessList.clear();
+        searchBusinessList.addAll(mBusinesses);
     }
 
     public void replaceData(List<Business> businesses) {
@@ -37,14 +41,29 @@ public class BusinessAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void filter(String charText) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        searchBusinessList.clear();
+        if (charText.length() == 0) {
+            searchBusinessList.addAll(mBusinesses);
+        } else {
+            for (Business business : mBusinesses) {
+                if (business.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    searchBusinessList.add(business);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getCount() {
-        return mBusinesses.size();
+        return searchBusinessList.size();
     }
 
     @Override
     public Business getItem(int i) {
-        return mBusinesses.get(i);
+        return searchBusinessList.get(i);
     }
 
     @Override
@@ -64,6 +83,10 @@ public class BusinessAdapter extends BaseAdapter {
         titleTextView.setText(business.getName());
         TextView subTitleTextView = (TextView) rowView.findViewById(R.id.subTitle);
         subTitleTextView.setText(business.getLga());
+
+
+        TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
+        rinTextView.setText("#" + business.getRin());
 
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override

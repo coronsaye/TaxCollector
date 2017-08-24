@@ -8,8 +8,14 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -19,7 +25,7 @@ import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 
 import java.util.ArrayList;
@@ -33,7 +39,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class BusinessFragment extends Fragment implements BusinessContract.View {
+public class BusinessFragment extends Fragment implements BusinessContract.View, SearchView.OnQueryTextListener {
 
     private BusinessContract.Presenter presenter;
     private BusinessAdapter mListAdapter;
@@ -92,7 +98,7 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_business, container, false);
         ButterKnife.bind(this, root);
-
+        setHasOptionsMenu(true);
         listView.setAdapter(mListAdapter);
         mNoBusinessAddView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +128,7 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
                 presenter.loadBusinesses();
             }
         });
+
         return root;
 
     }
@@ -163,6 +170,12 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
     }
 
     @Override
+    public void showFormCompleteError(String formPoint) {
+        String message = "Ensure that " + formPoint + " is filled";
+        showMessage(message);
+    }
+
+    @Override
     public void showNoBusinesses() {
         showNoBusinessViews("There are currently no businesses", R.drawable.ic_not_interested_black_24dp, false);
     }
@@ -188,6 +201,17 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
         Snackbar.make(getView(), message, Snackbar.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.search_menu, menu);
+        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
+        SearchView searchView = new SearchView(((AppCompatActivity) getContext()).getSupportActionBar().getThemedContext());
+        MenuItemCompat.setShowAsAction(searchMenuItem, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(searchMenuItem, searchView);
+        searchView.setOnQueryTextListener(this);
+
+    }
 
     private void showNoBusinessViews(String mainText, int iconRes, boolean showAddView) {
         mBusinessView.setVisibility(View.GONE);
@@ -204,4 +228,34 @@ public class BusinessFragment extends Fragment implements BusinessContract.View 
             presenter.openBusinessDetail(clickedBusiness);
         }
     };
+
+    /**
+     * Called when the user submits the query. This could be due to a key press on the
+     * keyboard or due to pressing a submit button.
+     * The listener can override the standard behavior by returning true
+     * to indicate that it has handled the submit request. Otherwise return false to
+     * let the SearchView handle the submission by launching any associated intent.
+     *
+     * @param query the query text that is to be submitted
+     * @return true if the query has been handled by the listener, false to let the
+     * SearchView perform the default action.
+     */
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        return false;
+    }
+
+    /**
+     * Called when the query text is changed by the user.
+     *
+     * @param newText the new content of the query text field.
+     * @return false if the SearchView should perform the default action of showing any
+     * suggestions if available, true if the action was handled by the listener.
+     */
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (mListAdapter != null)
+            mListAdapter.filter(newText);
+        return true;
+    }
 }

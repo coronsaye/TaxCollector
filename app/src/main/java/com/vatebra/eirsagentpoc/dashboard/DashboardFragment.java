@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.diegodobelo.expandingview.ExpandingItem;
@@ -94,7 +95,10 @@ public class DashboardFragment extends Fragment {
             public void onClick(View view) {
                 if (subItemTextView.getText().equals(getString(R.string.business_title)))
                     FlowController.launchBusinessActivity(getContext());
-
+                else if (subItemTextView.getText().equals(getString(R.string.individuals_title)))
+                    FlowController.launchIndividualActivity(getContext());
+                else if (subItemTextView.getText().equals(getString(R.string.companies_title)))
+                    FlowController.launchCompanyActivity(getContext());
                 //go to respective View
             }
         });
@@ -102,7 +106,12 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //addItem
-                FlowController.launchAddEditBusinessActivity(getContext());
+                if (subItemTextView.getText().equals(getString(R.string.business_title)))
+                    FlowController.launchAddEditBusinessActivity(getContext());
+                else if (subItemTextView.getText().equals(getString(R.string.individuals_title)))
+                    FlowController.launchAddEditIndividualActivity(getContext());
+//                else if (subItemTextView.getText().equals(getString(R.string.companies_title)))
+//                    FlowController.launchCompanyActivity(getContext());
             }
         });
     }

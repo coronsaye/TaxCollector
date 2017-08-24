@@ -135,6 +135,11 @@ public class BusinessDetailFragment extends Fragment implements BusinessDetailCo
     }
 
     @Override
+    public void showBusinessStructure(String structure) {
+        businessStructureTextView.setText(structure);
+    }
+
+    @Override
     public void showBusinessProfile(String profile) {
 
     }

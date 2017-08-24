@@ -1,9 +1,11 @@
-package com.vatebra.eirsagentpoc.business.domain.entity;
+package com.vatebra.eirsagentpoc.domain.entity;
 
 import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.RealmObject;
 
 /**
  * Created by David Eti on 17/08/2017.
@@ -54,7 +56,41 @@ public class FakeBusinessRemoteDataSource implements BusinessDataSource {
     }
 
     @Override
-    public void addBusiness(@NonNull Business business) {
+    public void addBusiness(@NonNull Business business, @NonNull UpdateBusinessCallback callback) {
         // TODO: 17/08/2017 Send business to remote
     }
+
+    @Override
+    public void updateBusiness(@NonNull Business business, @NonNull UpdateBusinessCallback callback) {
+
+    }
+
+    @Override
+    public void getLgas(@NonNull GetObjectCallback<Lga> callback) {
+
+    }
+
+    @Override
+    public void getCategories(@NonNull GetObjectCallback<BusinessCategory> callback) {
+
+    }
+
+    @Override
+    public void getSectors(@NonNull GetObjectCallback<BusinessSector> callback) {
+
+    }
+
+    @Override
+    public void getSubSectors(@NonNull GetObjectCallback<BusinessSubSector> callback) {
+
+    }
+
+    @Override
+    public void getStructures(@NonNull GetObjectCallback<BusinessStruture> callback) {
+
+    }
+
+
+
+
 }

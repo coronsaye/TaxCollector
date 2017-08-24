@@ -2,8 +2,6 @@ package com.vatebra.eirsagentpoc.building.domain.entity;
 
 import android.support.annotation.NonNull;
 
-import com.vatebra.eirsagentpoc.business.domain.entity.FakeBusinessRemoteDataSource;
-
 import java.util.ArrayList;
 import java.util.List;
 

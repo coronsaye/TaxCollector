@@ -4,7 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.vatebra.eirsagentpoc.BasePresenter;
 import com.vatebra.eirsagentpoc.BaseView;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 
 import java.util.List;
 
@@ -23,6 +23,7 @@ public interface BusinessContract {
         void showAddBusiness();
 
         void showBusinessDetailUi(String businessRin);
+        void showFormCompleteError(String formPoint);
 
         void showNoBusinesses();
 

@@ -1,10 +1,11 @@
-package com.vatebra.eirsagentpoc.business.domain.usecase;
+package com.vatebra.eirsagentpoc.business.businesses.usecase;
 
 import android.support.annotation.NonNull;
 
 import com.vatebra.eirsagentpoc.UseCase;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
-import com.vatebra.eirsagentpoc.business.domain.entity.BusinessRepository;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -22,8 +23,17 @@ public class SaveBusiness extends UseCase<SaveBusiness.RequestValues, SaveBusine
     @Override
     protected void executeUseCase(SaveBusiness.RequestValues requestValues) {
         Business business = requestValues.getBusiness();
-        mBusinessRepository.addBusiness(business);
-        getUseCaseCallback().onSuccess(new ResponseValue(business));
+        mBusinessRepository.addBusiness(business, new BusinessDataSource.UpdateBusinessCallback() {
+            @Override
+            public void onUpdateSuccessful(String message) {
+                getUseCaseCallback().onSuccess(new ResponseValue(message));
+            }
+
+            @Override
+            public void onUpdateFailed() {
+
+            }
+        });
     }
 
     public static final class RequestValues implements UseCase.RequestValues {
@@ -43,14 +53,14 @@ public class SaveBusiness extends UseCase<SaveBusiness.RequestValues, SaveBusine
 
     public static final class ResponseValue implements UseCase.ResponseValue {
 
-        private final Business mBusiness;
+        private String message;
 
-        public ResponseValue(@NonNull Business business) {
-            mBusiness = checkNotNull(business, "business cannot be null!");
+        public ResponseValue(@NonNull String message) {
+            this.message = message;
         }
 
-        public Business getBusiness() {
-            return mBusiness;
+        public String getMessage() {
+            return message;
         }
     }
 }

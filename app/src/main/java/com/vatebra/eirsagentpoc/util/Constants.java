@@ -6,5 +6,18 @@ package com.vatebra.eirsagentpoc.util;
 
 public class Constants {
 
+    public enum MaritalStatus {
+        Single(1), Married(2);
 
+        private int value;
+
+        private MaritalStatus(int value) {
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.name();
+        }
+    }
 }

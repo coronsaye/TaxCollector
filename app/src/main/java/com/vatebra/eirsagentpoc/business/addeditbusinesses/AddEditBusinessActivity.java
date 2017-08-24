@@ -47,7 +47,7 @@ public class AddEditBusinessActivity extends AppCompatActivity {
             }
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), addEditBusinessFragment, R.id.contentFrame);
 
-            new AddEditBusinessPresenter(Injection.provideUseCaseHandler(), addEditBusinessFragment, Injection.provideSaveBusiness(this), Injection.provideGetBusiness(this), businessRin);
+            new AddEditBusinessPresenter(Injection.provideUseCaseHandler(), addEditBusinessFragment, Injection.provideSaveBusiness(this), Injection.provideGetBusiness(this),Injection.provideUpdateBusiness(this), businessRin);
         }
     }
 

@@ -1,11 +1,11 @@
-package com.vatebra.eirsagentpoc.business.domain.usecase;
+package com.vatebra.eirsagentpoc.business.businesses.usecase;
 
 import android.support.annotation.NonNull;
 
 import com.vatebra.eirsagentpoc.UseCase;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
-import com.vatebra.eirsagentpoc.business.domain.entity.BusinessDataSource;
-import com.vatebra.eirsagentpoc.business.domain.entity.BusinessRepository;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 
 import java.util.List;
 

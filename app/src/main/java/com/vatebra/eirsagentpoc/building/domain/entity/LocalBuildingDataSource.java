@@ -4,7 +4,6 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.base.Strings;
-import com.vatebra.eirsagentpoc.business.domain.entity.LocalBusinessDataSource;
 
 import java.util.ArrayList;
 import java.util.List;

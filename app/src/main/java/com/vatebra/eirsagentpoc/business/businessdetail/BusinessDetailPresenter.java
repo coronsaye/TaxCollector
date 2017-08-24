@@ -6,8 +6,8 @@ import android.support.annotation.Nullable;
 import com.google.common.base.Strings;
 import com.vatebra.eirsagentpoc.UseCase;
 import com.vatebra.eirsagentpoc.UseCaseHandler;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
-import com.vatebra.eirsagentpoc.business.domain.usecase.GetBusiness;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.business.businesses.usecase.GetBusiness;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -119,6 +119,10 @@ public class BusinessDetailPresenter implements BusinessDetailContract.Presenter
         } else {
             mBusinessDetailView.showBusinessProfile(business.getProfile());
         }
-
+        if (Strings.isNullOrEmpty(business.getBusinessStructure())) {
+            mBusinessDetailView.showBusinessStructure("none");
+        } else {
+            mBusinessDetailView.showBusinessStructure(business.getBusinessStructure());
+        }
     }
 }

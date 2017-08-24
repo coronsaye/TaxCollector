@@ -3,6 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     package="com.vatebra.eirsagentpoc">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -22,9 +25,35 @@
         </activity>
         <activity
             android:name=".business.businesses.BusinessActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
+        <activity
+            android:name=".business.addeditbusinesses.AddEditBusinessActivity"
             android:theme="@style/AppTheme.OverlapSystemBar" />
-        <activity android:name=".business.addeditbusinesses.AddEditBusinessActivity" />
-        <activity android:name=".business.businessdetail.BusinessDetailActivity"></activity>
+        <activity
+            android:name=".business.businessdetail.BusinessDetailActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity
+            android:name=".taxpayers.individuals.IndividualsActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity
+            android:name=".taxpayers.individuals.IndividualDetailActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity
+            android:name=".taxpayers.companies.CompanyDetailActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity
+            android:name=".taxpayers.companies.CompaniesActivity"
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity android:name=".taxpayers.individuals.AddEditIndividualActivity" />
+        <activity android:name=".taxpayers.companies.AddEditCompanyActivity"></activity>
     </application>
 
 </manifest>

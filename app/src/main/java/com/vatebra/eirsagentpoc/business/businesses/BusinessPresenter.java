@@ -4,8 +4,8 @@ import android.support.annotation.NonNull;
 
 import com.vatebra.eirsagentpoc.UseCase;
 import com.vatebra.eirsagentpoc.UseCaseHandler;
-import com.vatebra.eirsagentpoc.business.domain.entity.Business;
-import com.vatebra.eirsagentpoc.business.domain.usecase.GetBusinesses;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.business.businesses.usecase.GetBusinesses;
 
 import java.util.List;
 

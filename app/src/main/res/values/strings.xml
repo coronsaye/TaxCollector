@@ -9,7 +9,7 @@
     <string name="companies_title">Companies</string>
     <string name="payment_title">Payment</string>
     <string name="no_business_all">No businesses yet</string>
-    <string name="no_business_add">Add a business + </string>
+    <string name="no_business_add">Add a name + </string>
     <string name="lorem_ipsum_short">Lorem ipsum dolor</string>
     <string name="lorem_ipsum_medium">Lorem ipsum dolor sit amet, eu interdum curabitur magna et sed, sed lectus feugiat ultrices. Curae ultricies vestibulum, sit phasellus consequat, in mi laoreet nullam quam pede eu.</string>
     <string name="lorem_ipsum_long">Lorem ipsum dolor sit amet, eu interdum curabitur magna et sed, sed lectus feugiat ultrices. Curae ultricies vestibulum, sit phasellus consequat, in mi laoreet nullam quam pede eu, tempus justo ad tortor nullam. Est et vel, suscipit in purus accumsan dis faucibus, adipiscing arcu venenatis orci sodales elit, non lobortis aenean pellentesque vestibulum consectetuer lectus, cras donec.</string>
@@ -19,7 +19,7 @@
     <string name="edit_business_title">Edit Business</string>
     <string name="add_business_title">Add New Business</string>
     <string name="business_name_hint">Business Name</string>
-    <string name="add_business_error">Could not add business, ensure all fields are filled</string>
+    <string name="add_business_error">Could not add name, ensure all fields are filled</string>
     <string name="business_success_message">Business Successfully Added</string>
     <string name="empty_string_text">none</string>
     <string name="edit_business_error">Cannot Edit Business</string>
@@ -34,4 +34,6 @@
     <string name="operations_hint">Operations</string>
     <string name="structure_hint">Structure</string>
     <string name="edit_business_success">Business Edited Successfully</string>
+    <string name="view_business">View Business</string>
+    <string name="search_text">Search</string>
 </resources>

@@ -1,6 +1,6 @@
 package com.vatebra.eirsagentpoc.di;
 
-import com.vatebra.eirsagentpoc.business.domain.entity.BusinessRepository;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 
 import javax.inject.Singleton;
 

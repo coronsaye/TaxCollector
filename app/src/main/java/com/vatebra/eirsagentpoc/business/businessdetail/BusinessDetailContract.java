@@ -30,6 +30,8 @@ public interface BusinessDetailContract {
 
         void showBusinessOperations(String operations);
 
+        void showBusinessStructure(String structure);
+
         void showBusinessProfile(String profile);
 
         void showBusinessStatus(String status);
