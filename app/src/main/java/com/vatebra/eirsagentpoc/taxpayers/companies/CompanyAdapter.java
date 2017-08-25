@@ -88,7 +88,7 @@ public class CompanyAdapter extends BaseAdapter {
         TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
 
         titleTextView.setText(company.getName());
-        taxOfficeTextView.setText(company.getTaxOffice());
+        taxOfficeTextView.setText(company.getTaxOfficeName());
         phoneTextView.setText(company.getPhoneNo());
         rinTextView.setText("#" + company.getRin());
         rowView.setOnClickListener(new View.OnClickListener() {
@@ -103,4 +103,6 @@ public class CompanyAdapter extends BaseAdapter {
     public interface CompanyItemListener {
         void onCompanyClick(Company company);
     }
+
+
 }

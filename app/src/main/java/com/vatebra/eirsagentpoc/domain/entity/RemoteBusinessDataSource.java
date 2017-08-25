@@ -83,7 +83,7 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
                     if (businessApiResponse != null && businessApiResponse.getStatus().equals("00")) {
                         callback.onUpdateSuccessful(businessApiResponse.getMessage());
                     } else if (businessApiResponse != null && businessApiResponse.getStatus().equals("01")) {
-                        callback.onUpdateSuccessful(businessApiResponse.getMessage());
+                        callback.onUpdateFailed(); //Add Message
                     } else {
                         callback.onUpdateFailed();
                     }
@@ -107,7 +107,7 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
                     if (businessApiResponse != null && businessApiResponse.getStatus().equals("00")) {
                         callback.onUpdateSuccessful(businessApiResponse.getMessage());
                     } else if (businessApiResponse != null && businessApiResponse.getStatus().equals("01")) {
-                        callback.onUpdateSuccessful(businessApiResponse.getMessage());
+                        callback.onUpdateFailed();//Add Message
                     } else {
                         callback.onUpdateFailed();
                     }

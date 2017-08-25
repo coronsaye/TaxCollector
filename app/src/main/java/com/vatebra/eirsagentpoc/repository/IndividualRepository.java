@@ -57,19 +57,21 @@ public class IndividualRepository {
     }
 
 
-    public void UpdateIndividual(final Individual individual) {
+    public void UpdateIndividual(final Individual individual, final OnApiResponse callback) {
         retrofitProxyService.UpdateIndividual(individual).enqueue(new Callback<ApiResponse<Individual>>() {
             @Override
             public void onResponse(Call<ApiResponse<Individual>> call, Response<ApiResponse<Individual>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     ApiResponse<Individual> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                        Toast.makeText(App.getInstance(), "Successfully Update", Toast.LENGTH_LONG).show();
-                        individualDao.SaveIndividual(individual);
+                        callback.OnSuccessMessage(apiResponse.getMessage());
+//                        individualDao.SaveIndividual(individual);
+                        getIndividuals();
                     }
                 } else {
+                    Log.e(TAG, "onResponse: " + response.raw());
                     //could not get individuals
-                    Toast.makeText(App.getInstance(), "Could not Updated", Toast.LENGTH_LONG).show();
+                    Toast.makeText(App.getInstance(), "Could not Update Individual", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -83,19 +85,21 @@ public class IndividualRepository {
     }
 
 
-    public void CreateIndividual(final Individual individual) {
+    public void CreateIndividual(final Individual individual, final OnApiResponse callback) {
         retrofitProxyService.CreateIndividual(individual).enqueue(new Callback<ApiResponse<Individual>>() {
             @Override
             public void onResponse(Call<ApiResponse<Individual>> call, Response<ApiResponse<Individual>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     ApiResponse<Individual> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                        Toast.makeText(App.getInstance(), "Successfully Created Individual", Toast.LENGTH_LONG).show();
-                        individualDao.SaveIndividual(individual);
+                        callback.OnSuccessMessage(apiResponse.getMessage());
+//                        individualDao.SaveIndividual(individual);
+                        getIndividuals();
                     }
                 } else {
+                    Log.e(TAG, "onResponse: " + response.raw());
                     //could not get individuals
-                    Toast.makeText(App.getInstance(), "Could not Update Company", Toast.LENGTH_LONG).show();
+                    Toast.makeText(App.getInstance(), "Could not Create Individual", Toast.LENGTH_LONG).show();
 
                 }
             }
@@ -176,6 +180,11 @@ public class IndividualRepository {
 
             }
         });
+
+    }
+
+    public interface OnApiResponse {
+        void OnSuccessMessage(String message);
 
     }
 }

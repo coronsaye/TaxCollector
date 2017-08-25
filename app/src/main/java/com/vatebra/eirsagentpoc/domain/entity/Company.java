@@ -29,8 +29,11 @@ public class Company extends RealmObject {
     private String emailAddress;
     @SerializedName("EmailAddress1")
     private String emailAddressTwo;
-    @SerializedName("TaxOfficeName")
+    @SerializedName("TaxOffice")
     private String taxOffice;
+    @SerializedName("TaxOfficeName")
+    private String TaxOfficeName;
+
     @SerializedName("TaxPayerType")
     private String taxPayerType;
     @SerializedName("EconomicActivity")
@@ -195,5 +198,13 @@ public class Company extends RealmObject {
 
     public void setEconomicActivityID(int economicActivityID) {
         EconomicActivityID = economicActivityID;
+    }
+
+    public String getTaxOfficeName() {
+        return TaxOfficeName;
+    }
+
+    public void setTaxOfficeName(String taxOfficeName) {
+        TaxOfficeName = taxOfficeName;
     }
 }

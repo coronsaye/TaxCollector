@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
@@ -28,7 +29,7 @@ import butterknife.ButterKnife;
 
 import static com.vatebra.eirsagentpoc.taxpayers.individuals.IndividualDetailActivity.EXTRA_INDIVIDUAL_RIN;
 
-public class AddEditIndividualActivity extends AppCompatActivity {
+public class AddEditIndividualActivity extends AppCompatActivity implements IndividualRepository.OnApiResponse {
 
     public static final int REQUEST_ADD_INDIVIDUAL = 2;
     @BindView(R.id.toolbar)
@@ -61,6 +62,9 @@ public class AddEditIndividualActivity extends AppCompatActivity {
     @BindView(R.id.bio_details)
     TextInputEditText bio_details;
 
+    @BindView(R.id.gender_spinner)
+    Spinner gender_spinner;
+
     @BindView(R.id.tax_office_spinner)
     Spinner tax_office_spinner;
 
@@ -86,17 +90,20 @@ public class AddEditIndividualActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null)
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         userRin = getIntent().getStringExtra(EXTRA_INDIVIDUAL_RIN);
-
+        individualRepository = IndividualRepository.getInstance();
         if (userRin != null) {
-            individualRepository = IndividualRepository.getInstance();
 
             individual = individualRepository.getIndividual(userRin);
         }
-
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            if (isNewIndividual()) {
+                getSupportActionBar().setTitle("Add New Individual");
+            } else {
+                getSupportActionBar().setTitle("Edit Individual");
+            }
+        }
         populateFields();
 
         fabDone.setOnClickListener(new View.OnClickListener() {
@@ -142,10 +149,15 @@ public class AddEditIndividualActivity extends AppCompatActivity {
                     individual.setMaritalStatus(status.name());
                     // TODO: 24/08/2017 SET MARITAL STATUS ID
                 }
+
+                Constants.EnumGender gender = (Constants.EnumGender) gender_spinner.getSelectedItem();
+                if(gender != null){
+                    individual.setGender(gender.name());
+                }
                 EconomicActivity economicActivity = (EconomicActivity) economic_spinner.getSelectedItem();
                 if (economicActivity != null) {
                     individual.setEconomicActivity(economicActivity.getName());
-                    individual.setEconomicActivityID(economicActivity.getTaxPayerTypeId());
+                    individual.setEconomicActivityID(economicActivity.getId());
                 }
 
 
@@ -159,11 +171,11 @@ public class AddEditIndividualActivity extends AppCompatActivity {
 
     private void SaveIndividual(Individual individual) {
         if (isNewIndividual()) {
-            individualRepository.CreateIndividual(individual);
+            individualRepository.CreateIndividual(individual, this);
             //create individual
         } else {
             //update individual
-            individualRepository.UpdateIndividual(individual);
+            individualRepository.UpdateIndividual(individual, this);
         }
     }
 
@@ -185,37 +197,53 @@ public class AddEditIndividualActivity extends AppCompatActivity {
             bio_details.setText(individual.getBiometricDetails());
         }
 
-            individualRepository.getTaxOffice(new BusinessDataSource.GetObjectCallback<TaxOffice>() {
-                @Override
-                public void onObjectsLoaded(List<TaxOffice> objects) {
-                    ArrayAdapter<TaxOffice> dataAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, objects);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    tax_office_spinner.setAdapter(dataAdapter);
-                }
+        individualRepository.getTaxOffice(new BusinessDataSource.GetObjectCallback<TaxOffice>() {
+            @Override
+            public void onObjectsLoaded(List<TaxOffice> objects) {
+                ArrayAdapter<TaxOffice> dataAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                tax_office_spinner.setAdapter(dataAdapter);
+            }
 
-                @Override
-                public void onDataNotAvailable() {
+            @Override
+            public void onDataNotAvailable() {
 
-                }
-            });
+            }
+        });
 
-            ArrayAdapter<Constants.MaritalStatus> dataAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, Constants.MaritalStatus.values());
-            dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            marital_spinner.setAdapter(dataAdapter);
+        ArrayAdapter<Constants.MaritalStatus> dataAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, Constants.MaritalStatus.values());
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        marital_spinner.setAdapter(dataAdapter);
 
-            individualRepository.getEconomicActivities(new BusinessDataSource.GetObjectCallback<EconomicActivity>() {
-                @Override
-                public void onObjectsLoaded(List<EconomicActivity> objects) {
-                    ArrayAdapter<EconomicActivity> dataAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, objects);
-                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    economic_spinner.setAdapter(dataAdapter);
-                }
+        ArrayAdapter<Constants.EnumGender> genderAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, Constants.EnumGender.values());
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        gender_spinner.setAdapter(genderAdapter);
 
-                @Override
-                public void onDataNotAvailable() {
 
-                }
-            });
-        }
+        individualRepository.getEconomicActivities(new BusinessDataSource.GetObjectCallback<EconomicActivity>() {
+            @Override
+            public void onObjectsLoaded(List<EconomicActivity> objects) {
+                ArrayAdapter<EconomicActivity> dataAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, objects);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                economic_spinner.setAdapter(dataAdapter);
+            }
 
+            @Override
+            public void onDataNotAvailable() {
+
+            }
+        });
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    @Override
+    public void OnSuccessMessage(String message) {
+        Toast.makeText(App.getInstance(), message, Toast.LENGTH_LONG).show();
+        this.finish();
+    }
 }

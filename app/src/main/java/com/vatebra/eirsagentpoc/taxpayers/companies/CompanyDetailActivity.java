@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.domain.entity.Company;
+import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.CompanyRepository;
 import com.vatebra.eirsagentpoc.repository.IndividualRepository;
 import com.vatebra.eirsagentpoc.taxpayers.individuals.IndividualFragment;
@@ -75,7 +76,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Manage Company");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-        String companyRin = getIntent().getStringExtra(EXTRA_COMPANY_RIN);
+        final String companyRin = getIntent().getStringExtra(EXTRA_COMPANY_RIN);
 
         if (companyRin != null) {
             companyRepository = CompanyRepository.getInstance();
@@ -84,6 +85,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     //display edit view
+                    FlowController.launchAddEditCompanyActivity(CompanyDetailActivity.this, companyRin);
                 }
             });
         }
@@ -97,7 +99,7 @@ public class CompanyDetailActivity extends AppCompatActivity {
         details_company_phone_two.setText(company.getPhoneNo());
         details_company_email.setText(company.getEmailAddress());
         details_company_email_two.setText(company.getEmailAddressTwo());
-        details_company_taxoffice.setText(company.getTaxOffice());
+        details_company_taxoffice.setText(company.getTaxOfficeName());
         details_company_tin.setText(company.getTin());
         details_company_status.setText(company.getTaxPayerStatus());
         details_company_tax_notify.setText(company.getPreferredNotificationMethod());

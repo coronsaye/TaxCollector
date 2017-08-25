@@ -120,8 +120,20 @@ public class BusinessRepository implements BusinessDataSource {
                 if (cachedBusinesses == null) {
                     cachedBusinesses = new ArrayList<>();
                 }
-                cachedBusinesses.add(business);
-                mBusinessLocalDataSource.addBusiness(business, callback);
+
+                getBusinesses(new LoadBusinessesCallback() {
+                    @Override
+                    public void onBusinessesLoaded(List<Business> businesses) {
+
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
+//                cachedBusinesses.add(business);
+//                mBusinessLocalDataSource.addBusiness(business, callback);
             }
 
             @Override
@@ -138,7 +150,19 @@ public class BusinessRepository implements BusinessDataSource {
             @Override
             public void onUpdateSuccessful(String message) {
                 callback.onUpdateSuccessful(message);
-                mBusinessLocalDataSource.updateBusiness(business, callback);
+//                mBusinessLocalDataSource.updateBusiness(business, callback);
+
+                getBusinesses(new LoadBusinessesCallback() {
+                    @Override
+                    public void onBusinessesLoaded(List<Business> businesses) {
+
+                    }
+
+                    @Override
+                    public void onDataNotAvailable() {
+
+                    }
+                });
             }
 
             @Override

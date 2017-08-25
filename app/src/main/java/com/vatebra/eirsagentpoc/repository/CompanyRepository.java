@@ -46,18 +46,22 @@ public class CompanyRepository {
         return companyDao.getCompanies();
     }
 
-    public void UpdateCompany(final Company company){
-        retrofitProxyService.CreateCompany(company).enqueue(new Callback<ApiResponse<Company>>() {
+    public void UpdateCompany(final Company company, final OnResponse callback) {
+        retrofitProxyService.UpdateCompany(company).enqueue(new Callback<ApiResponse<Company>>() {
             @Override
             public void onResponse(Call<ApiResponse<Company>> call, Response<ApiResponse<Company>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     ApiResponse<Company> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                        Toast.makeText(App.getInstance(), "Successfully Updated", Toast.LENGTH_LONG).show();
-                        companyDao.SaveCompany(company);
+                        callback.OnSuccessMessage(apiResponse.getMessage());
+                        getCompanies();
+                    }
+                    else {
+                        Toast.makeText(App.getInstance(), "Could not Update ", Toast.LENGTH_LONG).show();
                     }
                 } else {
                     //could not get individuals
+                    Log.e(TAG, "onResponse: " + response.raw());
                     Toast.makeText(App.getInstance(), "Could not Update Company", Toast.LENGTH_LONG).show();
 
                 }
@@ -71,7 +75,7 @@ public class CompanyRepository {
         });
     }
 
-    public void CreateCompany(final Company company){
+    public void CreateCompany(final Company company, final OnResponse callback) {
 
         retrofitProxyService.CreateCompany(company).enqueue(new Callback<ApiResponse<Company>>() {
             @Override
@@ -79,8 +83,8 @@ public class CompanyRepository {
                 if (response.isSuccessful() && response.code() == 200) {
                     ApiResponse<Company> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                        Toast.makeText(App.getInstance(), "Successfully Created Company", Toast.LENGTH_LONG).show();
-                        companyDao.SaveCompany(company);
+                        callback.OnSuccessMessage(apiResponse.getMessage());
+                        getCompanies();
                     }
                 } else {
                     //could not get individuals
@@ -95,6 +99,7 @@ public class CompanyRepository {
             }
         });
     }
+
     public Company getCompany(String rin) {
         return companyDao.getCompany(rin);
     }
@@ -123,5 +128,11 @@ public class CompanyRepository {
                 Log.e(TAG, "onFailure: ", t);
             }
         });
+    }
+
+
+    public interface OnResponse {
+        void OnSuccessMessage(String message);
+
     }
 }

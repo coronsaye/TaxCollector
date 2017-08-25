@@ -22,15 +22,12 @@ public class RetrofitClient {
     private static String TAG = RetrofitClient.class.getSimpleName();
 
     private static Retrofit getClient() {
-        String baseUri = "http://192.168.5.101/edirsapi/";
+        String baseUri = "http://192.168.1.84/edirsapi/";
         if (retrofit == null) {
 
             try {
 
-                OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-                        .connectTimeout(60, TimeUnit.SECONDS)
-                        .readTimeout(60, TimeUnit.SECONDS)
-                        .writeTimeout(60, TimeUnit.SECONDS)
+                OkHttpClient okHttpClient = new OkHttpClient().newBuilder().retryOnConnectionFailure(true)
                         .build();
 
                 retrofit = new Retrofit.Builder()

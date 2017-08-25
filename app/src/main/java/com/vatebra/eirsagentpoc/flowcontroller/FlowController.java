@@ -7,6 +7,7 @@ import com.vatebra.eirsagentpoc.business.addeditbusinesses.AddEditBusinessActivi
 import com.vatebra.eirsagentpoc.business.addeditbusinesses.AddEditBusinessFragment;
 import com.vatebra.eirsagentpoc.business.businessdetail.BusinessDetailActivity;
 import com.vatebra.eirsagentpoc.business.businesses.BusinessActivity;
+import com.vatebra.eirsagentpoc.taxpayers.companies.AddEditCompanyActivity;
 import com.vatebra.eirsagentpoc.taxpayers.companies.CompaniesActivity;
 import com.vatebra.eirsagentpoc.taxpayers.companies.CompanyDetailActivity;
 import com.vatebra.eirsagentpoc.taxpayers.individuals.AddEditIndividualActivity;
@@ -73,4 +74,15 @@ public class FlowController {
         intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, rin);
         context.startActivity(intent);
     }
+
+    public static void launchAddEditCompanyActivity(Context context){
+        Intent intent = new Intent(context, AddEditCompanyActivity.class);
+        context.startActivity(intent);
+    }
+    public static void launchAddEditCompanyActivity(Context context, String companyRin){
+        Intent intent = new Intent(context, AddEditCompanyActivity.class);
+        intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN,companyRin);
+        context.startActivity(intent);
+    }
+
 }

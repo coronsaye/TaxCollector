@@ -49,7 +49,7 @@ public class Individual extends RealmObject {
     @SerializedName("TaxOfficeName")
     private String taxOffice;
     @Nullable
-    @SerializedName("MaritalStatus")
+    @SerializedName("MartialStatus")
     private String maritalStatus;
     @SerializedName("Nationality")
     private String nationality;
@@ -68,7 +68,7 @@ public class Individual extends RealmObject {
 
 
     private int TaxOfficeID;
-
+    @SerializedName("EconomicAcivityID")
     private int EconomicActivityID;
 
     public Individual() {

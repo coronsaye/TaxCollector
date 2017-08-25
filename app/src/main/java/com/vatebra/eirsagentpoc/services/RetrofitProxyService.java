@@ -43,10 +43,10 @@ public interface RetrofitProxyService {
     @GET("business/businesssubsectors")
     Call<ApiResponse<BusinessSubSector>> getBusinessSubSectors();
 
-    @GET("api/Individual/GetIndividuals")
+    @GET("company/GetIndividuals")
     Call<ApiResponse<Individual>> getIndividuals();
 
-    @GET("api/Company/GetCompanies")
+    @GET("company/GetCompanies")
     Call<ApiResponse<Company>> getCompanies();
 
     @POST("bussiness/createbusiness")
@@ -55,16 +55,16 @@ public interface RetrofitProxyService {
     @PUT("bussiness/createbusiness")
     Call<ApiResponse<Business>> EditBusiness(@Body Business business);
 
-    @POST("individual/AddCompany")
+    @POST("company/AddIndividual")
     Call<ApiResponse<Individual>> CreateIndividual(@Body Individual individual);
 
-    @POST("individual/UpdateIndividual")
+    @POST("company/UpdateIndividual")
     Call<ApiResponse<Individual>> UpdateIndividual(@Body Individual individual);
 
-    @GET("global/tax")
+    @GET("company/GetTaxOffice")
     Call<ApiResponse<TaxOffice>> getTaxOffice();
 
-    @GET("Individual/GetEconomicActivity")
+    @GET("company/GetEconomicActivity")
     Call<ApiResponse<EconomicActivity>> getEconomicActivities();
 
     @POST("company/AddCompany")

@@ -86,7 +86,13 @@ public class IndividualDetailActivity extends AppCompatActivity {
         Individual individual = individualRepository.getIndividual(rin);
         individualNameTextView.setText(individual.getFullName());
         individualRinTextView.setText("#" + individual.getUserRin());
-        individualPhoneTextView.setText(individual.getMobileNumberOne());
+        if(individual.getMobileNumberOne().equals("none")){
+            individualPhoneTextView.setText(individual.getMobileNumberTwo());
+        }
+        else {
+            individualPhoneTextView.setText(individual.getMobileNumberOne());
+        }
+
         details_individual_email.setText(individual.getEmailAddressOne());
         details_individual_gender.setText(individual.getGender());
         details_individual_dob.setText(individual.getDateOfBirth());

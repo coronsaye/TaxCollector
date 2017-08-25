@@ -99,6 +99,7 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
             @Override
             public void onClick(View view) {
                 //show add company page
+                FlowController.launchAddEditCompanyActivity(getContext());
             }
         });
 
