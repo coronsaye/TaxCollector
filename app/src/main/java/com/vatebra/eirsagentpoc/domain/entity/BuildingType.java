@@ -30,5 +30,10 @@ public class BuildingType extends RealmObject {
 
     public BuildingType() {
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }
 

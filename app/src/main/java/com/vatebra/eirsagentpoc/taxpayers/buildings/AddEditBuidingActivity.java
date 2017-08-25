@@ -123,7 +123,7 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                 building.setName(add_buildingname.getText().toString());
                 building.setTagNumber(add_tagname.getText().toString());
                 building.setStreetName(add_streetname.getText().toString());
-
+                building.setBuildingNumber(add_tagname.getText().toString());
                 Town town = (Town) add_town_spinner.getSelectedItem();
                 if (town != null) {
                     building.setTownID(town.getID());
@@ -141,6 +141,10 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                     building.setBuildingTypeID(buildingType.getID());
                 }
 
+                BuildingOwnerShip buildingOwnerShip = (BuildingOwnerShip) buildingownership_spinner.getSelectedItem();
+                if(buildingOwnerShip != null){
+                    building.setBuildingOwnershipID(buildingOwnerShip.getID());
+                }
                 BuildingCompletion buildingCompletion = (BuildingCompletion) buildingcompletion_spinner.getSelectedItem();
 
                 if (buildingCompletion != null) {
@@ -159,8 +163,11 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
 
                 BuildingOccupancyType buildingOccupancyType = (BuildingOccupancyType) buildingoccupancy_type_spinner.getSelectedItem();
                 if (buildingOccupancyType != null) {
-                    building.setBuildingOccupancyType(buildingOccupancyType.getID());
+                    building.setBuildingOccupancyTypeID(buildingOccupancyType.getID());
                 }
+
+                building.setLatitude(add_latitude.getText().toString());
+                building.setLongitude(add_longitude.getText().toString());
                 //SET BUILDING FIELDS
                 SaveBuilding(building);
             }

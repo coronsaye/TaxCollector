@@ -73,7 +73,19 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
         buildingAdapter = new BuildingAdapter(new ArrayList<Building>(0), buildingItemListener);
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        buildings = buildingRepository.getBuildings();
+        if (buildings != null) {
+            noComapanyView.setVisibility(View.GONE);
+            buildingAdapter.replaceData(buildings);
+            if(swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()){
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        }
 
+    }
     public static BuildingFragment newInstance() {
         return new BuildingFragment();
     }

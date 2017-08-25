@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -60,7 +65,10 @@
             android:theme="@style/AppTheme.OverlapSystemBar" />
         <activity android:name=".taxpayers.buildings.BuildingsActivity" />
         <activity android:name=".taxpayers.buildings.BuildingDetailsActivity" />
-        <activity android:name=".taxpayers.buildings.AddEditBuidingActivity"></activity>
+        <activity android:name=".taxpayers.buildings.AddEditBuidingActivity" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"></activity>
     </application>
 
 </manifest>

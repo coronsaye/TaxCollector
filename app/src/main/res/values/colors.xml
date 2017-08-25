@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#004D40</color>
+    <color name="colorAccent">#BF360C</color>
     <color name="separatorColor">#18102C</color>
     <color name="pink">#FF308E</color>
     <color name="orange">#FA9301</color>
@@ -29,6 +29,6 @@
     <color name="medium_teal_500">#2fc3c1</color>
 
 
-    <color name="pale_red">#ff3658</color>
+    <color name="pale_red">#BF360C</color>
 
 </resources>

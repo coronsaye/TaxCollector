@@ -1,5 +1,7 @@
 package com.vatebra.eirsagentpoc.domain.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -14,6 +16,7 @@ public class Ward extends RealmObject {
     private String LGA;
     private String Name;
 
+    @SerializedName("LGAID")
     private int LgaId;
 
     public Ward() {
@@ -41,5 +44,18 @@ public class Ward extends RealmObject {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public int getLgaId() {
+        return LgaId;
+    }
+
+    public void setLgaId(int lgaId) {
+        LgaId = lgaId;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

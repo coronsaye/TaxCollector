@@ -84,7 +84,7 @@ public interface RetrofitProxyService {
     @POST("company/UpdateCompany")
     Call<ApiResponse<Company>> UpdateCompany(@Body Company company);
 
-    @GET("building/buildingList")
+    @GET("building/buildinglist")
     Call<ApiResponse<Building>> getBuildings();
 
     @GET("building/buildingtypes")
@@ -108,10 +108,10 @@ public interface RetrofitProxyService {
     @GET("building/buildingownerships")
     Call<ApiResponse<BuildingOwnerShip>> getBuildingOwnerships();
 
-    @POST("company/createbuilding")
+    @POST("building/createbuilding")
     Call<ApiResponse<Building>> CreatBuilding(@Body Building building);
 
-    @POST("company/editbuilding")
+    @POST("building/editbuilding")
     Call<ApiResponse<Building>> Editbuilding(@Body Building building);
 
     @GET("global/wards")

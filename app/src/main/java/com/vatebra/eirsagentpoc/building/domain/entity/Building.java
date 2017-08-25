@@ -14,41 +14,70 @@ public class Building extends RealmObject {
     @PrimaryKey
     @SerializedName("RIN")
     private String rin;
+    @SerializedName("TagNumber")
     private String tagNumber;
+    @SerializedName("BuildingNumber")
     private String buildingNumber;
+    @SerializedName("Name")
     private String name;
+    @SerializedName("StreetName")
     private String streetName;
+    @SerializedName("OffStreetName")
     private String offStreetName;
+    @SerializedName("Town")
     private String town;
+    @SerializedName("LGA")
     private String lga;
     private String ward;
+    @SerializedName("AssetType")
     private String assetType;
+    @SerializedName("BuildingType")
     private String buildingType;
+    @SerializedName("BuildingCompletion")
     private String buildingCompletion;
+    @SerializedName("BuildingPurpose")
     private String buildingPurpose;
+    @SerializedName("BuildingOwnership")
     private String buildingOwnership;
+    @SerializedName("BuildingOccupancy")
     private String buildingOccupancy;
+    @SerializedName("BuildingOccupancyType")
     private String buildingOccupancyType;
+    @SerializedName("Latitude")
     private String latitude;
+    @SerializedName("Longitude")
     private String longitude;
     private String status;//active or inactive
+    @SerializedName("Profile")
     private String profile;
 
-
+    @SerializedName("TownID")
     private int TownID;
+    @SerializedName("LGAID")
     private int LGAID;
+    @SerializedName("WardID")
     private int WardID;
+    @SerializedName("AssetTypeID")
     private int AssetTypeID;
     private int BuildingTypeID;
     private int BuildingCompletionID;
     private int BuildingPurposeID;
     private int BuildingOwnershipID;
     private int BuildingOccupancyID;
-    private int BuildingOccupancyType;
+    @SerializedName("BuildingOccupancyTypeID")
+    private int BuildingOccupancyTypeID;
 
 
     public Building() {
 
+    }
+
+    public int getBuildingOccupancyTypeID() {
+        return BuildingOccupancyTypeID;
+    }
+
+    public void setBuildingOccupancyTypeID(int buildingOccupancyTypeID) {
+        BuildingOccupancyTypeID = buildingOccupancyTypeID;
     }
 
     public String getRin() {
@@ -275,9 +304,6 @@ public class Building extends RealmObject {
         BuildingOwnershipID = buildingOwnershipID;
     }
 
-    public void setBuildingOccupancyType(int buildingOccupancyType) {
-        BuildingOccupancyType = buildingOccupancyType;
-    }
 
     public int getBuildingOccupancyID() {
         return BuildingOccupancyID;

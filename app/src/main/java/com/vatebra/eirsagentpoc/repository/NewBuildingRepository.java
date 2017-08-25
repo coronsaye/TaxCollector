@@ -97,13 +97,13 @@ public class NewBuildingRepository {
                     callback.OnSuccessMessage(apiResponse.getMessage());
                     getBuildings();
                 } else {
-                    Toast.makeText(App.getInstance(), "Could not Create Company", Toast.LENGTH_LONG).show();
+                    Toast.makeText(App.getInstance(), "Could not Create building", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse<Building>> call, Throwable t) {
-
+                Toast.makeText(App.getInstance(), "Could not Create building", Toast.LENGTH_LONG).show();
             }
         });
     }

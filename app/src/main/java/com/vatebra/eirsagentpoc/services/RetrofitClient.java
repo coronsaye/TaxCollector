@@ -22,7 +22,7 @@ public class RetrofitClient {
     private static String TAG = RetrofitClient.class.getSimpleName();
 
     private static Retrofit getClient() {
-        String baseUri = "http://192.168.1.84/edirsapi/";
+        String baseUri = "http://192.168.5.103/edirsapi/";
         if (retrofit == null) {
 
             try {
