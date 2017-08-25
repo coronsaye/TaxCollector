@@ -99,6 +99,10 @@ public class DashboardFragment extends Fragment {
                     FlowController.launchIndividualActivity(getContext());
                 else if (subItemTextView.getText().equals(getString(R.string.companies_title)))
                     FlowController.launchCompanyActivity(getContext());
+                else if (subItemTextView.getText().equals(getString(R.string.building_title)))
+                    FlowController.launchBuildingActivity(getContext());
+
+
                 //go to respective View
             }
         });
@@ -112,6 +116,9 @@ public class DashboardFragment extends Fragment {
                     FlowController.launchAddEditIndividualActivity(getContext());
                 else if (subItemTextView.getText().equals(getString(R.string.companies_title)))
                     FlowController.launchAddEditCompanyActivity(getContext());
+                else if (subItemTextView.getText().equals(getString(R.string.building_title)))
+                    FlowController.launchAddEditBuildingActivity(getContext());
+
             }
         });
     }

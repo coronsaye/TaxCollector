@@ -57,7 +57,10 @@
             android:theme="@style/AppTheme.OverlapSystemBar" />
         <activity
             android:name=".taxpayers.companies.AddEditCompanyActivity"
-            android:theme="@style/AppTheme.OverlapSystemBar"></activity>
+            android:theme="@style/AppTheme.OverlapSystemBar" />
+        <activity android:name=".taxpayers.buildings.BuildingsActivity" />
+        <activity android:name=".taxpayers.buildings.BuildingDetailsActivity" />
+        <activity android:name=".taxpayers.buildings.AddEditBuidingActivity"></activity>
     </application>
 
 </manifest>

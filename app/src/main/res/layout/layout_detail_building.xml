@@ -1,0 +1,460 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="4dp">
+
+            <TextView
+                android:id="@+id/details_building_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="64dp"
+                android:fontFamily="sans-serif"
+                android:textAllCaps="false"
+                android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                android:textColor="@color/text_dark_200"
+                tools:text="Building Name" />
+
+            <TextView
+                android:id="@+id/details_building_rin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@string/font_family_medium"
+                android:textColor="@color/pale_red"
+                android:textSize="14sp"
+                tools:text="BUILDING RIN" />
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="96dp"
+            android:layout_height="1dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/medium_green_600" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/drawable_details_content_bg"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Street Name"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_street"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:ellipsize="end"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:maxLines="2"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+                <TextView
+                    android:id="@+id/building_town_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Town"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/building_town"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/building_town_hint"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+
+                <TextView
+                    android:id="@+id/building_lga_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/building_town"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="LGA"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/building_lga"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/building_lga_hint"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+
+                <TextView
+                    android:id="@+id/building_ward_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Ward"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/building_ward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/building_ward_hint"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+
+                <TextView
+                    android:id="@+id/building_assettype_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@id/building_lga_hint"
+                    android:layout_below="@id/building_ward"
+                    android:fontFamily="@string/font_family_medium"
+                    android:text="Asset Type"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_300"
+                    android:textSize="16sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/building_assettype"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_below="@id/building_assettype_hint"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="@string/font_family_light"
+                    android:lineSpacingExtra="2dp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/text_dark_200"
+                    android:textSize="14sp"
+                    android:textStyle="normal"
+                    tools:text="@string/lorem_ipsum_short" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="96dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/medium_green_600" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/drawable_details_content_bg"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/building_type_hint"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Building Type"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/building_type_hint"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/building_completion_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/building_type"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Building Completion"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_completion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/building_completion_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/building_purpose_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Building Purpose"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_purpose"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/building_purpose_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/building_ownership_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@id/building_completion_hint"
+                android:layout_below="@id/building_purpose"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Building Ownership"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_ownership"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/building_ownership_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="96dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/medium_green_600"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/drawable_details_content_bg"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/building_occupancy_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Building Occupancy"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_occupancy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/building_occupancy_hint"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/building_occupancy_type_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/building_occupancy"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Building Occupancy Type"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_occupancy_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/building_occupancy_type_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/building_latitude_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Latitude"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_latitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/building_latitude_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+
+            <TextView
+                android:id="@+id/building_longitude_hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignTop="@id/building_occupancy_type_hint"
+                android:layout_below="@id/building_latitude"
+                android:fontFamily="@string/font_family_medium"
+                android:text="Longitude"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_300"
+                android:textSize="16sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/building_longitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/building_longitude_hint"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@string/font_family_light"
+                android:lineSpacingExtra="2dp"
+                android:textAllCaps="false"
+                android:textColor="@color/text_dark_200"
+                android:textSize="14sp"
+                android:textStyle="normal"
+                tools:text="@string/lorem_ipsum_short" />
+        </RelativeLayout>
+    </LinearLayout>
+</ScrollView>

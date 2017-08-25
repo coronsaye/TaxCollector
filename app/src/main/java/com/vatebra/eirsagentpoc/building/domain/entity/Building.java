@@ -1,5 +1,7 @@
 package com.vatebra.eirsagentpoc.building.domain.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -10,6 +12,7 @@ import io.realm.annotations.PrimaryKey;
 public class Building extends RealmObject {
 
     @PrimaryKey
+    @SerializedName("RIN")
     private String rin;
     private String tagNumber;
     private String buildingNumber;
@@ -30,6 +33,19 @@ public class Building extends RealmObject {
     private String longitude;
     private String status;//active or inactive
     private String profile;
+
+
+    private int TownID;
+    private int LGAID;
+    private int WardID;
+    private int AssetTypeID;
+    private int BuildingTypeID;
+    private int BuildingCompletionID;
+    private int BuildingPurposeID;
+    private int BuildingOwnershipID;
+    private int BuildingOccupancyID;
+    private int BuildingOccupancyType;
+
 
     public Building() {
 
@@ -193,5 +209,81 @@ public class Building extends RealmObject {
 
     public void setProfile(String profile) {
         this.profile = profile;
+    }
+
+    public int getTownID() {
+        return TownID;
+    }
+
+    public void setTownID(int townID) {
+        TownID = townID;
+    }
+
+    public int getLGAID() {
+        return LGAID;
+    }
+
+    public void setLGAID(int LGAID) {
+        this.LGAID = LGAID;
+    }
+
+    public int getWardID() {
+        return WardID;
+    }
+
+    public void setWardID(int wardID) {
+        WardID = wardID;
+    }
+
+    public int getAssetTypeID() {
+        return AssetTypeID;
+    }
+
+    public void setAssetTypeID(int assetTypeID) {
+        AssetTypeID = assetTypeID;
+    }
+
+    public int getBuildingTypeID() {
+        return BuildingTypeID;
+    }
+
+    public void setBuildingTypeID(int buildingTypeID) {
+        BuildingTypeID = buildingTypeID;
+    }
+
+    public int getBuildingCompletionID() {
+        return BuildingCompletionID;
+    }
+
+    public void setBuildingCompletionID(int buildingCompletionID) {
+        BuildingCompletionID = buildingCompletionID;
+    }
+
+    public int getBuildingPurposeID() {
+        return BuildingPurposeID;
+    }
+
+    public void setBuildingPurposeID(int buildingPurposeID) {
+        BuildingPurposeID = buildingPurposeID;
+    }
+
+    public int getBuildingOwnershipID() {
+        return BuildingOwnershipID;
+    }
+
+    public void setBuildingOwnershipID(int buildingOwnershipID) {
+        BuildingOwnershipID = buildingOwnershipID;
+    }
+
+    public void setBuildingOccupancyType(int buildingOccupancyType) {
+        BuildingOccupancyType = buildingOccupancyType;
+    }
+
+    public int getBuildingOccupancyID() {
+        return BuildingOccupancyID;
+    }
+
+    public void setBuildingOccupancyID(int buildingOccupancyID) {
+        BuildingOccupancyID = buildingOccupancyID;
     }
 }

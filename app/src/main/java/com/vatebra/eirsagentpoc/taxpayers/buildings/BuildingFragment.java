@@ -1,4 +1,4 @@
-package com.vatebra.eirsagentpoc.taxpayers.companies;
+package com.vatebra.eirsagentpoc.taxpayers.buildings;
 
 
 import android.os.Bundle;
@@ -6,13 +6,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,9 +16,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
-import com.vatebra.eirsagentpoc.domain.entity.Company;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
+import com.vatebra.eirsagentpoc.building.domain.entity.BuildingRepository;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.CompanyRepository;
+import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
+import com.vatebra.eirsagentpoc.taxpayers.companies.CompanyFragment;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -35,9 +33,8 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class CompanyFragment extends Fragment implements android.support.v7.widget.SearchView.OnQueryTextListener {
-
-    private CompanyAdapter companyAdapter;
+public class BuildingFragment extends Fragment implements android.support.v7.widget.SearchView.OnQueryTextListener {
+    private BuildingAdapter buildingAdapter;
 
     @BindView(R.id.nocompanies)
     View noComapanyView;
@@ -62,37 +59,41 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
 
     FloatingActionButton floatingActionButton;
 
-    List<Company> companies;
+    List<Building> buildings;
 
-    CompanyRepository companyRepository;
+    NewBuildingRepository buildingRepository;
 
-
-    public CompanyFragment() {
+    public BuildingFragment() {
         // Required empty public constructor
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        companyAdapter = new CompanyAdapter(new ArrayList<Company>(0), companyItemListener);
+        buildingAdapter = new BuildingAdapter(new ArrayList<Building>(0), buildingItemListener);
+
     }
+
+    public static BuildingFragment newInstance() {
+        return new BuildingFragment();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_company, container, false);
+        View view = inflater.inflate(R.layout.fragment_building, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
-        companyRepository = CompanyRepository.getInstance();
-        listView.setAdapter(companyAdapter);
+        buildingRepository = NewBuildingRepository.getInstance();
+        listView.setAdapter(buildingAdapter);
 
         noCompanyAddView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //show add company page
-                FlowController.launchAddEditCompanyActivity(getContext());
-
+                FlowController.launchAddEditBuildingActivity(getContext());
             }
         });
 
@@ -101,7 +102,7 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
             @Override
             public void onClick(View view) {
                 //show add company page
-                FlowController.launchAddEditCompanyActivity(getContext());
+                FlowController.launchAddEditBuildingActivity(getContext());
             }
         });
 
@@ -118,9 +119,9 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
             @Override
             public void onRefresh() {
                 //load individuals
-                companies = companyRepository.getCompanies();
-                if (companies != null) {
-                    companyAdapter.replaceData(companies);
+                buildings = buildingRepository.getBuildings();
+                if (buildings != null) {
+                    buildingAdapter.replaceData(buildings);
                     noComapanyView.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -128,42 +129,6 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         });
         return view;
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        companies = companyRepository.getCompanies();
-        if (companies != null) {
-            companyAdapter.replaceData(companies);
-            noComapanyView.setVisibility(View.GONE);
-
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.search_menu, menu);
-        MenuItem searchMenuItem = menu.findItem(R.id.action_search);
-        android.support.v7.widget.SearchView searchView = new android.support.v7.widget.SearchView(((AppCompatActivity) getContext()).getSupportActionBar().getThemedContext());
-        MenuItemCompat.setShowAsAction(searchMenuItem, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        MenuItemCompat.setActionView(searchMenuItem, searchView);
-        searchView.setOnQueryTextListener(this);
-
-    }
-
-
-    public static CompanyFragment newInstance() {
-        return new CompanyFragment();
-    }
-
-
-    CompanyAdapter.CompanyItemListener companyItemListener = new CompanyAdapter.CompanyItemListener() {
-        @Override
-        public void onCompanyClick(Company company) {
-            FlowController.launchCompanyDetailsActivity(getContext(), company.getRin());
-        }
-    };
 
     /**
      * Called when the user submits the query. This could be due to a key press on the
@@ -181,6 +146,13 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         return false;
     }
 
+    BuildingAdapter.BuildingItemListener buildingItemListener = new BuildingAdapter.BuildingItemListener() {
+        @Override
+        public void OnBuildingClick(Building building) {
+            FlowController.launchBuildingDetailsActivity(getContext(), building.getRin());
+        }
+    };
+
     /**
      * Called when the query text is changed by the user.
      *
@@ -190,8 +162,8 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
      */
     @Override
     public boolean onQueryTextChange(String newText) {
-        if (companyAdapter != null)
-            companyAdapter.filter(newText);
+        if (buildingAdapter != null)
+            buildingAdapter.filter(newText);
         return true;
     }
 }

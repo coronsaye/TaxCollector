@@ -7,6 +7,9 @@ import com.vatebra.eirsagentpoc.business.addeditbusinesses.AddEditBusinessActivi
 import com.vatebra.eirsagentpoc.business.addeditbusinesses.AddEditBusinessFragment;
 import com.vatebra.eirsagentpoc.business.businessdetail.BusinessDetailActivity;
 import com.vatebra.eirsagentpoc.business.businesses.BusinessActivity;
+import com.vatebra.eirsagentpoc.taxpayers.buildings.AddEditBuidingActivity;
+import com.vatebra.eirsagentpoc.taxpayers.buildings.BuildingDetailsActivity;
+import com.vatebra.eirsagentpoc.taxpayers.buildings.BuildingsActivity;
 import com.vatebra.eirsagentpoc.taxpayers.companies.AddEditCompanyActivity;
 import com.vatebra.eirsagentpoc.taxpayers.companies.CompaniesActivity;
 import com.vatebra.eirsagentpoc.taxpayers.companies.CompanyDetailActivity;
@@ -56,32 +59,59 @@ public class FlowController {
         context.startActivity(intent);
     }
 
-    public static void launchAddEditIndividualActivity(Context context){
+    public static void launchAddEditIndividualActivity(Context context) {
         Intent intent = new Intent(context, AddEditIndividualActivity.class);
         context.startActivity(intent);
     }
-    public static void launchAddEditIndividualActivity(Context context, String userRin){
+
+    public static void launchAddEditIndividualActivity(Context context, String userRin) {
         Intent intent = new Intent(context, AddEditIndividualActivity.class);
-        intent.putExtra(IndividualDetailActivity.EXTRA_INDIVIDUAL_RIN,userRin);
+        intent.putExtra(IndividualDetailActivity.EXTRA_INDIVIDUAL_RIN, userRin);
         context.startActivity(intent);
     }
+
     public static void launchCompanyActivity(Context context) {
         Intent intent = new Intent(context, CompaniesActivity.class);
         context.startActivity(intent);
     }
+
     public static void launchCompanyDetailsActivity(Context context, String rin) {
         Intent intent = new Intent(context, CompanyDetailActivity.class);
         intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, rin);
         context.startActivity(intent);
     }
 
-    public static void launchAddEditCompanyActivity(Context context){
+    public static void launchAddEditCompanyActivity(Context context) {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
         context.startActivity(intent);
     }
-    public static void launchAddEditCompanyActivity(Context context, String companyRin){
+
+    public static void launchAddEditCompanyActivity(Context context, String companyRin) {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
-        intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN,companyRin);
+        intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, companyRin);
+        context.startActivity(intent);
+    }
+
+    public static void launchBuildingActivity(Context context) {
+        Intent intent = new Intent(context, BuildingsActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void launchBuildingDetailsActivity(Context context, String rin) {
+        Intent intent = new Intent(context, BuildingDetailsActivity.class);
+        intent.putExtra(BuildingDetailsActivity.EXTRA_BUILDING_RIN, rin);
+        context.startActivity(intent);
+    }
+
+
+    public static void launchAddEditBuildingActivity(Context context) {
+        Intent intent = new Intent(context, AddEditBuidingActivity.class);
+        context.startActivity(intent);
+    }
+
+    public static void launchAddEditBuildingActivity(Context context, String buildingRin) {
+        Intent intent = new Intent(context, AddEditBuidingActivity.class);
+        intent.putExtra(BuildingDetailsActivity.EXTRA_BUILDING_RIN, buildingRin);
         context.startActivity(intent);
     }
 
