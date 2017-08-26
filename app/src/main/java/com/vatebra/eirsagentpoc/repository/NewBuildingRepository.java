@@ -1,5 +1,6 @@
 package com.vatebra.eirsagentpoc.repository;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -7,6 +8,8 @@ import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.building.domain.entity.BuildingDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.ApiResponse;
+import com.vatebra.eirsagentpoc.domain.entity.ApiSingleResponse;
+import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingCompletion;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingFunction;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingOccupancies;
@@ -14,6 +17,7 @@ import com.vatebra.eirsagentpoc.domain.entity.BuildingOccupancyType;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingOwnerShip;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingPurpose;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingType;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.Company;
 import com.vatebra.eirsagentpoc.domain.entity.EconomicActivity;
@@ -154,6 +158,29 @@ public class NewBuildingRepository {
             @Override
             public void onFailure(Call<ApiResponse<Town>> call, Throwable t) {
 
+            }
+        });
+    }
+
+    public void GetBuildingProfile(@NonNull Building building, final BusinessRepository.OnApiReceived<AssetProfile> callback) {
+        retrofitProxyService.getAssetProfile(building).enqueue(new Callback<ApiSingleResponse<AssetProfile>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<AssetProfile>> call, Response<ApiSingleResponse<AssetProfile>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<AssetProfile> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+                    } else if (apiResponse != null && apiResponse.getStatus().equals("01")) {
+                        callback.OnFailed(apiResponse.getMessage());
+                    }
+                } else {
+                    callback.OnFailed("Couldn't Get Building Profile, Try With Different Parameters");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<AssetProfile>> call, Throwable t) {
+                callback.OnFailed("Couldn't Connect, Ensure you have an active connection");
             }
         });
     }

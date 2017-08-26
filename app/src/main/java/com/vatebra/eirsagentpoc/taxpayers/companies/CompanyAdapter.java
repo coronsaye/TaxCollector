@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
@@ -24,12 +25,14 @@ public class CompanyAdapter extends BaseAdapter {
 
     private List<Company> companies;
     private List<Company> searchCompanies = new ArrayList<>();
-
+    public Company selectedCompany;
     private CompanyItemListener companyItemListener;
+    private boolean isCompanyChooser;
 
-    public CompanyAdapter(List<Company> companies, CompanyItemListener companyItemListener) {
+    public CompanyAdapter(List<Company> companies, CompanyItemListener companyItemListener, boolean isCompanyChooser) {
         setList(companies);
         this.companyItemListener = companyItemListener;
+        this.isCompanyChooser = isCompanyChooser;
     }
 
     private void setList(List<Company> companies) {
@@ -87,6 +90,11 @@ public class CompanyAdapter extends BaseAdapter {
         TextView phoneTextView = (TextView) rowView.findViewById(R.id.bodyTitle);
         TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
 
+
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.selectCheckbox);
+        if (isCompanyChooser)
+            checkBox.setVisibility(View.VISIBLE);
+
         titleTextView.setText(company.getName());
         taxOfficeTextView.setText(company.getTaxOfficeName());
         phoneTextView.setText(company.getPhoneNo());
@@ -95,6 +103,12 @@ public class CompanyAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 companyItemListener.onCompanyClick(company);
+            }
+        });
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedCompany = company;
             }
         });
         return rowView;

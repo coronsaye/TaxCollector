@@ -18,66 +18,27 @@
         android:layout_gravity="center_vertical"
         android:visibility="gone"
         tools:visibility="visible" />
+
     <TextView
-        android:id="@+id/title"
-        android:layout_toEndOf="@id/selectCheckbox"
+        android:id="@+id/ruleTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_toEndOf="@id/selectCheckbox"
         android:fontFamily="sans-serif"
         android:padding="4dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
-        tools:text="David Eti" />
+        tools:text="Waste Tax" />
 
-    <TextView
-        android:id="@+id/subTitle"
-        android:layout_width="match_parent"
-        android:layout_alignStart="@+id/title"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title"
-        android:layout_gravity="center_vertical"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif"
-        android:lines="1"
-        android:padding="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textColor="#8000"
-        tools:text="@string/lorem_ipsum_medium" />
-
-    <TextView
-        android:id="@+id/bodyTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/subTitle"
-        android:layout_gravity="center_vertical"
-        android:layout_alignStart="@id/subTitle"
-        android:ellipsize="end"
-        android:fontFamily="sans-serif"
-        android:lines="1"
-        android:padding="4dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        android:textColor="#8000"
-        android:textStyle="bold"
-        tools:text="0701234567" />
-
-    <TextView
-        android:id="@+id/rinTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@id/title"
-        android:layout_gravity="center_vertical"
-        android:fontFamily="sans-serif"
-        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-        tools:text="@string/lorem_ipsum_short" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/frequncyLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/bodyTitle"
-        android:layout_gravity="end"
+        android:layout_alignStart="@id/ruleTitle"
+        android:layout_below="@id/ruleTitle"
         android:gravity="center_vertical">
 
         <TextView
@@ -85,17 +46,64 @@
             android:layout_height="wrap_content"
             android:fontFamily="@string/font_family_regular"
             android:gravity="end"
-            android:text="View Individual"
+            android:padding="4dp"
+            android:text="Frequency:"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textStyle="normal" />
+
+        <TextView
+            android:id="@+id/frequencyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@string/font_family_regular"
+            android:gravity="end"
+            android:padding="4dp"
+            android:text="MONTHLY"
             android:textAllCaps="false"
             android:textColor="@color/pale_red"
             android:textSize="12sp"
             android:textStyle="normal" />
-
-        <ImageView
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:padding="4dp"
-            android:tint="@color/pale_red"
-            app:srcCompat="@drawable/ic_right_cheron" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/bodyTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignStart="@id/ruleTitle"
+        android:layout_below="@id/frequncyLayout"
+        android:layout_gravity="start"
+        android:ellipsize="end"
+        android:fontFamily="sans-serif"
+        android:lines="1"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        android:textColor="#8000"
+        android:textStyle="bold"
+        tools:text="2017" />
+
+    <TextView
+        android:id="@+id/ruleCodeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/title"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="sans-serif"
+        android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+        tools:text="#AR01" />
+
+    <TextView
+        android:id="@+id/amountTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@id/bodyTitle"
+        android:layout_gravity="center_vertical"
+        android:fontFamily="sans-serif"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/colorPrimary"
+        tools:text="N4000" />
+
 </RelativeLayout>

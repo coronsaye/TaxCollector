@@ -307,7 +307,7 @@
                 android:layout_alignTop="@id/building_completion_hint"
                 android:layout_below="@id/building_purpose"
                 android:fontFamily="@string/font_family_medium"
-                android:text="Building Ownership"
+                android:text="Ownership"
                 android:textAllCaps="false"
                 android:textColor="@color/text_dark_300"
                 android:textSize="16sp"

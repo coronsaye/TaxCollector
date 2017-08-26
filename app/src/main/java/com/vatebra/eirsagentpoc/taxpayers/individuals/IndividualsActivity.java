@@ -6,7 +6,12 @@ import android.support.v7.widget.Toolbar;
 
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.business.businesses.BusinessFragment;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
+import com.vatebra.eirsagentpoc.taxpayers.companies.CompanyFragment;
 import com.vatebra.eirsagentpoc.util.ActivityUtils;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +21,7 @@ public class IndividualsActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    Business business;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,14 +34,27 @@ public class IndividualsActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("Individuals");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
+        Boolean ischooserMenu = getIntent().getBooleanExtra(ProfilingActivity.EXTRA_PROFILE_KEY, false);
+        if (ischooserMenu) {
+            if (getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY) != null) {
+                business = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY));
+            }
+        }
 
-        IndividualFragment individualFragment =  (IndividualFragment)getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+        IndividualFragment individualFragment = (IndividualFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (individualFragment == null) {
-            individualFragment = IndividualFragment.newInstance();
+            if (ischooserMenu) {
+                getSupportActionBar().setTitle("Select Tax Payer");
+                individualFragment = IndividualFragment.newInstance(true, business);
+            } else {
+                individualFragment = IndividualFragment.newInstance(false);
+
+            }
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), individualFragment, R.id.contentFrame);
         }
 
     }
+
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();

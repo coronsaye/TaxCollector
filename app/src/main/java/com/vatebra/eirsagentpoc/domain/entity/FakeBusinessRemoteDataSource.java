@@ -2,6 +2,8 @@ package com.vatebra.eirsagentpoc.domain.entity;
 
 import android.support.annotation.NonNull;
 
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -90,7 +92,10 @@ public class FakeBusinessRemoteDataSource implements BusinessDataSource {
 
     }
 
+    @Override
+    public void GetBusinessProfile(@NonNull Business business, BusinessRepository.OnApiReceived<AssetProfile> callback) {
 
+    }
 
 
 }

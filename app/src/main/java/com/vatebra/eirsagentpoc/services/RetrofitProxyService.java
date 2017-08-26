@@ -2,6 +2,8 @@ package com.vatebra.eirsagentpoc.services;
 
 import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.domain.entity.ApiResponse;
+import com.vatebra.eirsagentpoc.domain.entity.ApiSingleResponse;
+import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingCompletion;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingFunction;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingOccupancies;
@@ -120,4 +122,9 @@ public interface RetrofitProxyService {
     @GET("global/towns")
     Call<ApiResponse<Town>> getTowns();
 
+    @POST("profile/getBusinessProfile")
+    Call<ApiSingleResponse<AssetProfile>> getAssetProfile(@Body Business business);
+
+    @POST("profile/getBuildingProfile")
+    Call<ApiSingleResponse<AssetProfile>> getAssetProfile(@Body Building building);
 }

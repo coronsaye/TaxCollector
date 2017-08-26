@@ -2,6 +2,7 @@ package com.vatebra.eirsagentpoc.repository;
 
 import android.support.annotation.NonNull;
 
+import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessCategory;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
@@ -299,6 +300,11 @@ public class BusinessRepository implements BusinessDataSource {
         });
     }
 
+    @Override
+    public void GetBusinessProfile(@NonNull Business business, OnApiReceived<AssetProfile> callback) {
+        mBusinessRemoteDataSource.GetBusinessProfile(business, callback);
+    }
+
 
     private void getBusinessesFromRemoteDataSource(@NonNull final LoadBusinessesCallback callback) {
         mBusinessRemoteDataSource.getBusinesses(new LoadBusinessesCallback() {
@@ -350,5 +356,10 @@ public class BusinessRepository implements BusinessDataSource {
 
     }
 
+
+    public interface OnApiReceived<T> {
+        void OnSuccess(T data);
+        void OnFailed(String message);
+    }
 
 }

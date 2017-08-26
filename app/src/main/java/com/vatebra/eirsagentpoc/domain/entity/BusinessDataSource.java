@@ -2,6 +2,8 @@ package com.vatebra.eirsagentpoc.domain.entity;
 
 import android.support.annotation.NonNull;
 
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
+
 import java.util.List;
 
 import io.realm.RealmObject;
@@ -62,5 +64,7 @@ public interface BusinessDataSource {
     void getSubSectors(@NonNull GetObjectCallback<BusinessSubSector> callback);
 
     void getStructures(@NonNull GetObjectCallback<BusinessStruture> callback);
+
+    void GetBusinessProfile(@NonNull Business business, final BusinessRepository.OnApiReceived<AssetProfile> callback);
 
 }

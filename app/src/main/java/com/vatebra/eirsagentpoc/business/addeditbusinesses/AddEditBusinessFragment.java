@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessCategory;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
@@ -26,6 +27,7 @@ import com.vatebra.eirsagentpoc.domain.entity.BusinessSector;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessStruture;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessSubSector;
 import com.vatebra.eirsagentpoc.domain.entity.Lga;
+import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 
 import java.util.List;
@@ -140,7 +142,26 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
 
         }
 
-        mPresenter.saveBusiness(business);
+        if (business.getRin() == null) {
+            //is a new Business
+            businessRepository.GetBusinessProfile(business, new BusinessRepository.OnApiReceived<AssetProfile>() {
+                @Override
+                public void OnSuccess(AssetProfile data) {
+                    FlowController.launchProfilingActivity(getContext(), data, business);
+                }
+
+                @Override
+                public void OnFailed(String message) {
+                    if (!isAdded())
+                        return;
+                    Snackbar.make(businessNameTextView, message, Snackbar.LENGTH_LONG).show();
+                }
+            });
+        } else {
+            mPresenter.saveBusiness(business);
+
+        }
+
 
     }
 

@@ -4,6 +4,7 @@ package com.vatebra.eirsagentpoc.taxpayers.companies;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -19,12 +20,21 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.UseCase;
+import com.vatebra.eirsagentpoc.UseCaseHandler;
+import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.Company;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.CompanyRepository;
+import com.vatebra.eirsagentpoc.taxpayers.individuals.IndividualFragment;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,15 +76,44 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
 
     CompanyRepository companyRepository;
 
+    Boolean isChooseTaxPayer = false;
+    private UseCaseHandler mUseCaseHandler;
+    private SaveBusiness saveBusiness;
+    private static final String COMPANY_PARAMS = "isChooseTaxPayer";
+    private static final String BUSINESS_PARAMS = "businesspayer";
+    Business business;
 
     public CompanyFragment() {
         // Required empty public constructor
     }
 
+    public static CompanyFragment newInstance(boolean isChooseTaxPayer) {
+
+        CompanyFragment companyFragment = new CompanyFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(COMPANY_PARAMS, isChooseTaxPayer);
+
+        companyFragment.setArguments(args);
+        return companyFragment;
+    }
+
+    public static CompanyFragment newInstance(boolean isChooseTaxPayer, Business business) {
+        CompanyFragment companyFragment = new CompanyFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(COMPANY_PARAMS, isChooseTaxPayer);
+        args.putParcelable(BUSINESS_PARAMS, Parcels.wrap(business));
+        companyFragment.setArguments(args);
+        return companyFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        companyAdapter = new CompanyAdapter(new ArrayList<Company>(0), companyItemListener);
+        if (getArguments() != null) {
+            isChooseTaxPayer = getArguments().getBoolean(COMPANY_PARAMS);
+            business = Parcels.unwrap(getArguments().getParcelable(BUSINESS_PARAMS));
+        }
+        companyAdapter = new CompanyAdapter(new ArrayList<Company>(0), companyItemListener, isChooseTaxPayer);
     }
 
     @Override
@@ -82,6 +121,8 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_company, container, false);
+        saveBusiness = Injection.provideSaveBusiness(getContext());
+        mUseCaseHandler = Injection.provideUseCaseHandler();
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         companyRepository = CompanyRepository.getInstance();
@@ -97,11 +138,17 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         });
 
         floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_add);
+        if (isChooseTaxPayer)
+            floatingActionButton.setImageResource(R.drawable.ic_right_cheron);
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //show add company page
-                FlowController.launchAddEditCompanyActivity(getContext());
+                if (isChooseTaxPayer)
+                    createAsset();
+                else
+                    FlowController.launchAddEditCompanyActivity(getContext());
             }
         });
 
@@ -140,6 +187,42 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         }
     }
 
+    private void createAsset() {
+        if (!isAdded() || companyAdapter == null) {
+            return;
+        }
+        if (business != null) {
+            business.setCompanyID(companyAdapter.selectedCompany.getId());
+            mUseCaseHandler.execute(saveBusiness, new SaveBusiness.RequestValues(business), new UseCase.UseCaseCallback<SaveBusiness.ResponseValue>() {
+                @Override
+                public void onSuccess(SaveBusiness.ResponseValue response) {
+
+                    if (!isAdded()) {
+                        return;
+                    }
+                    Snackbar.make(floatingActionButton, "Business Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getActivity().finish();
+                            FlowController.launchDashboardctivity(getContext());
+                        }
+                    }).show();
+
+                }
+
+                @Override
+                public void onError() {
+                    Toast.makeText(getContext(), "Business Profiling Failed", Toast.LENGTH_LONG).show();
+
+                }
+            });
+
+        }
+
+//        String message = companyAdapter.selectedCompany.getName();
+//        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -150,11 +233,6 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         MenuItemCompat.setActionView(searchMenuItem, searchView);
         searchView.setOnQueryTextListener(this);
 
-    }
-
-
-    public static CompanyFragment newInstance() {
-        return new CompanyFragment();
     }
 
 

@@ -2,6 +2,9 @@ package com.vatebra.eirsagentpoc.domain.entity;
 
 import com.google.gson.annotations.SerializedName;
 
+import org.parceler.Parcel;
+
+import io.realm.BusinessRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,6 +12,9 @@ import io.realm.annotations.PrimaryKey;
  * Created by David Eti on 16/08/2017.
  */
 
+@Parcel(implementations = { BusinessRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { Business.class })
 public class Business extends RealmObject {
 
     @PrimaryKey
@@ -41,7 +47,13 @@ public class Business extends RealmObject {
     private int BusinessSectorID;
     private int BusinessSubSectorID;
     private int LGAID;
+
+
     private String Name; //as gotten from the api
+
+    //USED FOR PROFILING
+    private int CompanyID;
+    private int IndividualID;
 
 
     public Business() {
@@ -191,5 +203,22 @@ public class Business extends RealmObject {
 
     public void setCreateName(String Name) {
         this.Name = Name;
+    }
+
+
+    public int getCompanyID() {
+        return CompanyID;
+    }
+
+    public void setCompanyID(int companyID) {
+        CompanyID = companyID;
+    }
+
+    public int getIndividualID() {
+        return IndividualID;
+    }
+
+    public void setIndividualID(int individualID) {
+        IndividualID = individualID;
     }
 }

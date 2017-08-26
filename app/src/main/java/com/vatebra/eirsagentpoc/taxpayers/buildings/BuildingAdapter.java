@@ -47,7 +47,7 @@ public class BuildingAdapter extends BaseAdapter{
         View rowView = view;
         if (rowView == null) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
-            rowView = inflater.inflate(R.layout.item_company, viewGroup, false);
+            rowView = inflater.inflate(R.layout.item_building, viewGroup, false);
         }
 
         final Building building = getItem(i);
@@ -57,8 +57,8 @@ public class BuildingAdapter extends BaseAdapter{
         TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
 
         titleTextView.setText(building.getName());
-        taxOfficeTextView.setText(building.getOffStreetName());
-        phoneTextView.setText(building.getTagNumber());
+        taxOfficeTextView.setText(building.getStreetName());
+        phoneTextView.setText(building.getLga());
         rinTextView.setText("#" + building.getRin());
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -19,12 +19,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.UseCase;
+import com.vatebra.eirsagentpoc.UseCaseHandler;
+import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.IndividualRepository;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +69,13 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
     List<Individual> individuals;
 
     IndividualRepository individualRepository;
+    Boolean isChooseTaxPayer = false;
+    Business business;
+
+    private UseCaseHandler mUseCaseHandler;
+    private SaveBusiness saveBusiness;
+    private static final String INDIVIDUAL_PARAMS = "isChooseTaxPayerInd";
+    private static final String BUSINESS_PARAMS = "businesspayer";
 
     public IndividualFragment() {
         // Required empty public constructor
@@ -69,11 +84,29 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new IndividualAdapter(new ArrayList<Individual>(0), individualItemListener);
+        if (getArguments() != null) {
+            isChooseTaxPayer = getArguments().getBoolean(INDIVIDUAL_PARAMS);
+            business = Parcels.unwrap(getArguments().getParcelable(BUSINESS_PARAMS));
+        }
+        mListAdapter = new IndividualAdapter(new ArrayList<Individual>(0), individualItemListener, isChooseTaxPayer);
     }
 
-    public static IndividualFragment newInstance() {
-        return new IndividualFragment();
+    public static IndividualFragment newInstance(boolean isChooseTaxPayer) {
+        IndividualFragment companyFragment = new IndividualFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(INDIVIDUAL_PARAMS, isChooseTaxPayer);
+
+        companyFragment.setArguments(args);
+        return companyFragment;
+    }
+
+    public static IndividualFragment newInstance(boolean isChooseTaxPayer, Business business) {
+        IndividualFragment companyFragment = new IndividualFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(INDIVIDUAL_PARAMS, isChooseTaxPayer);
+        args.putParcelable(BUSINESS_PARAMS, Parcels.wrap(business));
+        companyFragment.setArguments(args);
+        return companyFragment;
     }
 
     @Override
@@ -83,6 +116,8 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        saveBusiness = Injection.provideSaveBusiness(getContext());
+        mUseCaseHandler = Injection.provideUseCaseHandler();
         individualRepository = IndividualRepository.getInstance();
         listView.setAdapter(mListAdapter);
         noIndividualAddView.setOnClickListener(new View.OnClickListener() {
@@ -94,13 +129,21 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         });
 
         floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_add);
+
+        if (isChooseTaxPayer)
+            floatingActionButton.setImageResource(R.drawable.ic_right_cheron);
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //show add individuals page
-                FlowController.launchAddEditIndividualActivity(getContext());
+                //show add company page
+                if (isChooseTaxPayer)
+                    createAsset();
+                else
+                    FlowController.launchAddEditIndividualActivity(getContext());
             }
         });
+
 
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
@@ -152,6 +195,37 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         MenuItemCompat.setShowAsAction(searchMenuItem, MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW | MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         MenuItemCompat.setActionView(searchMenuItem, searchView);
         searchView.setOnQueryTextListener(this);
+
+    }
+
+    private void createAsset() {
+        if (!isAdded() || mListAdapter == null) {
+            return;
+        }
+        if (business != null) {
+
+            business.setIndividualID(mListAdapter.selectedIndividual.getId());
+            mUseCaseHandler.execute(saveBusiness, new SaveBusiness.RequestValues(business), new UseCase.UseCaseCallback<SaveBusiness.ResponseValue>() {
+                @Override
+                public void onSuccess(SaveBusiness.ResponseValue response) {
+
+                    if (!isAdded()) {
+                        return;
+                    }
+                    Toast.makeText(getContext(), "Business Profiling Complete", Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                    FlowController.launchDashboardctivity(getContext());
+                }
+
+                @Override
+                public void onError() {
+                    Toast.makeText(getContext(), "Business Profiling Failed", Toast.LENGTH_LONG).show();
+
+                }
+            });
+//            String message = mListAdapter.selectedIndividual.getFullName() + "\nBusiness: " + business.getName();
+//            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        }
 
     }
 

@@ -6,7 +6,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 import com.vatebra.eirsagentpoc.util.ActivityUtils;
+
+import org.parceler.Parcels;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -14,6 +18,7 @@ import butterknife.ButterKnife;
 public class CompaniesActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    Business business;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +32,20 @@ public class CompaniesActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         CompanyFragment companyFragment = (CompanyFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
+
+        Boolean ischooserMenu = getIntent().getBooleanExtra(ProfilingActivity.EXTRA_PROFILE_KEY, false);
         if (companyFragment == null) {
-            companyFragment = CompanyFragment.newInstance();
+            if (ischooserMenu) {
+                getSupportActionBar().setTitle("Select Tax Paying Company ");
+                if (getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY) != null) {
+                    business = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY));
+                    companyFragment = CompanyFragment.newInstance(true, business);
+
+                }
+            } else {
+                companyFragment = CompanyFragment.newInstance(false);
+            }
+
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), companyFragment, R.id.contentFrame);
         }
     }

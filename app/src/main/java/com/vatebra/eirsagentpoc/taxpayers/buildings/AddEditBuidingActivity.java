@@ -1,6 +1,7 @@
 package com.vatebra.eirsagentpoc.taxpayers.buildings;
 
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.building.domain.entity.BuildingRepository;
+import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingCompletion;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingOccupancies;
 import com.vatebra.eirsagentpoc.domain.entity.BuildingOccupancyType;
@@ -26,6 +28,7 @@ import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.Lga;
 import com.vatebra.eirsagentpoc.domain.entity.Town;
 import com.vatebra.eirsagentpoc.domain.entity.Ward;
+import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 
@@ -119,6 +122,8 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
             public void onClick(View view) {
                 if (isNewBuilding()) {
                     building = new Building();
+                } else {
+                    building.setRin(buildingRin);
                 }
                 building.setName(add_buildingname.getText().toString());
                 building.setTagNumber(add_tagname.getText().toString());
@@ -142,7 +147,7 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                 }
 
                 BuildingOwnerShip buildingOwnerShip = (BuildingOwnerShip) buildingownership_spinner.getSelectedItem();
-                if(buildingOwnerShip != null){
+                if (buildingOwnerShip != null) {
                     building.setBuildingOwnershipID(buildingOwnerShip.getID());
                 }
                 BuildingCompletion buildingCompletion = (BuildingCompletion) buildingcompletion_spinner.getSelectedItem();
@@ -176,7 +181,18 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
 
     private void SaveBuilding(Building building) {
         if (isNewBuilding()) {
-            buildingRepository.CreateBuilding(building, this);
+            buildingRepository.GetBuildingProfile(building, new BusinessRepository.OnApiReceived<AssetProfile>() {
+                @Override
+                public void OnSuccess(AssetProfile data) {
+                    FlowController.launchProfilingActivity(AddEditBuidingActivity.this, data);
+                }
+
+                @Override
+                public void OnFailed(String message) {
+                    Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
+                }
+            });
+//            buildingRepository.CreateBuilding(building, this);
         } else {
             buildingRepository.UpdateBuilding(building, this);
 
@@ -186,7 +202,7 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     private void populateFields() {
         if (!isNewBuilding()) {
             add_buildingname.setText(building.getName());
-            add_tagname.setText(building.getTagNumber());
+            add_tagname.setText(building.getBuildingNumber());
             add_streetname.setText(building.getStreetName());
             add_latitude.setText(building.getLatitude());
             add_longitude.setText(building.getLongitude());

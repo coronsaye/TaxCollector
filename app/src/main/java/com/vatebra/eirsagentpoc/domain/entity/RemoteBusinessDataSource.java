@@ -5,6 +5,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.vatebra.eirsagentpoc.App;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.services.RetrofitProxyService;
 
 import java.util.ArrayList;
@@ -74,6 +75,31 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
     }
 
     @Override
+    public void GetBusinessProfile(@NonNull Business business, final BusinessRepository.OnApiReceived<AssetProfile> callback){
+        retrofitProxyService.getAssetProfile(business).enqueue(new Callback<ApiSingleResponse<AssetProfile>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<AssetProfile>> call, Response<ApiSingleResponse<AssetProfile>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<AssetProfile> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+
+                    } else if (apiResponse != null && apiResponse.getStatus().equals("01")) {
+                        callback.OnFailed(apiResponse.getMessage()); //Add Message
+                    } else {
+                        callback.OnFailed("Failed Could not get Profile");
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<AssetProfile>> call, Throwable t) {
+                callback.OnFailed("Failed, Ensure you have an active connection");
+            }
+        });
+
+    }
+    @Override
     public void addBusiness(@NonNull Business business, @NonNull final UpdateBusinessCallback callback) {
         retrofitProxyService.CreateBusiness(business).enqueue(new Callback<ApiResponse<Business>>() {
             @Override
@@ -87,6 +113,9 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
                     } else {
                         callback.onUpdateFailed();
                     }
+                }
+                else {
+                    callback.onUpdateFailed();
                 }
             }
 

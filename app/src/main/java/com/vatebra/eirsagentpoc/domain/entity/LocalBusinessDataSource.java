@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.google.common.base.Strings;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -351,6 +352,11 @@ public class LocalBusinessDataSource implements BusinessDataSource {
         } else {
             callback.onObjectsLoaded(data);
         }
+    }
+
+    @Override
+    public void GetBusinessProfile(@NonNull Business business, BusinessRepository.OnApiReceived<AssetProfile> callback) {
+
     }
 
 }

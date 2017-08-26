@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
@@ -26,10 +27,13 @@ public class IndividualAdapter extends BaseAdapter {
     private List<Individual> individuals;
     private List<Individual> searchIndividuals = new ArrayList<>();
     private IndividualItemListener individualItemListener;
+    private boolean isChooseTaxPayer;
 
-    public IndividualAdapter(List<Individual> individuals, IndividualItemListener individualItemListener) {
+    Individual selectedIndividual;
+    public IndividualAdapter(List<Individual> individuals, IndividualItemListener individualItemListener,boolean isChooseTaxPayer) {
         setList(individuals);
         this.individualItemListener = individualItemListener;
+        this.isChooseTaxPayer = isChooseTaxPayer;
     }
 
 
@@ -87,6 +91,12 @@ public class IndividualAdapter extends BaseAdapter {
         TextView taxOfficeTextView = (TextView) rowView.findViewById(R.id.subTitle);
         TextView phoneTextView = (TextView) rowView.findViewById(R.id.bodyTitle);
         TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.selectCheckbox);
+
+
+        if (isChooseTaxPayer)
+            checkBox.setVisibility(View.VISIBLE);
+
 
         titleTextView.setText(individual.getFullName());
         taxOfficeTextView.setText(individual.getTaxOffice());
@@ -102,6 +112,13 @@ public class IndividualAdapter extends BaseAdapter {
             @Override
             public void onClick(View view) {
                 individualItemListener.onIndividualClick(individual);
+            }
+        });
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedIndividual = individual;
             }
         });
         return rowView;
