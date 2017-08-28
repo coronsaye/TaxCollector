@@ -1,6 +1,7 @@
 package com.vatebra.eirsagentpoc.taxpayers.individuals;
 
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,16 +12,26 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.vatebra.eirsagentpoc.App;
+import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.UseCase;
+import com.vatebra.eirsagentpoc.UseCaseHandler;
+import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.EconomicActivity;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
 import com.vatebra.eirsagentpoc.domain.entity.Lga;
 import com.vatebra.eirsagentpoc.domain.entity.TaxOffice;
+import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.IndividualRepository;
+import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 import com.vatebra.eirsagentpoc.util.Constants;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -83,6 +94,13 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
 
     IndividualRepository individualRepository;
 
+    Business attachedBusiness;
+
+    UseCaseHandler mUseCaseHandler;
+
+    SaveBusiness saveBusiness;
+    MaterialDialog dialogLoad;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +109,12 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
         setSupportActionBar(toolbar);
 
         userRin = getIntent().getStringExtra(EXTRA_INDIVIDUAL_RIN);
+        if (getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY) != null) {
+            attachedBusiness = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY));
+        }
         individualRepository = IndividualRepository.getInstance();
+        mUseCaseHandler = Injection.provideUseCaseHandler();
+        saveBusiness = Injection.provideSaveBusiness(AddEditIndividualActivity.this);
         if (userRin != null) {
 
             individual = individualRepository.getIndividual(userRin);
@@ -104,6 +127,13 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                 getSupportActionBar().setTitle("Edit Individual");
             }
         }
+
+        dialogLoad = new MaterialDialog.Builder(this)
+                .title("Loading")
+                .content("Please Wait...")
+                .progress(true, 0)
+                .progressIndeterminateStyle(true).build();
+
         populateFields();
 
         fabDone.setOnClickListener(new View.OnClickListener() {
@@ -151,7 +181,7 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                 }
 
                 Constants.EnumGender gender = (Constants.EnumGender) gender_spinner.getSelectedItem();
-                if(gender != null){
+                if (gender != null) {
                     individual.setGender(gender.name());
                 }
                 EconomicActivity economicActivity = (EconomicActivity) economic_spinner.getSelectedItem();
@@ -170,14 +200,78 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
     }
 
     private void SaveIndividual(Individual individual) {
+
+
+
         if (isNewIndividual()) {
-            individualRepository.CreateIndividual(individual, this);
+            if (dialogLoad != null && !dialogLoad.isShowing()) {
+                dialogLoad.show();
+            }
+            individualRepository.CreateIndividual(individual, new BusinessRepository.OnApiReceived<Individual>() {
+                @Override
+                public void OnSuccess(Individual data) {
+
+                    if (attachedBusiness != null) {
+                        attachBusinessToIndividual(data.getId());
+                    } else {
+                        if (dialogLoad != null && dialogLoad.isShowing())
+                            dialogLoad.hide();
+
+                        Snackbar.make(fabDone, "Individual Created Successfully", Snackbar.LENGTH_LONG).show();
+
+                    }
+                }
+
+                @Override
+                public void OnFailed(String message) {
+                    if (dialogLoad != null && dialogLoad.isShowing()) {
+                        dialogLoad.hide();
+                    }
+                    Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
+
+                }
+            });
             //create individual
         } else {
             //update individual
             individualRepository.UpdateIndividual(individual, this);
         }
     }
+
+    private void attachBusinessToIndividual(int individualId) {
+        if (attachedBusiness == null)
+            return;
+
+        attachedBusiness.setIndividualID(individualId);
+        mUseCaseHandler.execute(saveBusiness, new SaveBusiness.RequestValues(attachedBusiness), new UseCase.UseCaseCallback<SaveBusiness.ResponseValue>() {
+            @Override
+            public void onSuccess(SaveBusiness.ResponseValue response) {
+
+                if (dialogLoad != null && dialogLoad.isShowing()) {
+                    dialogLoad.hide();
+                }
+
+                Snackbar.make(fabDone, "Business Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                        FlowController.launchDashboardctivity(AddEditIndividualActivity.this);
+                    }
+                }).show();
+            }
+
+            @Override
+            public void onError() {
+                if (dialogLoad != null && dialogLoad.isShowing()) {
+                    dialogLoad.hide();
+                }
+                Snackbar.make(fabDone, "Business Profiling Failed", Snackbar.LENGTH_LONG).show();
+
+            }
+        });
+
+    }
+
 
     private boolean isNewIndividual() {
         return userRin == null;

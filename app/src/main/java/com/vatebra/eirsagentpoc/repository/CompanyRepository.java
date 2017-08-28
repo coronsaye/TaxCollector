@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.domain.entity.ApiResponse;
+import com.vatebra.eirsagentpoc.domain.entity.ApiSingleResponse;
 import com.vatebra.eirsagentpoc.domain.entity.Company;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
 import com.vatebra.eirsagentpoc.entity.CompanyDao;
@@ -75,26 +76,26 @@ public class CompanyRepository {
         });
     }
 
-    public void CreateCompany(final Company company, final OnResponse callback) {
+    public void CreateCompany(final Company company, final BusinessRepository.OnApiReceived<Company> callback) {
 
-        retrofitProxyService.CreateCompany(company).enqueue(new Callback<ApiResponse<Company>>() {
+        retrofitProxyService.CreateCompany(company).enqueue(new Callback<ApiSingleResponse<Company>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Company>> call, Response<ApiResponse<Company>> response) {
+            public void onResponse(Call<ApiSingleResponse<Company>> call, Response<ApiSingleResponse<Company>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
-                    ApiResponse<Company> apiResponse = response.body();
+                    ApiSingleResponse<Company> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                        callback.OnSuccessMessage(apiResponse.getMessage());
+                        callback.OnSuccess(apiResponse.getData());
                         getCompanies();
                     }
                 } else {
-                    //could not get individuals
-                    Toast.makeText(App.getInstance(), "Could not Create Company", Toast.LENGTH_LONG).show();
-
+                    //could not create company
+                    callback.OnFailed("Could not Create Company, Try again later");
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<Company>> call, Throwable t) {
+            public void onFailure(Call<ApiSingleResponse<Company>> call, Throwable t) {
+                callback.OnFailed("Could not Create Company, Ensure you have an active connection");
 
             }
         });

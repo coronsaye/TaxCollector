@@ -2,17 +2,23 @@ package com.vatebra.eirsagentpoc.dashboard;
 
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.diegodobelo.expandingview.ExpandingItem;
 import com.diegodobelo.expandingview.ExpandingList;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.domain.entity.TaxPayer;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
+import com.vatebra.eirsagentpoc.repository.GlobalRepository;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,7 +30,8 @@ public class DashboardFragment extends Fragment {
 
     @BindView(R.id.expanding_list_main)
     ExpandingList expandingList;
-
+    GlobalRepository globalRepository;
+    MaterialDialog dialogLoad;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -40,7 +47,14 @@ public class DashboardFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ButterKnife.bind(this, view);
+        globalRepository = GlobalRepository.getInstance();
         createDashboard();
+
+        dialogLoad = new MaterialDialog.Builder(getContext())
+                .title("Loading")
+                .content("Please Wait...")
+                .progress(true, 0)
+                .progressIndeterminateStyle(true).build();
         return view;
     }
 
@@ -77,7 +91,45 @@ public class DashboardFragment extends Fragment {
                 item.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        if (((TextView) item.findViewById(R.id.mainTextView)).getText().equals(getString(R.string.payment_title))) {
+                            new MaterialDialog.Builder(getContext())
+                                    .title("View Tax Payer Taxes")
+                                    .content("Kindly provide the TIN Number for the taxpayer")
+                                    .inputType(InputType.TYPE_CLASS_TEXT)
+                                    .input("Tin Number", "", new MaterialDialog.InputCallback() {
+                                        @Override
+                                        public void onInput(MaterialDialog dialog, CharSequence input) {
+                                            if (!isAdded())
+                                                return;
 
+                                            if (dialogLoad != null) {
+                                                dialogLoad.show();
+                                            }
+                                            // Do something
+                                            globalRepository.getTaxPayerByTin(input.toString(), new BusinessRepository.OnApiReceived<TaxPayer>() {
+                                                @Override
+                                                public void OnSuccess(TaxPayer data) {
+                                                    if (!isAdded())
+                                                        return;
+                                                    if (dialogLoad != null & dialogLoad.isShowing()) {
+                                                        dialogLoad.hide();
+                                                    }
+                                                    FlowController.launchTaxPayerActivity(getContext(), data);
+                                                }
+
+                                                @Override
+                                                public void OnFailed(String message) {
+                                                    if (!isAdded())
+                                                        return;
+                                                    if (dialogLoad != null & dialogLoad.isShowing()) {
+                                                        dialogLoad.hide();
+                                                    }
+                                                    Snackbar.make(item, message, Snackbar.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }
+                                    }).show();
+                        }
                     }
                 });
 

@@ -11,6 +11,8 @@ import com.vatebra.eirsagentpoc.business.businesses.BusinessActivity;
 import com.vatebra.eirsagentpoc.dashboard.DashboardActivity;
 import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.TaxPayer;
+import com.vatebra.eirsagentpoc.payment.TaxPayerActivity;
 import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 import com.vatebra.eirsagentpoc.taxpayers.buildings.AddEditBuidingActivity;
 import com.vatebra.eirsagentpoc.taxpayers.buildings.BuildingDetailsActivity;
@@ -120,7 +122,13 @@ public class FlowController {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
         context.startActivity(intent);
     }
-
+    public static void launchAddEditCompanyActivity(Context context, Business business) {
+        Intent intent = new Intent(context, AddEditCompanyActivity.class);
+        Bundle bund = new Bundle();
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY, Parcels.wrap(business));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
     public static void launchAddEditCompanyActivity(Context context, String companyRin) {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
         intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, companyRin);
@@ -166,4 +174,12 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
+    public static void launchTaxPayerActivity(Context context, TaxPayer taxPayer) {
+        Intent intent = new Intent(context, TaxPayerActivity.class);
+        intent.putExtra(TaxPayerActivity.EXTRA_TAXPAYER, taxPayer);
+        context.startActivity(intent);
+    }
+
+
 }

@@ -91,7 +91,7 @@ public class ProfilingActivity extends AppCompatActivity {
                                         FlowController.launchIndividualActivity(ProfilingActivity.this, true, business);
                                         break;
                                     case 2:
-                                        FlowController.launchAddEditCompanyActivity(ProfilingActivity.this);
+                                        FlowController.launchAddEditCompanyActivity(ProfilingActivity.this, business);
                                         break;
                                     case 3:
                                         FlowController.launchCompanyActivity(ProfilingActivity.this, true,business);
@@ -115,4 +115,11 @@ public class ProfilingActivity extends AppCompatActivity {
         listView.setAdapter(profileAdapter);
 
     }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
 }

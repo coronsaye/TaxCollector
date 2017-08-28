@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.domain.entity.ApiResponse;
+import com.vatebra.eirsagentpoc.domain.entity.ApiSingleResponse;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.EconomicActivity;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
@@ -85,29 +86,29 @@ public class IndividualRepository {
     }
 
 
-    public void CreateIndividual(final Individual individual, final OnApiResponse callback) {
-        retrofitProxyService.CreateIndividual(individual).enqueue(new Callback<ApiResponse<Individual>>() {
+    public void CreateIndividual(final Individual individual, final BusinessRepository.OnApiReceived<Individual> callback) {
+        retrofitProxyService.CreateIndividual(individual).enqueue(new Callback<ApiSingleResponse<Individual>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Individual>> call, Response<ApiResponse<Individual>> response) {
+            public void onResponse(Call<ApiSingleResponse<Individual>> call, Response<ApiSingleResponse<Individual>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
-                    ApiResponse<Individual> apiResponse = response.body();
+                    ApiSingleResponse<Individual> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                        callback.OnSuccessMessage(apiResponse.getMessage());
+                        callback.OnSuccess(apiResponse.getData());
 //                        individualDao.SaveIndividual(individual);
                         getIndividuals();
                     }
                 } else {
                     Log.e(TAG, "onResponse: " + response.raw());
                     //could not get individuals
-                    Toast.makeText(App.getInstance(), "Could not Create Individual", Toast.LENGTH_LONG).show();
+                    callback.OnFailed("Could not create Individual");
 
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<Individual>> call, Throwable t) {
+            public void onFailure(Call<ApiSingleResponse<Individual>> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
-                Toast.makeText(App.getInstance(), "Could not Update, ensure you have an active connection ", Toast.LENGTH_LONG).show();
+                callback.OnFailed("Could not create Individual,ensure you have an active connection");
             }
         });
     }

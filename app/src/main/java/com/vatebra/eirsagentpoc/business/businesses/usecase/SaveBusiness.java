@@ -31,7 +31,7 @@ public class SaveBusiness extends UseCase<SaveBusiness.RequestValues, SaveBusine
 
             @Override
             public void onUpdateFailed() {
-
+                getUseCaseCallback().onError();
             }
         });
     }

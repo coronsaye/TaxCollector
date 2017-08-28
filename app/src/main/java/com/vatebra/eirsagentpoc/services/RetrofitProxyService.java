@@ -22,12 +22,15 @@ import com.vatebra.eirsagentpoc.domain.entity.EconomicActivity;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
 import com.vatebra.eirsagentpoc.domain.entity.Lga;
 import com.vatebra.eirsagentpoc.domain.entity.TaxOffice;
+import com.vatebra.eirsagentpoc.domain.entity.TaxPayer;
 import com.vatebra.eirsagentpoc.domain.entity.Town;
 import com.vatebra.eirsagentpoc.domain.entity.Ward;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -69,7 +72,7 @@ public interface RetrofitProxyService {
     Call<ApiResponse<Business>> EditBusiness(@Body Business business);
 
     @POST("company/AddIndividual")
-    Call<ApiResponse<Individual>> CreateIndividual(@Body Individual individual);
+    Call<ApiSingleResponse<Individual>> CreateIndividual(@Body Individual individual);
 
     @POST("company/UpdateIndividual")
     Call<ApiResponse<Individual>> UpdateIndividual(@Body Individual individual);
@@ -81,7 +84,7 @@ public interface RetrofitProxyService {
     Call<ApiResponse<EconomicActivity>> getEconomicActivities();
 
     @POST("company/AddCompany")
-    Call<ApiResponse<Company>> CreateCompany(@Body Company company);
+    Call<ApiSingleResponse<Company>> CreateCompany(@Body Company company);
 
     @POST("company/UpdateCompany")
     Call<ApiResponse<Company>> UpdateCompany(@Body Company company);
@@ -127,4 +130,16 @@ public interface RetrofitProxyService {
 
     @POST("profile/getBuildingProfile")
     Call<ApiSingleResponse<AssetProfile>> getAssetProfile(@Body Building building);
+
+    @GET("profile/getTaxPayerBills")
+    Call<ApiSingleResponse<TaxPayer>> getTaxPayerDetails(@Query("tin") String tin);
+
+
+    @POST("profile/topUpAccount")
+    @FormUrlEncoded
+    Call<ApiSingleResponse<String>> topUpAccount(@Field("pin") String pin, @Field("userTin") String tin);
+
+    @POST("profile/payBill")
+    @FormUrlEncoded
+    Call<ApiSingleResponse<String>> payBill(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount,@Field("userTin") String tin);
 }
