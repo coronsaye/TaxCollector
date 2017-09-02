@@ -48,6 +48,7 @@ public class Injection {
     public static SaveBusiness provideSaveBusiness(@NonNull Context context) {
         return new SaveBusiness(Injection.providesBusinessRepository(context));
     }
+
     public static UpdateBusiness provideUpdateBusiness(@NonNull Context context) {
         return new UpdateBusiness(Injection.providesBusinessRepository(context));
     }

@@ -61,9 +61,9 @@ public class IndividualDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Manage Individual");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         }
         final String individualRin = getIntent().getStringExtra(EXTRA_INDIVIDUAL_RIN);
 

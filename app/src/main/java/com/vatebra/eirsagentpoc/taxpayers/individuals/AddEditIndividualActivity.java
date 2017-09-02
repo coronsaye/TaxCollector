@@ -1,5 +1,7 @@
 package com.vatebra.eirsagentpoc.taxpayers.individuals;
 
+import android.location.LocationManager;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -18,6 +21,7 @@ import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.UseCase;
 import com.vatebra.eirsagentpoc.UseCaseHandler;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
@@ -28,6 +32,7 @@ import com.vatebra.eirsagentpoc.domain.entity.TaxOffice;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.IndividualRepository;
+import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 import com.vatebra.eirsagentpoc.util.Constants;
 
@@ -101,6 +106,9 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
     SaveBusiness saveBusiness;
     MaterialDialog dialogLoad;
 
+    Building attachedBuilding;
+    NewBuildingRepository newBuildingRepository;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,9 +117,19 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
         setSupportActionBar(toolbar);
 
         userRin = getIntent().getStringExtra(EXTRA_INDIVIDUAL_RIN);
-        if (getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY) != null) {
-            attachedBusiness = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY));
+
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY)) {
+                attachedBusiness = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY));
+            } else if (extras.containsKey(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY)) {
+                attachedBuilding = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY));
+
+            }
         }
+
+        newBuildingRepository = NewBuildingRepository.getInstance();
         individualRepository = IndividualRepository.getInstance();
         mUseCaseHandler = Injection.provideUseCaseHandler();
         saveBusiness = Injection.provideSaveBusiness(AddEditIndividualActivity.this);
@@ -126,6 +144,7 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
             } else {
                 getSupportActionBar().setTitle("Edit Individual");
             }
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         }
 
         dialogLoad = new MaterialDialog.Builder(this)
@@ -202,7 +221,6 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
     private void SaveIndividual(Individual individual) {
 
 
-
         if (isNewIndividual()) {
             if (dialogLoad != null && !dialogLoad.isShowing()) {
                 dialogLoad.show();
@@ -213,9 +231,11 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
 
                     if (attachedBusiness != null) {
                         attachBusinessToIndividual(data.getId());
+                    } else if (attachedBuilding != null) {
+                        attachBuildingToIndividual(data.getId());
                     } else {
                         if (dialogLoad != null && dialogLoad.isShowing())
-                            dialogLoad.hide();
+                            dialogLoad.dismiss();
 
                         Snackbar.make(fabDone, "Individual Created Successfully", Snackbar.LENGTH_LONG).show();
 
@@ -225,7 +245,7 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                 @Override
                 public void OnFailed(String message) {
                     if (dialogLoad != null && dialogLoad.isShowing()) {
-                        dialogLoad.hide();
+                        dialogLoad.dismiss();
                     }
                     Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
 
@@ -236,6 +256,28 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
             //update individual
             individualRepository.UpdateIndividual(individual, this);
         }
+    }
+
+    private void attachBuildingToIndividual(int individualId) {
+        if (attachedBuilding == null)
+            return;
+
+        attachedBuilding.setIndividualID(individualId);
+        if (dialogLoad != null && dialogLoad.isShowing()) {
+            dialogLoad.hide();
+        }
+        newBuildingRepository.CreateBuilding(attachedBuilding, new NewBuildingRepository.OnMessageResponse() {
+            @Override
+            public void OnSuccessMessage(String message) {
+                Snackbar.make(fabDone, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        finish();
+                        FlowController.launchDashboardctivity(AddEditIndividualActivity.this);
+                    }
+                }).show();
+            }
+        });
     }
 
     private void attachBusinessToIndividual(int individualId) {

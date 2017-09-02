@@ -59,10 +59,10 @@
 
     <TextView
         android:id="@+id/dueDateTitle"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/subTitle"
-        android:layout_gravity="center_vertical"
+        android:layout_alignParentBottom="true"
         android:layout_alignStart="@id/subTitle"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
@@ -85,10 +85,11 @@
         tools:text="#AXYSX" />
 
     <LinearLayout
+        android:id="@+id/paylayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@id/dueDateTitle"
         android:layout_alignParentEnd="true"
-        android:layout_gravity="end"
         android:layout_alignParentBottom="true"
         android:gravity="center_vertical">
 

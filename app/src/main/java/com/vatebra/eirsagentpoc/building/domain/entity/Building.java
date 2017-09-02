@@ -1,7 +1,12 @@
 package com.vatebra.eirsagentpoc.building.domain.entity;
 
 import com.google.gson.annotations.SerializedName;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 
+import org.parceler.Parcel;
+
+import io.realm.BuildingRealmProxy;
+import io.realm.BusinessRealmProxy;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -9,6 +14,9 @@ import io.realm.annotations.PrimaryKey;
  * Created by David Eti on 21/08/2017.
  */
 
+@Parcel(implementations = { BuildingRealmProxy.class },
+        value = Parcel.Serialization.BEAN,
+        analyze = { Building.class })
 public class Building extends RealmObject {
 
     @PrimaryKey
@@ -67,7 +75,9 @@ public class Building extends RealmObject {
     @SerializedName("BuildingOccupancyTypeID")
     private int BuildingOccupancyTypeID;
 
-
+    //USED FOR PROFILING
+    private int CompanyID;
+    private int IndividualID;
     public Building() {
 
     }
@@ -311,5 +321,22 @@ public class Building extends RealmObject {
 
     public void setBuildingOccupancyID(int buildingOccupancyID) {
         BuildingOccupancyID = buildingOccupancyID;
+    }
+
+
+    public int getCompanyID() {
+        return CompanyID;
+    }
+
+    public void setCompanyID(int companyID) {
+        CompanyID = companyID;
+    }
+
+    public int getIndividualID() {
+        return IndividualID;
+    }
+
+    public void setIndividualID(int individualID) {
+        IndividualID = individualID;
     }
 }

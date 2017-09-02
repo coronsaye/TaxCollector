@@ -66,18 +66,17 @@ public class GlobalRepository {
     }
 
 
-    public void topUp(String pin, String tin, final BusinessRepository.OnApiReceived<String> callback){
-        retrofitProxyService.topUpAccount(pin,tin).enqueue(new Callback<ApiSingleResponse<String>>() {
+    public void topUp(String pin, String tin, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.topUpAccount(pin, tin).enqueue(new Callback<ApiSingleResponse<String>>() {
             @Override
             public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     ApiSingleResponse<String> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
                         callback.OnSuccess(apiResponse.getData());
-                    } else if( response.code() == 404){
+                    } else if (response.code() == 404) {
                         callback.OnFailed("Top Up Failed, Card has been used before, or doesn't exist");
-                    }
-                    else {
+                    } else {
                         callback.OnFailed("Card has been used before, or doesn't exist");
 
                     }
@@ -96,18 +95,46 @@ public class GlobalRepository {
         });
     }
 
-    public void payBill(int AssessmentId, double SettlementAmount, String tin, final BusinessRepository.OnApiReceived<String> callback){
-        retrofitProxyService.payBill(AssessmentId,SettlementAmount,tin).enqueue(new Callback<ApiSingleResponse<String>>() {
+    public void payBill(int AssessmentId, double SettlementAmount, String tin, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.payBill(AssessmentId, SettlementAmount, tin).enqueue(new Callback<ApiSingleResponse<String>>() {
             @Override
             public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
                 if (response.isSuccessful() && response.code() == 200) {
                     ApiSingleResponse<String> apiResponse = response.body();
                     if (apiResponse != null && apiResponse.getStatus().equals("00")) {
                         callback.OnSuccess(apiResponse.getData());
-                    } else if( response.code() == 400){
+                    } else if (response.code() == 400) {
                         callback.OnFailed("Bill payment failed, Account balance needs top up");
+                    } else {
+                        callback.OnFailed("Bill payment failed, try again later");
+
                     }
-                    else {
+                } else {
+                    Log.e(TAG, "onResponse: " + response.raw());
+                    callback.OnFailed("Could not top up Ensure the Pin is correct");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<String>> call, Throwable t) {
+                callback.OnFailed("Failed, Ensure you have an active connection");
+
+            }
+        });
+    }
+
+    public void payBillWithAtm(int AssessmentId, double SettlementAmount, String tin, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.payBillWithAtm(AssessmentId, SettlementAmount, tin).enqueue(new Callback<ApiSingleResponse<String>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<String> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+                    } else if (response.code() == 400) {
+                        callback.OnFailed("Bill payment failed, Account balance needs top up");
+                    } else {
                         callback.OnFailed("Bill payment failed, try again later");
 
                     }

@@ -39,8 +39,11 @@ public class DashboardActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         downloadBusinessObjects();
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(getString(R.string.dashboard_title));
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        }
         DashboardFragment dashboardFragment =
                 (DashboardFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (dashboardFragment == null) {

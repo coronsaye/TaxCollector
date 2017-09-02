@@ -3,8 +3,10 @@ package com.vatebra.eirsagentpoc;
 import android.app.Application;
 
 import com.vatebra.eirsagentpoc.di.AppComponent;
+import com.vatebra.eirsagentpoc.util.VatEventSharedHelper;
 
 
+import co.paystack.android.PaystackSdk;
 import io.realm.Realm;
 
 /**
@@ -24,6 +26,12 @@ public class App extends Application {
         super.onCreate();
         Realm.init(this);
         initApplication();
+        PaystackSdk.initialize(getApplicationContext());
+        VatEventSharedHelper helper = VatEventSharedHelper.getInstance(getApplicationContext());
+        if (helper.getAmount() == 0) {
+            helper.saveAmount(500000);
+        }
+
 //        appComponent = DaggerAppComponent.builder()
 //                .appModule(new AppModule(this))
 //                .networkModule(new NetworkModule("https://api.github.com"))
@@ -37,5 +45,6 @@ public class App extends Application {
     public AppComponent getAppComponent() {
         return appComponent;
     }
+
 
 }

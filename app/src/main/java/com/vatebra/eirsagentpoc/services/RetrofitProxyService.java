@@ -141,5 +141,10 @@ public interface RetrofitProxyService {
 
     @POST("profile/payBill")
     @FormUrlEncoded
-    Call<ApiSingleResponse<String>> payBill(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount,@Field("userTin") String tin);
+    Call<ApiSingleResponse<String>> payBill(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin);
+
+
+    @POST("profile/payBillWithAtm")
+    @FormUrlEncoded
+    Call<ApiSingleResponse<String>> payBillWithAtm(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin);
 }

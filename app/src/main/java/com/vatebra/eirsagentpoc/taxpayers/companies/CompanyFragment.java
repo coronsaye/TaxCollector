@@ -26,11 +26,13 @@ import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.UseCase;
 import com.vatebra.eirsagentpoc.UseCaseHandler;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.Company;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.CompanyRepository;
+import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 import com.vatebra.eirsagentpoc.taxpayers.individuals.IndividualFragment;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
 
@@ -81,7 +83,11 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
     private SaveBusiness saveBusiness;
     private static final String COMPANY_PARAMS = "isChooseTaxPayer";
     private static final String BUSINESS_PARAMS = "businesspayer";
+    private static final String BUILDING_PARAMS = "buildingpayer";
+
     Business business;
+    Building building;
+    NewBuildingRepository newBuildingRepository;
 
     public CompanyFragment() {
         // Required empty public constructor
@@ -106,12 +112,22 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         return companyFragment;
     }
 
+    public static CompanyFragment newInstance(boolean isChooseTaxPayer, Building building) {
+        CompanyFragment companyFragment = new CompanyFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(COMPANY_PARAMS, isChooseTaxPayer);
+        args.putParcelable(BUILDING_PARAMS, Parcels.wrap(building));
+        companyFragment.setArguments(args);
+        return companyFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             isChooseTaxPayer = getArguments().getBoolean(COMPANY_PARAMS);
             business = Parcels.unwrap(getArguments().getParcelable(BUSINESS_PARAMS));
+            building = Parcels.unwrap(getArguments().getParcelable(BUILDING_PARAMS));
         }
         companyAdapter = new CompanyAdapter(new ArrayList<Company>(0), companyItemListener, isChooseTaxPayer);
     }
@@ -125,6 +141,7 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         mUseCaseHandler = Injection.provideUseCaseHandler();
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        newBuildingRepository = NewBuildingRepository.getInstance();
         companyRepository = CompanyRepository.getInstance();
         listView.setAdapter(companyAdapter);
 
@@ -217,6 +234,22 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
                 }
             });
 
+        } else {
+            if (building != null) {
+                building.setCompanyID(companyAdapter.selectedCompany.getId());
+                newBuildingRepository.CreateBuilding(building, new NewBuildingRepository.OnMessageResponse() {
+                    @Override
+                    public void OnSuccessMessage(String message) {
+                        Snackbar.make(listView, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getActivity().finish();
+                                FlowController.launchDashboardctivity(getContext());
+                            }
+                        }).show();
+                    }
+                });
+            }
         }
 
 //        String message = companyAdapter.selectedCompany.getName();

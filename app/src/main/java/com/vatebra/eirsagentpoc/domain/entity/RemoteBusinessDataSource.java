@@ -90,6 +90,9 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
                         callback.OnFailed("Failed Could not get Profile");
                     }
                 }
+                else {
+                    callback.OnFailed("Failed Could not get Profile");
+                }
             }
 
             @Override

@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.diegodobelo.expandingview.ExpandingItem;
@@ -101,6 +103,11 @@ public class DashboardFragment extends Fragment {
                                         public void onInput(MaterialDialog dialog, CharSequence input) {
                                             if (!isAdded())
                                                 return;
+
+                                            if(TextUtils.isEmpty(input.toString())){
+                                                Toast.makeText(getContext(),"Ensure you provide TIN ", Toast.LENGTH_SHORT).show();
+                                                return;
+                                            }
 
                                             if (dialogLoad != null) {
                                                 dialogLoad.show();

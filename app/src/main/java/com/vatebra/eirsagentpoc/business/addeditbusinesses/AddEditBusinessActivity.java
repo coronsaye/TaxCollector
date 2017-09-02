@@ -25,8 +25,10 @@ public class AddEditBusinessActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null)
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+        }
 
         AddEditBusinessFragment addEditBusinessFragment = (AddEditBusinessFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
 
@@ -47,7 +49,7 @@ public class AddEditBusinessActivity extends AppCompatActivity {
             }
             ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), addEditBusinessFragment, R.id.contentFrame);
 
-            new AddEditBusinessPresenter(Injection.provideUseCaseHandler(), addEditBusinessFragment, Injection.provideSaveBusiness(this), Injection.provideGetBusiness(this),Injection.provideUpdateBusiness(this), businessRin);
+            new AddEditBusinessPresenter(Injection.provideUseCaseHandler(), addEditBusinessFragment, Injection.provideSaveBusiness(this), Injection.provideGetBusiness(this), Injection.provideUpdateBusiness(this), businessRin);
         }
     }
 

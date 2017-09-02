@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.business.addeditbusinesses.AddEditBusinessActivity;
 import com.vatebra.eirsagentpoc.business.addeditbusinesses.AddEditBusinessFragment;
 import com.vatebra.eirsagentpoc.business.businessdetail.BusinessDetailActivity;
@@ -83,6 +84,15 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
+    public static void launchAddEditIndividualActivity(Context context, Building building) {
+        Intent intent = new Intent(context, AddEditIndividualActivity.class);
+        Bundle bund = new Bundle();
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
     public static void launchIndividualActivity(Context context, boolean isChooser, Business business) {
         Intent intent = new Intent(context, IndividualsActivity.class);
         Bundle bund = new Bundle();
@@ -91,7 +101,14 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
-
+    public static void launchIndividualActivity(Context context, boolean isChooser, Building building) {
+        Intent intent = new Intent(context, IndividualsActivity.class);
+        Bundle bund = new Bundle();
+        bund.putBoolean(ProfilingActivity.EXTRA_PROFILE_KEY, isChooser);
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
     public static void launchAddEditIndividualActivity(Context context, String userRin) {
         Intent intent = new Intent(context, AddEditIndividualActivity.class);
         intent.putExtra(IndividualDetailActivity.EXTRA_INDIVIDUAL_RIN, userRin);
@@ -111,7 +128,14 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
-
+    public static void launchCompanyActivity(Context context, boolean isChooser, Building building) {
+        Intent intent = new Intent(context, CompaniesActivity.class);
+        Bundle bund = new Bundle();
+        bund.putBoolean(ProfilingActivity.EXTRA_PROFILE_KEY, isChooser);
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
     public static void launchCompanyDetailsActivity(Context context, String rin) {
         Intent intent = new Intent(context, CompanyDetailActivity.class);
         intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, rin);
@@ -129,6 +153,15 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
+    public static void launchAddEditCompanyActivity(Context context, Building building) {
+        Intent intent = new Intent(context, AddEditCompanyActivity.class);
+        Bundle bund = new Bundle();
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
     public static void launchAddEditCompanyActivity(Context context, String companyRin) {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
         intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, companyRin);
@@ -162,6 +195,17 @@ public class FlowController {
     public static void launchProfilingActivity(Context context, AssetProfile profile) {
         Intent intent = new Intent(context, ProfilingActivity.class);
         intent.putExtra(ProfilingActivity.EXTRA_PROFILE_KEY, profile);
+        context.startActivity(intent);
+    }
+
+    public static void launchProfilingActivity(Context context, AssetProfile profile, Building building) {
+        Intent intent = new Intent(context, ProfilingActivity.class);
+        Bundle bund = new Bundle();
+
+        bund.putSerializable(ProfilingActivity.EXTRA_PROFILE_KEY, profile);
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+
         context.startActivity(intent);
     }
 

@@ -1,5 +1,7 @@
 package com.vatebra.eirsagentpoc.taxpayers;
 
+import android.text.Html;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +23,7 @@ import java.util.List;
 public class ProfileAdapter extends BaseAdapter {
 
     List<ProfileAssement> assements;
+    Spanned nairaSymbol = Html.fromHtml("&#8358");
 
 
     public ProfileAdapter(List<ProfileAssement> assements) {
@@ -65,7 +68,7 @@ public class ProfileAdapter extends BaseAdapter {
 
 
         TextView amountTextView = (TextView) rowView.findViewById(R.id.amountTextView);
-        amountTextView.setText(assement.getAssessmentAmount());
+        amountTextView.setText(nairaSymbol + assement.getAssessmentAmount());
 
         return rowView;
     }

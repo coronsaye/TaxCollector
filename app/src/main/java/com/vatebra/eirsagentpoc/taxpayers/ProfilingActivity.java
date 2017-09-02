@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
@@ -42,9 +43,11 @@ public class ProfilingActivity extends AppCompatActivity {
     AssetProfile assetProfile;
     public static final String EXTRA_PROFILE_KEY = "PROFILE_OBJECT";
     public static final String EXTRA_OBJECT_BUSINESS_KEY = "PROFILE_BUSINESS";
+    public static final String EXTRA_OBJECT_BUILDING_KEY = "PROFILE_BUILDING";
 
     List<String> options;
     Business business;
+    Building building;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,21 +56,32 @@ public class ProfilingActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
 
-        assetProfile = (AssetProfile) getIntent().getSerializableExtra(EXTRA_PROFILE_KEY);
-        if (getIntent().getExtras().getParcelable(EXTRA_OBJECT_BUSINESS_KEY) != null) {
-            business = Parcels.unwrap(getIntent().getExtras().getParcelable(EXTRA_OBJECT_BUSINESS_KEY));
+        assetProfile = (AssetProfile) getIntent().getExtras().getSerializable(EXTRA_PROFILE_KEY);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            if (extras.containsKey(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY)) {
+                business = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY));
+            } else if (extras.containsKey(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY)) {
+                building = Parcels.unwrap(getIntent().getExtras().getParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY));
+
+            }
         }
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Asset Profile");
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         }
 
         options = new ArrayList<>();
-        options.add("New Individual");
-        options.add("Existing Individual");
-        options.add("New Company");
-        options.add("Existing Company");
+
+            options.add("New Individual");
+            options.add("Existing Individual");
+            options.add("New Company");
+            options.add("Existing Company");
+
+
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,16 +99,31 @@ public class ProfilingActivity extends AppCompatActivity {
 
                                 switch (which) {
                                     case 0:
-                                        FlowController.launchAddEditIndividualActivity(ProfilingActivity.this, business);
+                                        if (business != null)
+                                            FlowController.launchAddEditIndividualActivity(ProfilingActivity.this, business);
+                                        else
+                                            FlowController.launchAddEditIndividualActivity(ProfilingActivity.this, building);
+
                                         break;
                                     case 1:
-                                        FlowController.launchIndividualActivity(ProfilingActivity.this, true, business);
+                                        if (business != null)
+                                            FlowController.launchIndividualActivity(ProfilingActivity.this, true, business);
+                                        else
+                                            FlowController.launchIndividualActivity(ProfilingActivity.this, true, building);
+
                                         break;
                                     case 2:
-                                        FlowController.launchAddEditCompanyActivity(ProfilingActivity.this, business);
+                                        if (business != null)
+                                            FlowController.launchAddEditCompanyActivity(ProfilingActivity.this, business);
+                                        else
+                                            FlowController.launchAddEditCompanyActivity(ProfilingActivity.this, building);
+
                                         break;
                                     case 3:
-                                        FlowController.launchCompanyActivity(ProfilingActivity.this, true,business);
+                                        if (business != null)
+                                            FlowController.launchCompanyActivity(ProfilingActivity.this, true, business);
+                                        else
+                                            FlowController.launchCompanyActivity(ProfilingActivity.this, true, building);
                                         break;
                                 }
                                 return true;

@@ -80,9 +80,10 @@ public class BuildingDetailsActivity extends AppCompatActivity {
 
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Manage Building");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         }
 
         final String buildingRin = getIntent().getStringExtra(EXTRA_BUILDING_RIN);

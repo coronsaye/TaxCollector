@@ -72,9 +72,10 @@ public class CompanyDetailActivity extends AppCompatActivity {
 
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle("Manage Company");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         }
         final String companyRin = getIntent().getStringExtra(EXTRA_COMPANY_RIN);
 

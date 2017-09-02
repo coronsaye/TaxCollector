@@ -27,12 +27,15 @@
         <include
             android:id="@+id/contentFrame" layout="@layout/content_taxpayer"/>
 
-        <Button
+        <android.support.design.widget.FloatingActionButton
             android:id="@+id/button_topUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/fab_margin"
             android:text="Top Up"
+            app:srcCompat="@drawable/ic_wallet"
+            android:tint="@color/white"
+            android:visibility="gone"
             android:textColor="@color/white"
             android:background="@color/colorPrimary"
             app:fabSize="normal"

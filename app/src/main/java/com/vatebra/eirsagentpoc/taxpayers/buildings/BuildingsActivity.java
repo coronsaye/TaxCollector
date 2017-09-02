@@ -26,6 +26,7 @@ public class BuildingsActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Buildings");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         }
         BuildingFragment buildingFragment = (BuildingFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);
         if (buildingFragment == null) {

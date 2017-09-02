@@ -34,6 +34,8 @@ public class BusinessActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("Businesses");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
         }
 
         BusinessFragment businessFragment = (BusinessFragment) getSupportFragmentManager().findFragmentById(R.id.contentFrame);

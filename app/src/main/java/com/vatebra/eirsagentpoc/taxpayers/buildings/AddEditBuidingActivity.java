@@ -1,8 +1,19 @@
 package com.vatebra.eirsagentpoc.taxpayers.buildings;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -37,7 +48,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class AddEditBuidingActivity extends AppCompatActivity implements NewBuildingRepository.OnMessageResponse {
+public class AddEditBuidingActivity extends AppCompatActivity implements NewBuildingRepository.OnMessageResponse, LocationListener {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -94,6 +105,9 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     Building building;
     NewBuildingRepository buildingRepository;
     BusinessRepository businessRepository;
+    LocationManager locationManager;
+    double longitudeNetwork;
+    double latitudeNetwork;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,8 +129,15 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
             } else {
                 getSupportActionBar().setTitle("Edit Building");
             }
+            getSupportActionBar().setIcon(R.mipmap.ic_launcher);
+
+        }
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (!isLocationEnabled()) {
+            showAlert();
         }
         populateFields();
+        checkLocation();
         fabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,12 +200,12 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
         });
     }
 
-    private void SaveBuilding(Building building) {
+    private void SaveBuilding(final Building building) {
         if (isNewBuilding()) {
             buildingRepository.GetBuildingProfile(building, new BusinessRepository.OnApiReceived<AssetProfile>() {
                 @Override
                 public void OnSuccess(AssetProfile data) {
-                    FlowController.launchProfilingActivity(AddEditBuidingActivity.this, data);
+                    FlowController.launchProfilingActivity(AddEditBuidingActivity.this, data, building);
                 }
 
                 @Override
@@ -360,4 +381,96 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
         Toast.makeText(App.getInstance(), message, Toast.LENGTH_LONG).show();
         this.finish();
     }
+
+
+    private boolean isLocationEnabled() {
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    private void showAlert() {
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("Enable Location")
+                .setMessage("Your Locations Settings is set to 'Off'.\nPlease Enable Location to " +
+                        "use this app")
+                .setPositiveButton("Location Settings", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                        Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(myIntent);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    }
+                });
+        dialog.show();
+    }
+
+    private void checkLocation() {
+
+        Location location = getLastKnownLocation();
+        if (location != null) {
+            longitudeNetwork = location.getLongitude();
+            latitudeNetwork = location.getLatitude();
+            add_longitude.setText(longitudeNetwork + "");
+            add_latitude.setText(latitudeNetwork + "");
+        }
+
+    }
+
+    private Location getLastKnownLocation() {
+        if (Build.VERSION.SDK_INT >= 23 &&
+                ContextCompat.checkSelfPermission(AddEditBuidingActivity.this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ContextCompat.checkSelfPermission(AddEditBuidingActivity.this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Ensure permission to access location has been granted.", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        List<String> providers = locationManager.getProviders(true);
+        Location bestLocation = null;
+        for (String provider : providers) {
+            Location l = locationManager.getLastKnownLocation(provider);
+            locationManager.requestLocationUpdates(provider, 2 * 60 * 1000, 10, this);
+
+            if (l == null) {
+                continue;
+            }
+            if (bestLocation == null || l.getAccuracy() < bestLocation.getAccuracy()) {
+                // Found best last known location: %s", l);
+                bestLocation = l;
+            }
+        }
+        return bestLocation;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        longitudeNetwork = location.getLongitude();
+        latitudeNetwork = location.getLatitude();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                add_longitude.setText(longitudeNetwork + "");
+                add_latitude.setText(latitudeNetwork + "");
+            }
+        });
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
+    }
+
+
 }

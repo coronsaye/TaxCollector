@@ -14,5 +14,12 @@
     <com.diegodobelo.expandingview.ExpandingList
         android:id="@+id/expanding_list_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_below="@id/expanding_list_main"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/edologo" />
 </RelativeLayout>

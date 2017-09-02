@@ -1,5 +1,8 @@
 package com.vatebra.eirsagentpoc.payment;
 
+import android.text.Html;
+import android.text.Spanned;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +13,12 @@ import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.domain.entity.Bill;
 import com.vatebra.eirsagentpoc.domain.entity.TaxPayer;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by David Eti on 27/08/2017.
@@ -20,6 +28,7 @@ public class TaxPayerAdapter extends BaseAdapter {
 
     List<Bill> bills;
     OnBillClickListener onBillClickListener;
+    Spanned nairaSymbol = Html.fromHtml("&#8358");
 
     public TaxPayerAdapter(List<Bill> bills, OnBillClickListener onBillClickListener) {
         this.bills = bills;
@@ -28,7 +37,7 @@ public class TaxPayerAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return bills.size();
+        return (bills.size());
     }
 
     @Override
@@ -41,10 +50,11 @@ public class TaxPayerAdapter extends BaseAdapter {
         return i;
     }
 
-    public void removeBill(Bill bill){
+    public void removeBill(Bill bill) {
         bills.remove(bill);
         notifyDataSetChanged();
     }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         View rowView = view;
@@ -59,11 +69,27 @@ public class TaxPayerAdapter extends BaseAdapter {
         TextView ruleTextView = (TextView) rowView.findViewById(R.id.subTitle);
         ruleTextView.setText(bill.getRuleName());
         TextView dueDateTextView = (TextView) rowView.findViewById(R.id.dueDateTitle);
-        dueDateTextView.setText("Due On - " + bill.getSettlementDueDate());
+
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+
+        try {
+            String value = bill.getSettlementDueDate();
+            Date date = format.parse(value);
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(date);
+            String dateString = String.valueOf(bill.getTaxYear() + "/" + calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, Locale.getDefault())) + "/" + String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+            dueDateTextView.setText("Due On - " + dateString);
+
+        } catch (Exception ex) {
+            dueDateTextView.setText("Due On - " + bill.getSettlementDueDate());
+
+        }
+
         TextView assessmentRefTextView = (TextView) rowView.findViewById(R.id.assessmentRefTextView);
         assessmentRefTextView.setText("#" + bill.getAssessmentRef());
         TextView paymentAmount = (TextView) rowView.findViewById(R.id.paymentAmount);
-        paymentAmount.setText("PAY: " + bill.getAsssessmentAmount());
+        paymentAmount.setText("PAY: " + nairaSymbol + bill.getAsssessmentAmount());
 
 
         rowView.setOnClickListener(new View.OnClickListener() {

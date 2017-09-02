@@ -4,6 +4,7 @@ package com.vatebra.eirsagentpoc.taxpayers.individuals;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.MenuItemCompat;
@@ -25,11 +26,13 @@ import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.UseCase;
 import com.vatebra.eirsagentpoc.UseCaseHandler;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.IndividualRepository;
+import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
 
 import org.parceler.Parcels;
@@ -71,11 +74,13 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
     IndividualRepository individualRepository;
     Boolean isChooseTaxPayer = false;
     Business business;
-
+    Building building;
+    NewBuildingRepository newBuildingRepository;
     private UseCaseHandler mUseCaseHandler;
     private SaveBusiness saveBusiness;
     private static final String INDIVIDUAL_PARAMS = "isChooseTaxPayerInd";
     private static final String BUSINESS_PARAMS = "businesspayer";
+    private static final String BUILDING_PARAMS = "buildingpayer";
 
     public IndividualFragment() {
         // Required empty public constructor
@@ -87,6 +92,7 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         if (getArguments() != null) {
             isChooseTaxPayer = getArguments().getBoolean(INDIVIDUAL_PARAMS);
             business = Parcels.unwrap(getArguments().getParcelable(BUSINESS_PARAMS));
+            building = Parcels.unwrap(getArguments().getParcelable(BUILDING_PARAMS));
         }
         mListAdapter = new IndividualAdapter(new ArrayList<Individual>(0), individualItemListener, isChooseTaxPayer);
     }
@@ -109,6 +115,15 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         return companyFragment;
     }
 
+    public static IndividualFragment newInstance(boolean isChooseTaxPayer, Building building) {
+        IndividualFragment companyFragment = new IndividualFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(INDIVIDUAL_PARAMS, isChooseTaxPayer);
+        args.putParcelable(BUILDING_PARAMS, Parcels.wrap(building));
+        companyFragment.setArguments(args);
+        return companyFragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -116,6 +131,7 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         View view = inflater.inflate(R.layout.fragment_individual, container, false);
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
+        newBuildingRepository = NewBuildingRepository.getInstance();
         saveBusiness = Injection.provideSaveBusiness(getContext());
         mUseCaseHandler = Injection.provideUseCaseHandler();
         individualRepository = IndividualRepository.getInstance();
@@ -161,6 +177,7 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
                 if (individuals != null) {
                     noIndividualView.setVisibility(View.GONE);
                     mListAdapter.replaceData(individuals);
+                    swipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
@@ -225,6 +242,22 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
             });
 //            String message = mListAdapter.selectedIndividual.getFullName() + "\nBusiness: " + business.getName();
 //            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        } else {
+            if (building != null) {
+                building.setIndividualID(mListAdapter.selectedIndividual.getId());
+                newBuildingRepository.CreateBuilding(building, new NewBuildingRepository.OnMessageResponse() {
+                    @Override
+                    public void OnSuccessMessage(String message) {
+                        Snackbar.make(listView, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                getActivity().finish();
+                                FlowController.launchDashboardctivity(getContext());
+                            }
+                        }).show();
+                    }
+                });
+            }
         }
 
     }
