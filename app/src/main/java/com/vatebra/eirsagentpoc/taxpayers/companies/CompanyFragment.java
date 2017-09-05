@@ -31,6 +31,7 @@ import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.Company;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.CompanyRepository;
 import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 import com.vatebra.eirsagentpoc.taxpayers.individuals.IndividualFragment;
@@ -237,9 +238,9 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
         } else {
             if (building != null) {
                 building.setCompanyID(companyAdapter.selectedCompany.getId());
-                newBuildingRepository.CreateBuilding(building, new NewBuildingRepository.OnMessageResponse() {
+                newBuildingRepository.CreateBuilding(building, new BusinessRepository.OnApiReceived<Building>() {
                     @Override
-                    public void OnSuccessMessage(String message) {
+                    public void OnSuccess(Building data) {
                         Snackbar.make(listView, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
@@ -247,6 +248,11 @@ public class CompanyFragment extends Fragment implements android.support.v7.widg
                                 FlowController.launchDashboardctivity(getContext());
                             }
                         }).show();
+                    }
+
+                    @Override
+                    public void OnFailed(String message) {
+                        Snackbar.make(listView, message, Snackbar.LENGTH_LONG).show();
                     }
                 });
             }

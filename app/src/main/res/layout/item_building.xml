@@ -10,6 +10,13 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/list_item_padding">
+    <CheckBox
+        android:id="@+id/selectCheckbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <TextView
         android:id="@+id/title"
@@ -19,6 +26,7 @@
         android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:fontFamily="sans-serif"
         android:padding="4dp"
+        android:layout_toEndOf="@id/selectCheckbox"
         android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
         tools:text="Vatebra" />
 
@@ -28,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/title"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_alignStart="@+id/title"
         android:ellipsize="end"
         android:fontFamily="sans-serif"
         android:lines="1"
@@ -43,8 +51,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/subTitle"
         android:layout_gravity="center_vertical"
-        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:ellipsize="end"
+        android:layout_alignStart="@+id/title"
         android:fontFamily="sans-serif"
         android:lines="1"
         android:padding="4dp"

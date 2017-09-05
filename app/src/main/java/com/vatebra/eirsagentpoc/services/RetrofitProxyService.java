@@ -114,7 +114,7 @@ public interface RetrofitProxyService {
     Call<ApiResponse<BuildingOwnerShip>> getBuildingOwnerships();
 
     @POST("building/createbuilding")
-    Call<ApiResponse<Building>> CreatBuilding(@Body Building building);
+    Call<ApiSingleResponse<Building>> CreatBuilding(@Body Building building);
 
     @POST("building/editbuilding")
     Call<ApiResponse<Building>> Editbuilding(@Body Building building);
@@ -134,7 +134,6 @@ public interface RetrofitProxyService {
     @GET("profile/getTaxPayerBills")
     Call<ApiSingleResponse<TaxPayer>> getTaxPayerDetails(@Query("tin") String tin);
 
-
     @POST("profile/topUpAccount")
     @FormUrlEncoded
     Call<ApiSingleResponse<String>> topUpAccount(@Field("pin") String pin, @Field("userTin") String tin);
@@ -147,4 +146,12 @@ public interface RetrofitProxyService {
     @POST("profile/payBillWithAtm")
     @FormUrlEncoded
     Call<ApiSingleResponse<String>> payBillWithAtm(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin);
+
+    @GET("bussiness/GetBusinessByRin")
+    Call<ApiSingleResponse<Business>> getBusinessByRin(@Query("rin") String rin);
+
+    @POST("profile/partialPayment")
+    @FormUrlEncoded
+    Call<ApiSingleResponse<String>> partialPayment(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin);
+
 }

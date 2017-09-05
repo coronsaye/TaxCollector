@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
@@ -42,7 +43,10 @@ import com.vatebra.eirsagentpoc.domain.entity.Ward;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
+import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
@@ -108,6 +112,7 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     LocationManager locationManager;
     double longitudeNetwork;
     double latitudeNetwork;
+    List<String> options = Arrays.asList("Existing Business", "New Business");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,6 +141,8 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
         if (!isLocationEnabled()) {
             showAlert();
         }
+
+
         populateFields();
         checkLocation();
         fabDone.setOnClickListener(new View.OnClickListener() {
@@ -202,10 +209,46 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
 
     private void SaveBuilding(final Building building) {
         if (isNewBuilding()) {
-            buildingRepository.GetBuildingProfile(building, new BusinessRepository.OnApiReceived<AssetProfile>() {
+            // TODO: 04/09/2017 PROFILING FOR BUILDINGS REMOVED
+//            buildingRepository.GetBuildingProfile(building, new BusinessRepository.OnApiReceived<AssetProfile>() {
+//                @Override
+//                public void OnSuccess(AssetProfile data) {
+//                    FlowController.launchProfilingActivity(AddEditBuidingActivity.this, data, building);
+//                }
+//
+//                @Override
+//                public void OnFailed(String message) {
+//                    Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
+//                }
+//            });
+            buildingRepository.CreateBuilding(building, new BusinessRepository.OnApiReceived<Building>() {
                 @Override
-                public void OnSuccess(AssetProfile data) {
-                    FlowController.launchProfilingActivity(AddEditBuidingActivity.this, data, building);
+                public void OnSuccess(final Building data) {
+                    new MaterialDialog.Builder(AddEditBuidingActivity.this)
+                            .title("Would you like to attach a business to this building")
+                            .items(options)
+                            .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
+                                @Override
+                                public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    /**
+                                     * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
+                                     * returning false here won't allow the newly selected radio button to actually be selected.
+                                     **/
+                                    switch (which) {
+                                        case 0:
+
+                                            break;
+                                        case 1:
+                                            FlowController.launchAddEditBusinessActivity(AddEditBuidingActivity.this, data);
+                                            break;
+                                    }
+
+                                    return true;
+                                }
+                            })
+                            .positiveText("Continue")
+                            .negativeText("No")
+                            .show();
                 }
 
                 @Override
@@ -213,7 +256,6 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                     Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
                 }
             });
-//            buildingRepository.CreateBuilding(building, this);
         } else {
             buildingRepository.UpdateBuilding(building, this);
 
@@ -255,9 +297,12 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                         buildingRepository.getWards(new BusinessDataSource.GetObjectCallback<Ward>() {
                             @Override
                             public void onObjectsLoaded(List<Ward> objects) {
-                                ArrayAdapter<Ward> dataAdapter = new ArrayAdapter<>(AddEditBuidingActivity.this, android.R.layout.simple_spinner_item, objects);
-                                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                                ward_spinner.setAdapter(dataAdapter);
+                                if (objects != null) {
+                                    ArrayAdapter<Ward> dataAdapter = new ArrayAdapter<>(AddEditBuidingActivity.this, android.R.layout.simple_spinner_item, objects);
+                                    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    ward_spinner.setAdapter(dataAdapter);
+                                }
+
                             }
 
                             @Override

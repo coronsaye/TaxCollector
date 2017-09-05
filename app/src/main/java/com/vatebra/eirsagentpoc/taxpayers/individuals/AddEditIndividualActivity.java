@@ -1,5 +1,6 @@
 package com.vatebra.eirsagentpoc.taxpayers.individuals;
 
+import android.app.DatePickerDialog;
 import android.location.LocationManager;
 import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
@@ -12,7 +13,9 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -38,14 +41,17 @@ import com.vatebra.eirsagentpoc.util.Constants;
 
 import org.parceler.Parcels;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.vatebra.eirsagentpoc.taxpayers.individuals.IndividualDetailActivity.EXTRA_INDIVIDUAL_RIN;
 
-public class AddEditIndividualActivity extends AppCompatActivity implements IndividualRepository.OnApiResponse {
+public class AddEditIndividualActivity extends AppCompatActivity implements IndividualRepository.OnApiResponse, DatePickerDialog.OnDateSetListener {
 
     public static final int REQUEST_ADD_INDIVIDUAL = 2;
     @BindView(R.id.toolbar)
@@ -61,7 +67,7 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
     TextInputEditText add_lastname;
 
     @BindView(R.id.add_dob)
-    TextInputEditText add_dob;
+    TextView add_dob;
 
     @BindView(R.id.add_mobile)
     TextInputEditText add_mobile;
@@ -108,6 +114,9 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
 
     Building attachedBuilding;
     NewBuildingRepository newBuildingRepository;
+    DatePickerDialog datePickerDialog;
+    private int year, month, day;
+    private Calendar calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +163,23 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                 .progressIndeterminateStyle(true).build();
 
         populateFields();
+//        datePickerDialog = new DatePickerDialog(
+//                context, AddEditIndividualActivity.this, startYear, starthMonth, startDay);
 
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+
+        month = calendar.get(Calendar.MONTH);
+        day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        datePickerDialog = new DatePickerDialog(this, this, year, month, day);
+
+        add_dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.show();
+            }
+        });
         fabDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -180,7 +205,8 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                 individual.setFirstName(add_firstname.getText().toString());
                 individual.setMiddleName(add_middlename.getText().toString());
                 individual.setLastName(add_lastname.getText().toString());
-                individual.setDateOfBirth(add_dob.getText().toString());
+//                individual.setDateOfBirth(add_dob.getText().toString());
+                individual.setDateOfBirth(calendar.getTime().toString());
                 individual.setMobileNumberOne(add_mobile.getText().toString());
                 individual.setMobileNumberTwo(add_mobile_two.getText().toString());
                 individual.setEmailAddressOne(add_email.getText().toString());
@@ -266,9 +292,9 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
         if (dialogLoad != null && dialogLoad.isShowing()) {
             dialogLoad.hide();
         }
-        newBuildingRepository.CreateBuilding(attachedBuilding, new NewBuildingRepository.OnMessageResponse() {
+        newBuildingRepository.CreateBuilding(attachedBuilding, new BusinessRepository.OnApiReceived<Building>() {
             @Override
-            public void OnSuccessMessage(String message) {
+            public void OnSuccess(Building data) {
                 Snackbar.make(fabDone, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -277,7 +303,13 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                     }
                 }).show();
             }
+
+            @Override
+            public void OnFailed(String message) {
+                Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
+            }
         });
+
     }
 
     private void attachBusinessToIndividual(int individualId) {
@@ -381,5 +413,21 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
     public void OnSuccessMessage(String message) {
         Toast.makeText(App.getInstance(), message, Toast.LENGTH_LONG).show();
         this.finish();
+    }
+
+    @Override
+    public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, monthOfYear);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateLabel();
+    }
+
+    private void updateLabel() {
+
+        String myFormat = "MM/dd/yy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+
+        add_dob.setText(sdf.format(calendar.getTime()));
     }
 }

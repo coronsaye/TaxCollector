@@ -15,19 +15,19 @@ public class Company extends RealmObject {
     @SerializedName("Id")
     private int id;
     @PrimaryKey
-    @SerializedName("RIN")
+    @SerializedName("CompanyRIN")
     private String rin;
     @SerializedName("Name")
     private String name;
     @SerializedName("TIN")
     private String tin;
-    @SerializedName("MobileNo")
+    @SerializedName("Mobile_Number_1")
     private String mobileNo;
-    @SerializedName("PhoneNo")
+    @SerializedName("Mobile_Number_2")
     private String phoneNo;
-    @SerializedName("EmailAddress")
+    @SerializedName("Email_Address_1")
     private String emailAddress;
-    @SerializedName("EmailAddress1")
+    @SerializedName("Email_Address_2")
     private String emailAddressTwo;
     @SerializedName("TaxOffice")
     private String taxOffice;
@@ -38,7 +38,7 @@ public class Company extends RealmObject {
     private String taxPayerType;
     @SerializedName("EconomicActivity")
     private String economicActivity;
-    @SerializedName("TaxPayerStatuss")
+    @SerializedName("IsActive")
     private String taxPayerStatus;
     @SerializedName("Longitude")
     private double longitude;
@@ -47,9 +47,9 @@ public class Company extends RealmObject {
     @SerializedName("NotificationMethod")
     private String preferredNotificationMethod;
 
-
+    @SerializedName("TaxOfficeID")
     private int TaxOfficeID;
-
+    @SerializedName("EconomicActivityID")
     private int EconomicActivityID;
 
 

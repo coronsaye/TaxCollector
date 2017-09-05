@@ -75,7 +75,7 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
     }
 
     @Override
-    public void GetBusinessProfile(@NonNull Business business, final BusinessRepository.OnApiReceived<AssetProfile> callback){
+    public void GetBusinessProfile(@NonNull Business business, final BusinessRepository.OnApiReceived<AssetProfile> callback) {
         retrofitProxyService.getAssetProfile(business).enqueue(new Callback<ApiSingleResponse<AssetProfile>>() {
             @Override
             public void onResponse(Call<ApiSingleResponse<AssetProfile>> call, Response<ApiSingleResponse<AssetProfile>> response) {
@@ -89,8 +89,7 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
                     } else {
                         callback.OnFailed("Failed Could not get Profile");
                     }
-                }
-                else {
+                } else {
                     callback.OnFailed("Failed Could not get Profile");
                 }
             }
@@ -102,6 +101,31 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
         });
 
     }
+
+    @Override
+    public void getBusinessByRin(@NonNull String rin, final BusinessRepository.OnApiReceived<Business> callback) {
+        retrofitProxyService.getBusinessByRin(rin).enqueue(new Callback<ApiSingleResponse<Business>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<Business>> call, Response<ApiSingleResponse<Business>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<Business> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+                    } else {
+                        callback.OnFailed("Business Not Found, Ensure you have the correct Rin");
+                    }
+                } else {
+                    callback.OnFailed("Business Not Found, Ensure you have the correct Rin");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<Business>> call, Throwable t) {
+                callback.OnFailed("Failed, Ensure you have an active connection");
+            }
+        });
+    }
+
     @Override
     public void addBusiness(@NonNull Business business, @NonNull final UpdateBusinessCallback callback) {
         retrofitProxyService.CreateBusiness(business).enqueue(new Callback<ApiResponse<Business>>() {
@@ -116,8 +140,7 @@ public class RemoteBusinessDataSource implements BusinessDataSource {
                     } else {
                         callback.onUpdateFailed();
                     }
-                }
-                else {
+                } else {
                     callback.onUpdateFailed();
                 }
             }

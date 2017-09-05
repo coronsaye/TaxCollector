@@ -72,6 +72,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
     Spanned nairaSymbol = Html.fromHtml("&#8358");
     List<String> paymentOptions;
     VatEventSharedHelper helper;
+    int selectedBillPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,7 +111,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
         populateFields();
     }
 
-    private void providePaymentOptions(final Bill bill) {
+    private void providePaymentOptions(final Bill bill, final boolean isFullPayment) {
         paymentOptions = new ArrayList<>();
 
         paymentOptions.add("Scratch Card");
@@ -134,13 +135,13 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                                 break;
 
                             case 1:
-                                AtmFragment atmFragment = AtmFragment.newInstance(bill);
+                                AtmFragment atmFragment = AtmFragment.newInstance(bill, isFullPayment);
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), atmFragment, R.id.contentFrame);
                                 break;
                             case 2:
                                 break;
                             case 3:
-                                payWithAgentBank(bill);
+                                payWithAgentBank(bill, isFullPayment);
                                 break;
                         }
                         return true;
@@ -150,18 +151,44 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                 .show();
     }
 
+    private void paymentTypeSelection(final Bill bill) {
+        new MaterialDialog.Builder(this)
+                .title("Partial/Full Payment")
+                .content("To proceed with partial payment, input amount to be paid below and press Continue, else choose " +
+                        "the full payment option.")
+                .inputType(InputType.TYPE_NUMBER_FLAG_DECIMAL)
+                .input("AMOUNT", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (TextUtils.isEmpty(input.toString())) {
+                            Toast.makeText(TaxPayerActivity.this, "Ensure you provide an amount", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        Double partialAmount = Double.parseDouble(input.toString());
+                        bill.setAsssessmentAmount(partialAmount);
+                        providePaymentOptions(bill, false);
+                    }
+                }).positiveText("Continue").negativeText("Full Payment").onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                providePaymentOptions(bill, true);
+            }
+        }).show();
+    }
+
     private void populateFields() {
 
         accountText.setText("Taxpayer Account: " + nairaSymbol + taxPayer.getAccountBalance());
 
         taxpayerTextView.setText(taxPayer.getTaxPayerName());
         tinTextView.setText(taxPayer.getTIN());
-        if(taxPayer.getBills() != null){
+        if (taxPayer.getBills() != null) {
             taxPayerAdapter = new TaxPayerAdapter(taxPayer.getBills(), new TaxPayerAdapter.OnBillClickListener() {
                 @Override
-                public void onBillClicked(final Bill bill) {
+                public void onBillClicked(final Bill bill, int position) {
                     //pay bill
-                    providePaymentOptions(bill);
+                    selectedBillPosition = position;
+                    paymentTypeSelection(bill);
 
                 }
             });
@@ -171,97 +198,125 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
         listView.setAdapter(taxPayerAdapter);
     }
 
-    private void payWithAgentBank(Bill bill) {
+    private void payWithAgentBank(Bill bill, boolean isFullPayment) {
         helper.removeAmount(bill.getAsssessmentAmount());
-        payBillWithAtm(bill, true);
+        payBillWithAtm(bill, true, isFullPayment);
     }
 
-    private void showAgreementDialog(final Bill bill) {
-        new MaterialDialog.Builder(TaxPayerActivity.this)
-                .title("Pay Bill?")
-                .content("You are about to pay the bill for " + bill.getAssetName() + "'s " + bill.getRuleName() + " would you like to proceed")
-                .positiveText("Agree")
-                .showListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialog) {
+//    private void showAgreementDialog(final Bill bill) {
+//        new MaterialDialog.Builder(TaxPayerActivity.this)
+//                .title("Pay Bill?")
+//                .content("You are about to pay the bill for " + bill.getAssetName() + "'s " + bill.getRuleName() + " would you like to proceed")
+//                .positiveText("Agree")
+//                .showListener(new DialogInterface.OnShowListener() {
+//                    @Override
+//                    public void onShow(DialogInterface dialog) {
+//
+//
+//                    }
+//                })
+//                .cancelListener(new DialogInterface.OnCancelListener() {
+//                    @Override
+//                    public void onCancel(DialogInterface dialog) {
+//                    }
+//                })
+//                .dismissListener(new DialogInterface.OnDismissListener() {
+//                    @Override
+//                    public void onDismiss(DialogInterface dialog) {
+//                    }
+//                }).onPositive(new MaterialDialog.SingleButtonCallback() {
+//            @Override
+//            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                payBill(bill);
+//            }
+//        })
+//                .show();
+//    }
 
+//    private void payBill(final Bill bill) {
+//        if (dialogLoad != null) {
+//            dialogLoad.show();
+//        }
+//
+//        globalRepository.payBill(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+//            @Override
+//            public void OnSuccess(String data) {
+//                if (dialogLoad != null & dialogLoad.isShowing()) {
+//                    dialogLoad.hide();
+//                }
+//
+//                Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
+//                accountText.setText("Taxpayer Account: " + nairaSymbol + data);
+//                taxPayerAdapter.removeBill(bill);
+//            }
+//
+//            @Override
+//            public void OnFailed(String message) {
+//                if (dialogLoad != null & dialogLoad.isShowing()) {
+//                    dialogLoad.hide();
+//                }
+//                Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
+//            }
+//        });
+//    }
 
-                    }
-                })
-                .cancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                    }
-                })
-                .dismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                    }
-                }).onPositive(new MaterialDialog.SingleButtonCallback() {
-            @Override
-            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                payBill(bill);
-            }
-        })
-                .show();
-    }
-
-    private void payBill(final Bill bill) {
+    private void payBillWithAtm(final Bill bill, final boolean isAgentWallet, final boolean isFullPayment) {
         if (dialogLoad != null) {
             dialogLoad.show();
         }
 
-        globalRepository.payBill(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
-            @Override
-            public void OnSuccess(String data) {
-                if (dialogLoad != null & dialogLoad.isShowing()) {
-                    dialogLoad.hide();
+        if (isFullPayment) {
+            globalRepository.payBillWithAtm(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+                @Override
+                public void OnSuccess(String data) {
+                    if (dialogLoad != null & dialogLoad.isShowing()) {
+                        dialogLoad.hide();
+                    }
+
+                    Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
+                    taxPayerAdapter.removeBill(bill);
+                    if (isAgentWallet) {
+                        double amount = helper.getAmount();
+                        if (getSupportActionBar() != null)
+                            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+                    }
                 }
 
-                Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
-                accountText.setText("Taxpayer Account: " + nairaSymbol + data);
-                taxPayerAdapter.removeBill(bill);
-            }
-
-            @Override
-            public void OnFailed(String message) {
-                if (dialogLoad != null & dialogLoad.isShowing()) {
-                    dialogLoad.hide();
+                @Override
+                public void OnFailed(String message) {
+                    if (dialogLoad != null & dialogLoad.isShowing()) {
+                        dialogLoad.hide();
+                    }
+                    Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
                 }
-                Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
-            }
-        });
-    }
+            });
+        } else {
+            globalRepository.partialPayment(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+                @Override
+                public void OnSuccess(String data) {
+                    if (dialogLoad != null & dialogLoad.isShowing()) {
+                        dialogLoad.hide();
+                    }
 
-    private void payBillWithAtm(final Bill bill, final boolean isAgentWallet) {
-        if (dialogLoad != null) {
-            dialogLoad.show();
+                    Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
+                    taxPayerAdapter.UpdateBill(bill, selectedBillPosition);
+                    if (isAgentWallet) {
+                        double amount = helper.getAmount();
+                        if (getSupportActionBar() != null)
+                            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+                    }
+                }
+
+                @Override
+                public void OnFailed(String message) {
+                    if (dialogLoad != null & dialogLoad.isShowing()) {
+                        dialogLoad.hide();
+                    }
+                    Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
+                }
+            });
         }
 
-        globalRepository.payBillWithAtm(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
-            @Override
-            public void OnSuccess(String data) {
-                if (dialogLoad != null & dialogLoad.isShowing()) {
-                    dialogLoad.hide();
-                }
-
-                Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
-                taxPayerAdapter.removeBill(bill);
-                if (isAgentWallet) {
-                    double amount = helper.getAmount();
-                    if (getSupportActionBar() != null)
-                        getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
-                }
-            }
-
-            @Override
-            public void OnFailed(String message) {
-                if (dialogLoad != null & dialogLoad.isShowing()) {
-                    dialogLoad.hide();
-                }
-                Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
-            }
-        });
     }
 
     private void topUp() {
@@ -316,10 +371,10 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
     }
 
     @Override
-    public void OnSuccessTransaction(Bill bill) {
+    public void OnSuccessTransaction(Bill bill, boolean isFullPayment) {
 
 //        Snackbar.make(toolbar, "You have successfully payed for: " + bill.getRuleName(), Snackbar.LENGTH_LONG).show();
-        payBillWithAtm(bill, false);
+        payBillWithAtm(bill, false, isFullPayment);
     }
 
     @Override

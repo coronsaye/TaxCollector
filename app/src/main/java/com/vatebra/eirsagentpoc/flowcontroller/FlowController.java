@@ -50,11 +50,46 @@ public class FlowController {
         context.startActivity(intent);
     }
 
+    public static void launchBuildingActivity(Context context, boolean isChooser) {
+        Intent intent = new Intent(context, BuildingsActivity.class);
+        Bundle bund = new Bundle();
+        bund.putBoolean(ProfilingActivity.EXTRA_PROFILE_KEY, isChooser);
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
+    public static void launchBuildingActivity(Context context, boolean isChooser, Business business) {
+        Intent intent = new Intent(context, BuildingsActivity.class);
+        Bundle bund = new Bundle();
+        bund.putBoolean(ProfilingActivity.EXTRA_PROFILE_KEY, isChooser);
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY, Parcels.wrap(business));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
     public static void launchAddEditBusinessActivity(Context context, String businessRin) {
         Intent intent = new Intent(context, AddEditBusinessActivity.class);
         intent.putExtra(AddEditBusinessFragment.ARGUMENT_EDIT_BUSINESS_ID, businessRin);
         context.startActivity(intent);
     }
+
+    public static void launchAddEditBusinessActivity(Context context, Building building) {
+        Intent intent = new Intent(context, AddEditBusinessActivity.class);
+        Bundle bund = new Bundle();
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
+    public static void launchAddEditBusinessActivity(Context context, Building building, Business business) {
+        Intent intent = new Intent(context, AddEditBusinessActivity.class);
+        Bundle bund = new Bundle();
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY, Parcels.wrap(business));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
 
     public static void launchBusinessDetailsActivity(Context context, String businessRin) {
         Intent intent = new Intent(context, BusinessDetailActivity.class);
@@ -77,6 +112,7 @@ public class FlowController {
         Intent intent = new Intent(context, AddEditIndividualActivity.class);
         context.startActivity(intent);
     }
+
     public static void launchAddEditIndividualActivity(Context context, Business business) {
         Intent intent = new Intent(context, AddEditIndividualActivity.class);
         Bundle bund = new Bundle();
@@ -101,6 +137,7 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
     public static void launchIndividualActivity(Context context, boolean isChooser, Building building) {
         Intent intent = new Intent(context, IndividualsActivity.class);
         Bundle bund = new Bundle();
@@ -109,6 +146,7 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
     public static void launchAddEditIndividualActivity(Context context, String userRin) {
         Intent intent = new Intent(context, AddEditIndividualActivity.class);
         intent.putExtra(IndividualDetailActivity.EXTRA_INDIVIDUAL_RIN, userRin);
@@ -128,6 +166,7 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
     public static void launchCompanyActivity(Context context, boolean isChooser, Building building) {
         Intent intent = new Intent(context, CompaniesActivity.class);
         Bundle bund = new Bundle();
@@ -136,6 +175,7 @@ public class FlowController {
         intent.putExtras(bund);
         context.startActivity(intent);
     }
+
     public static void launchCompanyDetailsActivity(Context context, String rin) {
         Intent intent = new Intent(context, CompanyDetailActivity.class);
         intent.putExtra(CompanyDetailActivity.EXTRA_COMPANY_RIN, rin);
@@ -146,6 +186,7 @@ public class FlowController {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
         context.startActivity(intent);
     }
+
     public static void launchAddEditCompanyActivity(Context context, Business business) {
         Intent intent = new Intent(context, AddEditCompanyActivity.class);
         Bundle bund = new Bundle();

@@ -97,5 +97,10 @@ public class FakeBusinessRemoteDataSource implements BusinessDataSource {
 
     }
 
+    @Override
+    public void getBusinessByRin(@NonNull String rin, BusinessRepository.OnApiReceived<Business> callback) {
+
+    }
+
 
 }

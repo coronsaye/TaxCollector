@@ -55,8 +55,19 @@ public class TaxPayerAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void UpdateBill(Bill bill, int position) {
+        Bill oldBill = getItem(position);
+        // TODO: 05/09/2017 SUBTRACT THE BILL AMOUNT FROM THE OLD BILL IN THE CASE OF PARTIAL
+        bills.remove(position);
+        notifyDataSetChanged();
+        bills.add(position, bill);
+        notifyDataSetChanged();
+
+    }
+
+
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
+    public View getView(final int i, View view, ViewGroup viewGroup) {
         View rowView = view;
         if (rowView == null) {
             LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
@@ -95,7 +106,7 @@ public class TaxPayerAdapter extends BaseAdapter {
         rowView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBillClickListener.onBillClicked(bill);
+                onBillClickListener.onBillClicked(bill, i);
             }
         });
 
@@ -105,6 +116,6 @@ public class TaxPayerAdapter extends BaseAdapter {
 
     public interface OnBillClickListener {
 
-        void onBillClicked(Bill bill);
+        void onBillClicked(Bill bill, int position);
     }
 }

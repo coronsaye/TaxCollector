@@ -56,6 +56,14 @@ public class Business extends RealmObject {
     private int IndividualID;
 
 
+    //newly added for attaching building to business
+    @SerializedName("BuildingID")
+    private int BuildingID;
+    @SerializedName("BuildingRIN")
+    private String BuildingRIN;
+
+
+
     public Business() {
 
     }
@@ -220,5 +228,22 @@ public class Business extends RealmObject {
 
     public void setIndividualID(int individualID) {
         IndividualID = individualID;
+    }
+
+
+    public int getBuildingID() {
+        return BuildingID;
+    }
+
+    public void setBuildingID(int buildingID) {
+        BuildingID = buildingID;
+    }
+
+    public String getBuildingRIN() {
+        return BuildingRIN;
+    }
+
+    public void setBuildingRIN(String buildingRIN) {
+        BuildingRIN = buildingRIN;
     }
 }

@@ -36,20 +36,20 @@ public class Individual extends RealmObject {
     @SerializedName("TIN")
     private String tin;
     @Nullable
-    @SerializedName("MobileNO")
+    @SerializedName("Mobile_Number_1")
     private String mobileNumberOne;
-    @SerializedName("PhoneNO")
+    @SerializedName("Mobile_Number_2")
     private String mobileNumberTwo;
-    @SerializedName("EmailAddress")
+    @SerializedName("Email_Address_1")
     private String emailAddressOne;
-    @SerializedName("EmailAddress1")
+    @SerializedName("Email_Address_2")
     private String emailAddresTwo;
     @SerializedName("BioMetricDetails")
     private String biometricDetails;
     @SerializedName("TaxOfficeName")
     private String taxOffice;
     @Nullable
-    @SerializedName("MartialStatus")
+    @SerializedName("MaritalStatus")
     private String maritalStatus;
     @SerializedName("Nationality")
     private String nationality;

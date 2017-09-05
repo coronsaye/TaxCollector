@@ -339,6 +339,10 @@ public class BusinessRepository implements BusinessDataSource {
         });
     }
 
+    @Override
+    public void getBusinessByRin(@NonNull String rin, final OnApiReceived<Business> callback) {
+        mBusinessRemoteDataSource.getBusinessByRin(rin, callback);
+    }
 
     private void getCategoriesFromRemote() {
 
@@ -359,6 +363,7 @@ public class BusinessRepository implements BusinessDataSource {
 
     public interface OnApiReceived<T> {
         void OnSuccess(T data);
+
         void OnFailed(String message);
     }
 

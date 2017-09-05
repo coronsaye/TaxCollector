@@ -47,17 +47,21 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
     String agentEmail = "david3ti@gmail.com";
     Bill bill;
     private static String ARG_BILL = "argbill";
+    private static String ARG_ISFULLPAYMENT = "argisfullpayment";
+
     private OnTransactionListener mListener;
     MaterialDialog dialogLoad;
+    Boolean isFullPayment;
 
     public AtmFragment() {
 
     }
 
-    public static AtmFragment newInstance(Bill bill) {
+    public static AtmFragment newInstance(Bill bill, boolean isFullPayment) {
         AtmFragment fragment = new AtmFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_BILL, bill);
+        args.putBoolean(ARG_ISFULLPAYMENT, isFullPayment);
         fragment.setArguments(args);
         return fragment;
     }
@@ -67,6 +71,7 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             bill = (Bill) getArguments().getSerializable(ARG_BILL);
+            isFullPayment = getArguments().getBoolean(ARG_ISFULLPAYMENT);
         }
     }
 
@@ -248,14 +253,13 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
 
                 AtmFragment.this.transaction = transaction;
                 if (mListener != null && bill != null) {
-                    mListener.OnSuccessTransaction(bill);
+                    mListener.OnSuccessTransaction(bill, isFullPayment);
                     FragmentManager manager = getActivity().getSupportFragmentManager();
                     FragmentTransaction trans = manager.beginTransaction();
                     trans.remove(AtmFragment.this);
                     trans.commit();
                     manager.popBackStack();
-                }
-                {
+                } else {
                     Toast.makeText(getContext(), "Bill Payment Failed", Toast.LENGTH_LONG).show();
 //                    getActivity().onBackPressed();
 
@@ -306,7 +310,7 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
 
     public interface OnTransactionListener {
 
-        void OnSuccessTransaction(Bill bill);
+        void OnSuccessTransaction(Bill bill, boolean isFullPayment);
 
         void OnFailedTransaction(String message);
     }

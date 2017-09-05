@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.NavUtils;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.BusinessCategory;
@@ -29,6 +31,8 @@ import com.vatebra.eirsagentpoc.domain.entity.BusinessSubSector;
 import com.vatebra.eirsagentpoc.domain.entity.Lga;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -43,6 +47,8 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class AddEditBusinessFragment extends Fragment implements AddBusinessContract.View {
 
     public static final String ARGUMENT_EDIT_BUSINESS_ID = "EDIT_BUSINESS_ID";
+    public static final String ARGUMENT_ATTACHED_BUILDING = "ATTACHED_BUILDING";
+    public static final String ARGUMENT_ATTACHED_BUSINESS = "ATTACHED_BUSINESS";
 
     @BindView(R.id.add_business_name)
     public TextView businessNameTextView;
@@ -62,11 +68,14 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
     @BindView(R.id.structure_spinner)
     public Spinner structureSpinner;
 
+    @BindView(R.id.lgaHint)
+    TextView lgaHintTextView;
+
     public FloatingActionButton fabDone;
     BusinessRepository businessRepository;
 
     Business business;
-
+    Building attachedBuilding;
     private AddBusinessContract.Presenter mPresenter;
 
     public AddEditBusinessFragment() {
@@ -113,10 +122,16 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
         BusinessStruture struture = (BusinessStruture) structureSpinner.getSelectedItem();
         business.setCreateName(businessNameTextView.getText().toString());
         business.setName(businessNameTextView.getText().toString());
+        if (attachedBuilding != null) {
+            business.setLGAID(attachedBuilding.getLGAID());
+            business.setLga(attachedBuilding.getLga());
 
-        if (lga != null) {
-            business.setLGAID(lga.getID());
-            business.setLga(lga.getName());
+        } else {
+            if (lga != null) {
+                business.setLGAID(lga.getID());
+                business.setLga(lga.getName());
+            }
+
         }
 
         if (category != null) {
@@ -140,6 +155,12 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
             business.setBusinessStructureId(struture.getID());
             business.setBusinessStructure(struture.getName());
 
+        }
+        if (attachedBuilding != null) {
+            business.setBuildingID(attachedBuilding.getID());
+            business.setBuildingRIN(attachedBuilding.getRin());
+        } else {
+            business.setBuildingRIN(null);
         }
 
         if (business.getRin() == null) {
@@ -172,10 +193,25 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
         View root = inflater.inflate(R.layout.fragment_add_business, container, false);
         ButterKnife.bind(this, root);
         businessRepository = Injection.providesBusinessRepository(getContext());
-
+        if (attachedBuilding != null) {
+            lgaHintTextView.setVisibility(View.GONE);
+            lgaSpinner.setVisibility(View.GONE);
+        }
+        if (business != null) {
+            businessNameTextView.setText(business.getName());
+        }
         populateSpinners();
         setRetainInstance(true);
         return root;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            attachedBuilding = Parcels.unwrap(getArguments().getParcelable(ARGUMENT_ATTACHED_BUILDING));
+            business = Parcels.unwrap(getArguments().getParcelable(ARGUMENT_ATTACHED_BUSINESS));
+        }
     }
 
     @Override

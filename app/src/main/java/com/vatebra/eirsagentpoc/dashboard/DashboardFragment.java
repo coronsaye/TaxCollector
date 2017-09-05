@@ -2,6 +2,7 @@ package com.vatebra.eirsagentpoc.dashboard;
 
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
@@ -13,10 +14,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.diegodobelo.expandingview.ExpandingItem;
 import com.diegodobelo.expandingview.ExpandingList;
+import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.domain.entity.TaxPayer;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
@@ -34,6 +38,7 @@ public class DashboardFragment extends Fragment {
     ExpandingList expandingList;
     GlobalRepository globalRepository;
     MaterialDialog dialogLoad;
+    BusinessRepository businessRepository;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -50,6 +55,7 @@ public class DashboardFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
         ButterKnife.bind(this, view);
         globalRepository = GlobalRepository.getInstance();
+        businessRepository = Injection.providesBusinessRepository(getContext());
         createDashboard();
 
         dialogLoad = new MaterialDialog.Builder(getContext())
@@ -104,8 +110,8 @@ public class DashboardFragment extends Fragment {
                                             if (!isAdded())
                                                 return;
 
-                                            if(TextUtils.isEmpty(input.toString())){
-                                                Toast.makeText(getContext(),"Ensure you provide TIN ", Toast.LENGTH_SHORT).show();
+                                            if (TextUtils.isEmpty(input.toString())) {
+                                                Toast.makeText(getContext(), "Ensure you provide TIN ", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
 
@@ -170,7 +176,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 //addItem
                 if (subItemTextView.getText().equals(getString(R.string.business_title)))
-                    FlowController.launchAddEditBusinessActivity(getContext());
+                    LaunchAddBusiness();
                 else if (subItemTextView.getText().equals(getString(R.string.individuals_title)))
                     FlowController.launchAddEditIndividualActivity(getContext());
                 else if (subItemTextView.getText().equals(getString(R.string.companies_title)))
@@ -180,6 +186,67 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+    }
+
+
+    private void LaunchAddBusiness() {
+        new MaterialDialog.Builder(getContext())
+                .title("Add Business Using RIN")
+                .content("Kindly provide  below the Business RIN Number for the asset if available")
+                .inputType(InputType.TYPE_CLASS_TEXT)
+                .input("BUSINESS RIN", "", new MaterialDialog.InputCallback() {
+                    @Override
+                    public void onInput(MaterialDialog dialog, CharSequence input) {
+                        if (!isAdded())
+                            return;
+                        if (TextUtils.isEmpty(input.toString())) {
+                            Toast.makeText(getContext(), "Ensure you provide a RIN ", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        if (dialogLoad != null) {
+                            dialogLoad.show();
+                        }
+
+                        businessRepository.getBusinessByRin(input.toString(), new BusinessRepository.OnApiReceived<Business>() {
+                            @Override
+                            public void OnSuccess(Business data) {
+                                if (!isAdded())
+                                    return;
+                                if (dialogLoad != null & dialogLoad.isShowing()) {
+                                    dialogLoad.hide();
+                                }
+
+                                FlowController.launchBuildingActivity(getContext(), true, data);
+
+                            }
+
+                            @Override
+                            public void OnFailed(String message) {
+                                if (!isAdded())
+                                    return;
+                                if (dialogLoad != null & dialogLoad.isShowing()) {
+                                    dialogLoad.hide();
+                                }
+//                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                Snackbar.make(expandingList, message, Snackbar.LENGTH_INDEFINITE).setAction("New Building", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        FlowController.launchBuildingActivity(getContext(), true);
+                                    }
+                                }).show();
+                            }
+                        });
+
+                    }
+                }).positiveText("Continue").negativeText("No Rin Provided").onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                //TIN NOT PROVIDED
+//                FlowController.launchAddEditBusinessActivity(getContext());
+                FlowController.launchBuildingActivity(getContext(), true);
+            }
+        }).show();
     }
 
 }

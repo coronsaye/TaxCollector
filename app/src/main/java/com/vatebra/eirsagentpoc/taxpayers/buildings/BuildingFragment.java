@@ -19,15 +19,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.vatebra.eirsagentpoc.R;
 import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.building.domain.entity.BuildingRepository;
+import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.CompanyRepository;
 import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 import com.vatebra.eirsagentpoc.taxpayers.companies.CompanyFragment;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +71,11 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
     List<Building> buildings;
 
     NewBuildingRepository buildingRepository;
+    private static final String BUILDING_PARAMS = "isChooseTaxPayer";
+    private static final String BUSINESS_PARAMS = "business_params";
+
+    Boolean isBuildingChooser = false;
+    Business attachedBusiness;
 
     public BuildingFragment() {
         // Required empty public constructor
@@ -75,9 +84,14 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        buildingAdapter = new BuildingAdapter(new ArrayList<Building>(0), buildingItemListener);
+        if (getArguments() != null) {
+            isBuildingChooser = getArguments().getBoolean(BUILDING_PARAMS);
+            attachedBusiness = Parcels.unwrap(getArguments().getParcelable(BUSINESS_PARAMS));
+        }
+        buildingAdapter = new BuildingAdapter(new ArrayList<Building>(0), buildingItemListener, isBuildingChooser);
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -85,16 +99,33 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
         if (buildings != null) {
             noComapanyView.setVisibility(View.GONE);
             buildingAdapter.replaceData(buildings);
-            if(swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()){
+            if (swipeRefreshLayout != null && swipeRefreshLayout.isRefreshing()) {
                 swipeRefreshLayout.setRefreshing(false);
             }
         }
 
     }
+
     public static BuildingFragment newInstance() {
         return new BuildingFragment();
     }
 
+    public static BuildingFragment newInstance(boolean isBuildingChoosen) {
+        BuildingFragment companyFragment = new BuildingFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(BUILDING_PARAMS, isBuildingChoosen);
+        companyFragment.setArguments(args);
+        return companyFragment;
+    }
+
+    public static BuildingFragment newInstance(boolean isChooseTaxPayer, Business business) {
+        BuildingFragment buildingFragment = new BuildingFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(BUILDING_PARAMS, isChooseTaxPayer);
+        args.putParcelable(BUSINESS_PARAMS, Parcels.wrap(business));
+        buildingFragment.setArguments(args);
+        return buildingFragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -115,6 +146,9 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
         });
 
         floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_add);
+        if (isBuildingChooser)
+            floatingActionButton.setImageResource(R.drawable.ic_right_cheron);
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -123,6 +157,17 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
             }
         });
 
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //show add company page
+                if (isBuildingChooser)
+                    AttachBuildingToBusiness();
+                else //show add company page
+                    FlowController.launchAddEditBuildingActivity(getContext());
+            }
+        });
 
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(getActivity(), R.color.colorPrimary),
@@ -146,6 +191,22 @@ public class BuildingFragment extends Fragment implements android.support.v7.wid
         });
         return view;
     }
+
+    private void AttachBuildingToBusiness() {
+        if (!isAdded() || buildingAdapter == null)
+            return;
+        if (buildingAdapter.selectedBuilding == null) {
+            Toast.makeText(getContext(), "Please select a building to attach business", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (attachedBusiness != null) {
+            FlowController.launchAddEditBusinessActivity(getContext(), buildingAdapter.selectedBuilding, attachedBusiness);
+        } else {
+            FlowController.launchAddEditBusinessActivity(getContext(), buildingAdapter.selectedBuilding);
+
+        }
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);

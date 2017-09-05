@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
@@ -21,11 +22,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * Created by David Eti on 25/08/2017.
  */
 
-public class BuildingAdapter extends BaseAdapter{
+public class BuildingAdapter extends BaseAdapter {
 
     List<Building> buildings;
     private List<Building> searchBuildings = new ArrayList<>();
     private BuildingItemListener buildingItemListener;
+    private boolean isBuildingChooser;
+    public Building selectedBuilding;
 
     @Override
     public int getCount() {
@@ -56,6 +59,10 @@ public class BuildingAdapter extends BaseAdapter{
         TextView phoneTextView = (TextView) rowView.findViewById(R.id.bodyTitle);
         TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
 
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.selectCheckbox);
+        if (isBuildingChooser)
+            checkBox.setVisibility(View.VISIBLE);
+
         titleTextView.setText(building.getName());
         taxOfficeTextView.setText(building.getStreetName());
         phoneTextView.setText(building.getLga());
@@ -66,16 +73,26 @@ public class BuildingAdapter extends BaseAdapter{
                 buildingItemListener.OnBuildingClick(building);
             }
         });
+
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedBuilding = building;
+            }
+        });
+
+
         return rowView;
     }
 
-    public interface  BuildingItemListener{
+    public interface BuildingItemListener {
         void OnBuildingClick(Building building);
     }
 
-    public BuildingAdapter(List<Building> buildings, BuildingItemListener buildingItemListener) {
+    public BuildingAdapter(List<Building> buildings, BuildingItemListener buildingItemListener, boolean isBuildingChooser) {
         setList(buildings);
         this.buildingItemListener = buildingItemListener;
+        this.isBuildingChooser = isBuildingChooser;
     }
 
 
@@ -90,6 +107,7 @@ public class BuildingAdapter extends BaseAdapter{
         setList(buildings);
         notifyDataSetChanged();
     }
+
     public void filter(String charText) {
         charText = charText.toLowerCase(Locale.getDefault());
         searchBuildings.clear();

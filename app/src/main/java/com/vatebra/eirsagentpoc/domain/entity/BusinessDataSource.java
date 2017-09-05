@@ -67,4 +67,6 @@ public interface BusinessDataSource {
 
     void GetBusinessProfile(@NonNull Business business, final BusinessRepository.OnApiReceived<AssetProfile> callback);
 
+    void getBusinessByRin(@NonNull String rin, BusinessRepository.OnApiReceived<Business> callback);
+
 }

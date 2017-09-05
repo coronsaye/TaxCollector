@@ -31,7 +31,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:paddingStart="8dp"
             android:text="Asset Type"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -48,9 +48,10 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
         <TextView
+            android:id="@+id/lgaHint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:paddingStart="8dp"
             android:text="LGA"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -64,7 +65,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:paddingStart="8dp"
             android:text="Category"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -78,7 +79,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:paddingStart="8dp"
             android:text="Sector"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -92,7 +93,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:paddingStart="8dp"
             android:text="Sub Sector"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
@@ -106,7 +107,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingBottom="10dp"
+            android:paddingTop="10dp"
             android:paddingStart="8dp"
             android:text="Structure"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"

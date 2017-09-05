@@ -300,9 +300,9 @@ public class AddEditCompanyActivity extends AppCompatActivity implements Company
         if (dialogLoad != null && dialogLoad.isShowing()) {
             dialogLoad.hide();
         }
-        newBuildingRepository.CreateBuilding(attachedBuilding, new NewBuildingRepository.OnMessageResponse() {
+        newBuildingRepository.CreateBuilding(attachedBuilding, new BusinessRepository.OnApiReceived<Building>() {
             @Override
-            public void OnSuccessMessage(String message) {
+            public void OnSuccess(Building data) {
                 Snackbar.make(fabDone, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -311,7 +311,13 @@ public class AddEditCompanyActivity extends AppCompatActivity implements Company
                     }
                 }).show();
             }
+
+            @Override
+            public void OnFailed(String message) {
+                Snackbar.make(fabDone, message, Snackbar.LENGTH_LONG).show();
+            }
         });
+
     }
 
     private void attachBusinessToCompany(int companyId) {

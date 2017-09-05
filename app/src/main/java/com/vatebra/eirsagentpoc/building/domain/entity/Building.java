@@ -19,6 +19,9 @@ import io.realm.annotations.PrimaryKey;
         analyze = { Building.class })
 public class Building extends RealmObject {
 
+    @SerializedName("ID")
+    private int ID;
+
     @PrimaryKey
     @SerializedName("RIN")
     private String rin;
@@ -338,5 +341,13 @@ public class Building extends RealmObject {
 
     public void setIndividualID(int individualID) {
         IndividualID = individualID;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 }

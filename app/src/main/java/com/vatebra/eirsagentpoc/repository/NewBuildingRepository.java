@@ -92,22 +92,24 @@ public class NewBuildingRepository {
 
     }
 
-    public void CreateBuilding(Building building, final OnMessageResponse callback) {
-        retrofitProxyService.CreatBuilding(building).enqueue(new Callback<ApiResponse<Building>>() {
+    public void CreateBuilding(Building building, final BusinessRepository.OnApiReceived<Building> callback) {
+
+
+        retrofitProxyService.CreatBuilding(building).enqueue(new Callback<ApiSingleResponse<Building>>() {
             @Override
-            public void onResponse(Call<ApiResponse<Building>> call, Response<ApiResponse<Building>> response) {
-                ApiResponse<Building> apiResponse = response.body();
+            public void onResponse(Call<ApiSingleResponse<Building>> call, Response<ApiSingleResponse<Building>> response) {
+                ApiSingleResponse<Building> apiResponse = response.body();
                 if (apiResponse != null && apiResponse.getStatus().equals("00")) {
-                    callback.OnSuccessMessage(apiResponse.getMessage());
+                    callback.OnSuccess(apiResponse.getData());
                     getBuildings();
                 } else {
-                    Toast.makeText(App.getInstance(), "Could not Create building", Toast.LENGTH_LONG).show();
+                    callback.OnFailed("Could not Create building");
                 }
             }
 
             @Override
-            public void onFailure(Call<ApiResponse<Building>> call, Throwable t) {
-                Toast.makeText(App.getInstance(), "Could not Create building", Toast.LENGTH_LONG).show();
+            public void onFailure(Call<ApiSingleResponse<Building>> call, Throwable t) {
+                callback.OnFailed("Could not Create building, Ensure you have an active connection");
             }
         });
     }
