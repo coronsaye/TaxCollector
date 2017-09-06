@@ -299,7 +299,11 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                     }
 
                     Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
-                    taxPayerAdapter.UpdateBill(bill, selectedBillPosition);
+                    if (bill.getAmountLeft() == 0.0)
+                        taxPayerAdapter.removeBill(bill);
+                    else
+                        taxPayerAdapter.UpdateBill(bill, selectedBillPosition);
+
                     if (isAgentWallet) {
                         double amount = helper.getAmount();
                         if (getSupportActionBar() != null)

@@ -22,6 +22,7 @@ public class Bill implements Serializable {
     private String SettlementName;
     private String TaxPayerEmail;
     private double AsssessmentAmount;
+    private double AmountPaid;
 
     public int getAssessmentID() {
         return AssessmentID;
@@ -125,5 +126,17 @@ public class Bill implements Serializable {
 
     public void setAsssessmentAmount(double asssessmentAmount) {
         AsssessmentAmount = asssessmentAmount;
+    }
+
+    public double getAmountPaid() {
+        return AmountPaid;
+    }
+
+    public void setAmountPaid(double amountPaid) {
+        AmountPaid = amountPaid;
+    }
+
+    public double getAmountLeft() {
+        return AsssessmentAmount - AmountPaid;
     }
 }
