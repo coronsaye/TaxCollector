@@ -1,5 +1,8 @@
 package com.vatebra.eirsagentpoc.util;
 
+import android.text.Html;
+import android.text.Spanned;
+
 import retrofit2.http.PUT;
 
 /**
@@ -7,6 +10,9 @@ import retrofit2.http.PUT;
  */
 
 public class Constants {
+
+    public  static Spanned nairaSymbol = Html.fromHtml("&#8358");
+    public  static String userId = "30044";
 
     public enum MaritalStatus {
         Single(1), married(2);

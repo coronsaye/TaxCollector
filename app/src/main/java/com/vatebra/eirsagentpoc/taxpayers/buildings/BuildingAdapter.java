@@ -115,7 +115,7 @@ public class BuildingAdapter extends BaseAdapter {
             searchBuildings.addAll(buildings);
         } else {
             for (Building building : buildings) {
-                if (building.getName().toLowerCase(Locale.getDefault()).contains(charText)) {
+                if (building.getName().toLowerCase(Locale.getDefault()).contains(charText) || building.getStreetName().toLowerCase(Locale.getDefault()).contains(charText)) {
                     searchBuildings.add(building);
                 }
             }

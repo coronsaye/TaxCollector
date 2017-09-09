@@ -48,20 +48,22 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
     Bill bill;
     private static String ARG_BILL = "argbill";
     private static String ARG_ISFULLPAYMENT = "argisfullpayment";
+    private static String ARG_AMOUNT_TO_BE_PAID = "ammounttobepaid";
 
     private OnTransactionListener mListener;
     MaterialDialog dialogLoad;
     Boolean isFullPayment;
-
+    private double amountToBePaid;
     public AtmFragment() {
 
     }
 
-    public static AtmFragment newInstance(Bill bill, boolean isFullPayment) {
+    public static AtmFragment newInstance(Bill bill, boolean isFullPayment, double amountToBePaid) {
         AtmFragment fragment = new AtmFragment();
         Bundle args = new Bundle();
         args.putSerializable(ARG_BILL, bill);
         args.putBoolean(ARG_ISFULLPAYMENT, isFullPayment);
+        args.putDouble(ARG_AMOUNT_TO_BE_PAID, amountToBePaid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -72,6 +74,7 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
         if (getArguments() != null) {
             bill = (Bill) getArguments().getSerializable(ARG_BILL);
             isFullPayment = getArguments().getBoolean(ARG_ISFULLPAYMENT);
+            amountToBePaid = getArguments().getDouble(ARG_AMOUNT_TO_BE_PAID);
         }
     }
 
@@ -122,7 +125,7 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
 
         charge.setEmail(email);
 
-        Double amountInDouble = bill.getAsssessmentAmount();
+        Double amountInDouble = amountToBePaid;
 
         int amount = -1;
         try {

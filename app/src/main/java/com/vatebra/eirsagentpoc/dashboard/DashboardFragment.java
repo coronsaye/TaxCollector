@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,13 @@ import com.vatebra.eirsagentpoc.domain.entity.TaxPayer;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.GlobalRepository;
+import com.vatebra.eirsagentpoc.util.Constants;
+import com.vatebra.eirsagentpoc.util.VatEventSharedHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.vatebra.eirsagentpoc.util.Constants.nairaSymbol;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +44,10 @@ public class DashboardFragment extends Fragment {
     GlobalRepository globalRepository;
     MaterialDialog dialogLoad;
     BusinessRepository businessRepository;
+
+    @BindView(R.id.account_balance)
+    TextView account_balance;
+    VatEventSharedHelper helper;
 
     public DashboardFragment() {
         // Required empty public constructor
@@ -56,8 +65,10 @@ public class DashboardFragment extends Fragment {
         ButterKnife.bind(this, view);
         globalRepository = GlobalRepository.getInstance();
         businessRepository = Injection.providesBusinessRepository(getContext());
+        helper = VatEventSharedHelper.getInstance(getContext());
+        account_balance.setText("MY ACCOUNT: " + nairaSymbol + String.valueOf(helper.getAmount()));
         createDashboard();
-
+        getAccountBalance();
         dialogLoad = new MaterialDialog.Builder(getContext())
                 .title("Loading")
                 .content("Please Wait...")
@@ -96,7 +107,7 @@ public class DashboardFragment extends Fragment {
                 }
                 //do something when item is clicked
 
-                item.setOnClickListener(new View.OnClickListener() {
+                item.findViewById(R.id.mainTextView).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         if (((TextView) item.findViewById(R.id.mainTextView)).getText().equals(getString(R.string.payment_title))) {
@@ -249,4 +260,26 @@ public class DashboardFragment extends Fragment {
         }).show();
     }
 
+    private void getAccountBalance() {
+        globalRepository.getAgentAccountBalance(Constants.userId, new BusinessRepository.OnApiReceived<String>() {
+            @Override
+            public void OnSuccess(String data) {
+                if (!isAdded())
+                    return;
+                try {
+                    Double amount = Double.parseDouble(data);
+                    helper.saveAmount(amount);
+                    account_balance.setText("MY ACCOUNT: " + nairaSymbol + String.valueOf(helper.getAmount()));
+                } catch (Exception e) {
+                    Log.e("getAccountBalance", "OnSuccess: ", e);
+                }
+
+            }
+
+            @Override
+            public void OnFailed(String message) {
+
+            }
+        });
+    }
 }

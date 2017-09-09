@@ -102,7 +102,7 @@ public class TaxPayerAdapter extends BaseAdapter {
         TextView paymentAmount = (TextView) rowView.findViewById(R.id.paymentAmount);
         TextView paymentAmountLeft = (TextView) rowView.findViewById(R.id.paymentAmountLeft);
         paymentAmount.setText("ASSESSMENT: " + nairaSymbol + bill.getAsssessmentAmount());
-        paymentAmountLeft.setText("AMOUNT LEFT: " + nairaSymbol + bill.getAmountLeft());
+        paymentAmountLeft.setText("AMOUNT PAID: " + nairaSymbol + bill.getAmountPaid());
 
 
         rowView.setOnClickListener(new View.OnClickListener() {

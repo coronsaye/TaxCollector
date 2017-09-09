@@ -11,6 +11,7 @@ import android.text.Html;
 import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,6 +30,7 @@ import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.repository.GlobalRepository;
 import com.vatebra.eirsagentpoc.util.ActivityUtils;
+import com.vatebra.eirsagentpoc.util.Constants;
 import com.vatebra.eirsagentpoc.util.VatEventSharedHelper;
 
 import java.util.ArrayList;
@@ -36,6 +38,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.vatebra.eirsagentpoc.util.Constants.nairaSymbol;
 
 public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.OnTransactionListener {
 
@@ -73,6 +77,8 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
     List<String> paymentOptions;
     VatEventSharedHelper helper;
     int selectedBillPosition;
+    double oldBillAmount;
+    double amountToBePaid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
         helper = VatEventSharedHelper.getInstance(getApplicationContext());
 
         taxPayer = (TaxPayer) getIntent().getSerializableExtra(EXTRA_TAXPAYER);
-
+        accountText.setVisibility(View.INVISIBLE);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setTitle("Manage Bills");
@@ -131,11 +137,11 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
 
                         switch (which) {
                             case 0:
-                                topUp();
+                                ScratchCardDialog(bill);
                                 break;
 
                             case 1:
-                                AtmFragment atmFragment = AtmFragment.newInstance(bill, isFullPayment);
+                                AtmFragment atmFragment = AtmFragment.newInstance(bill, isFullPayment, amountToBePaid);
                                 ActivityUtils.addFragmentToActivity(getSupportFragmentManager(), atmFragment, R.id.contentFrame);
                                 break;
                             case 2:
@@ -165,7 +171,9 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                             return;
                         }
                         Double partialAmount = Double.parseDouble(input.toString());
-                        bill.setAsssessmentAmount(partialAmount);
+                        oldBillAmount = bill.getAsssessmentAmount();
+                        amountToBePaid = partialAmount;
+//                        bill.setAsssessmentAmount(partialAmount);
                         providePaymentOptions(bill, false);
                     }
                 }).positiveText("Continue").negativeText("Full Payment").onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -198,9 +206,27 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
         listView.setAdapter(taxPayerAdapter);
     }
 
-    private void payWithAgentBank(Bill bill, boolean isFullPayment) {
-        helper.removeAmount(bill.getAsssessmentAmount());
-        payBillWithAtm(bill, true, isFullPayment);
+    private void payWithAgentBank(final Bill bill, final boolean isFullPayment) {
+        int toBePaid = (int) amountToBePaid;
+        globalRepository.deductFromAgentAccount(Constants.userId, toBePaid, new BusinessRepository.OnApiReceived<String>() {
+            @Override
+            public void OnSuccess(String data) {
+                helper.removeAmount(amountToBePaid);
+                payBillWithAtm(bill, true, isFullPayment);
+
+                try {
+                    Double amount = Double.parseDouble(data);
+                    helper.saveAmount(amount);
+                } catch (Exception e) {
+                    Log.e("getAccountBalance", "OnSuccess: ", e);
+                }
+            }
+
+            @Override
+            public void OnFailed(String message) {
+                Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
+            }
+        });
     }
 
 //    private void showAgreementDialog(final Bill bill) {
@@ -266,7 +292,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
         }
 
         if (isFullPayment) {
-            globalRepository.payBillWithAtm(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+            globalRepository.payBillWithAtm(bill.getAssessmentID(), amountToBePaid, taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
                 @Override
                 public void OnSuccess(String data) {
                     if (dialogLoad != null & dialogLoad.isShowing()) {
@@ -280,6 +306,8 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                         if (getSupportActionBar() != null)
                             getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
                     }
+
+
                 }
 
                 @Override
@@ -299,10 +327,14 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                     }
 
                     Snackbar.make(toolbar, "Successfully paid bill", Snackbar.LENGTH_LONG).show();
-                    if (bill.getAmountLeft() == 0.0)
+                    if (bill.getAmountLeft() == 0.0) {
                         taxPayerAdapter.removeBill(bill);
-                    else
+
+                    } else {
+                        bill.setAmountPaid(bill.getAmountPaid() + amountToBePaid);
+                        bill.setAsssessmentAmount(oldBillAmount);
                         taxPayerAdapter.UpdateBill(bill, selectedBillPosition);
+                    }
 
                     if (isAgentWallet) {
                         double amount = helper.getAmount();
@@ -316,6 +348,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                     if (dialogLoad != null & dialogLoad.isShowing()) {
                         dialogLoad.hide();
                     }
+                    bill.setAsssessmentAmount(oldBillAmount);
                     Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
                 }
             });
@@ -323,10 +356,10 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
 
     }
 
-    private void topUp() {
+    private void ScratchCardDialog(final Bill bill) {
         new MaterialDialog.Builder(TaxPayerActivity.this)
-                .title("Top Up")
-                .content("Provide the scratch card pin to top up your Account")
+                .title("Scratch Card Payment")
+                .content("Provide the scratch card pin for payment")
                 .inputType(InputType.TYPE_CLASS_TEXT)
                 .input("Scratch Card", "", new MaterialDialog.InputCallback() {
                     @Override
@@ -339,16 +372,21 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                             Toast.makeText(TaxPayerActivity.this, "Ensure you provide PIN ", Toast.LENGTH_SHORT).show();
                             return;
                         }
-
-                        globalRepository.topUp(input.toString(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+                        globalRepository.ScratchCard(input.toString(), taxPayer.getTIN(), bill.getAssessmentID(), new BusinessRepository.OnApiReceived<String>() {
                             @Override
                             public void OnSuccess(String data) {
                                 if (dialogLoad != null & dialogLoad.isShowing()) {
                                     dialogLoad.hide();
                                 }
-
-                                Snackbar.make(toolbar, "New Balance: " + data, Snackbar.LENGTH_LONG).show();
-                                accountText.setText("Taxpayer Account: " + data);
+                                double amountPaid = Double.parseDouble(data);
+                                if (bill.getAsssessmentAmount() > amountPaid) {
+                                    bill.setAmountPaid(amountPaid);
+//                                    bill.setAsssessmentAmount(oldBillAmount);
+                                    taxPayerAdapter.UpdateBill(bill, selectedBillPosition);
+                                } else {
+                                    taxPayerAdapter.removeBill(bill);
+                                }
+                                Snackbar.make(toolbar, "paid " + data + " successfully", Snackbar.LENGTH_LONG).show();
 
                             }
 
@@ -358,9 +396,30 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                                     dialogLoad.hide();
                                 }
                                 Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
-
                             }
                         });
+
+//                        globalRepository.topUp(input.toString(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+//                            @Override
+//                            public void OnSuccess(String data) {
+//                                if (dialogLoad != null & dialogLoad.isShowing()) {
+//                                    dialogLoad.hide();
+//                                }
+//
+//                                Snackbar.make(toolbar, "New Balance: " + data, Snackbar.LENGTH_LONG).show();
+//                                accountText.setText("Taxpayer Account: " + data);
+//
+//                            }
+//
+//                            @Override
+//                            public void OnFailed(String message) {
+//                                if (dialogLoad != null & dialogLoad.isShowing()) {
+//                                    dialogLoad.hide();
+//                                }
+//                                Snackbar.make(toolbar, message, Snackbar.LENGTH_LONG).show();
+//
+//                            }
+//                        });
                     }
                 }).show();
     }

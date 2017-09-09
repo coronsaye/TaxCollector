@@ -4,7 +4,7 @@
     <string name="assets_title">Manage Assets</string>
     <string name="business_title">Business</string>
     <string name="building_title">Buildings</string>
-    <string name="tax_payer_title">Tax Payers</string>
+    <string name="tax_payer_title">Business Owner - Tax Payers</string>
     <string name="individuals_title">Individuals</string>
     <string name="companies_title">Companies</string>
     <string name="payment_title">Payment</string>

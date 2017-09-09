@@ -178,6 +178,21 @@ public class AddEditBusinessFragment extends Fragment implements AddBusinessCont
                     Snackbar.make(businessNameTextView, message, Snackbar.LENGTH_LONG).show();
                 }
             });
+        } else if (business.getRin() != null && attachedBuilding != null) {
+            businessRepository.GetBusinessProfile(business, new BusinessRepository.OnApiReceived<AssetProfile>() {
+                @Override
+                public void OnSuccess(AssetProfile data) {
+                    FlowController.launchProfilingActivity(getContext(), data, business);
+                }
+
+                @Override
+                public void OnFailed(String message) {
+                    if (!isAdded())
+                        return;
+                    Snackbar.make(businessNameTextView, message, Snackbar.LENGTH_LONG).show();
+                }
+            });
+
         } else {
             mPresenter.saveBusiness(business);
 

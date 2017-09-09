@@ -95,6 +95,35 @@ public class GlobalRepository {
         });
     }
 
+    public void ScratchCard(String pin, String tin, int AssessmentId, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.ScratchCardPayment(pin, tin, AssessmentId).enqueue(new Callback<ApiSingleResponse<String>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<String> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+                    } else if (response.code() == 404) {
+                        callback.OnFailed("Top Up Failed, Card has been used before, or doesn't exist");
+                    } else {
+                        callback.OnFailed("Card has been used before, or doesn't exist");
+
+                    }
+                } else {
+                    Log.e(TAG, "onResponse: " + response.raw());
+                    callback.OnFailed("Could not top up Ensure the Pin is correct");
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<String>> call, Throwable t) {
+                callback.OnFailed("Failed, Ensure you have an active connection");
+
+            }
+        });
+    }
+
     public void payBill(int AssessmentId, double SettlementAmount, String tin, final BusinessRepository.OnApiReceived<String> callback) {
         retrofitProxyService.payBill(AssessmentId, SettlementAmount, tin).enqueue(new Callback<ApiSingleResponse<String>>() {
             @Override
@@ -181,4 +210,56 @@ public class GlobalRepository {
             }
         });
     }
+
+    public void getAgentAccountBalance(String userId, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.getAgentAccountBalance(userId).enqueue(new Callback<ApiSingleResponse<String>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<String> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+                    } else {
+                        callback.OnFailed("Cannot Get Agent Account Balance");
+
+                    }
+                } else {
+                    callback.OnFailed("Cannot Get Agent Account Balance");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<String>> call, Throwable t) {
+                callback.OnFailed("Failed, Ensure you have an active connection");
+            }
+        });
+    }
+
+    public void deductFromAgentAccount(String userId, int amount, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.deductFromAgentAccount(userId, amount).enqueue(new Callback<ApiSingleResponse<String>>() {
+            @Override
+            public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
+                if (response.isSuccessful() && response.code() == 200) {
+                    ApiSingleResponse<String> apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getStatus().equals("00")) {
+                        callback.OnSuccess(apiResponse.getData());
+                    } else if (apiResponse != null && apiResponse.getStatus().equals("01")) {
+                        callback.OnFailed(apiResponse.getData());
+
+                    } else {
+                        callback.OnFailed("Cannot Get Agent Account Balance");
+
+                    }
+                } else {
+                    callback.OnFailed("Cannot Get Agent Account Balance");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiSingleResponse<String>> call, Throwable t) {
+                callback.OnFailed("Failed, Ensure you have an active connection");
+            }
+        });
+    }
+
 }

@@ -27,10 +27,7 @@ public class App extends Application {
         Realm.init(this);
         initApplication();
         PaystackSdk.initialize(getApplicationContext());
-        VatEventSharedHelper helper = VatEventSharedHelper.getInstance(getApplicationContext());
-        if (helper.getAmount() == 0) {
-            helper.saveAmount(500000);
-        }
+
 
 //        appComponent = DaggerAppComponent.builder()
 //                .appModule(new AppModule(this))

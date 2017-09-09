@@ -14,13 +14,16 @@ import io.realm.annotations.PrimaryKey;
  * Created by David Eti on 21/08/2017.
  */
 
-@Parcel(implementations = { BuildingRealmProxy.class },
+@Parcel(implementations = {BuildingRealmProxy.class},
         value = Parcel.Serialization.BEAN,
-        analyze = { Building.class })
+        analyze = {Building.class})
 public class Building extends RealmObject {
 
     @SerializedName("ID")
     private int ID;
+
+    @SerializedName("Id")
+    public int Id;//for use in  building creation, so ID Can be attached
 
     @PrimaryKey
     @SerializedName("RIN")
@@ -81,6 +84,7 @@ public class Building extends RealmObject {
     //USED FOR PROFILING
     private int CompanyID;
     private int IndividualID;
+
     public Building() {
 
     }
@@ -350,4 +354,6 @@ public class Building extends RealmObject {
     public void setID(int ID) {
         this.ID = ID;
     }
+
+
 }

@@ -154,4 +154,14 @@ public interface RetrofitProxyService {
     @FormUrlEncoded
     Call<ApiSingleResponse<String>> partialPayment(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin);
 
+    @GET("profile/getAgentAccountBalance")
+    Call<ApiSingleResponse<String>> getAgentAccountBalance(@Query("userId") String userId);
+
+    @GET("profile/deductFromAgentAccount")
+    Call<ApiSingleResponse<String>> deductFromAgentAccount(@Query("userId") String userId, @Query("amount") int amount);
+
+    @POST("profile/ScratchCardPayment")
+    @FormUrlEncoded
+    Call<ApiSingleResponse<String>> ScratchCardPayment(@Field("pin") String pin, @Field("userTin") String tin, @Field("AssessmentID") int assessmentId);
+
 }

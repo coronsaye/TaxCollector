@@ -16,7 +16,10 @@ import com.vatebra.eirsagentpoc.domain.entity.BusinessSubSector;
 import com.vatebra.eirsagentpoc.domain.entity.Lga;
 import com.vatebra.eirsagentpoc.domain.entity.LocalBusinessDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.RemoteBusinessDataSource;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
+import com.vatebra.eirsagentpoc.repository.GlobalRepository;
 import com.vatebra.eirsagentpoc.util.ActivityUtils;
+import com.vatebra.eirsagentpoc.util.VatEventSharedHelper;
 
 import java.util.List;
 
@@ -39,7 +42,7 @@ public class DashboardActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         downloadBusinessObjects();
-        if (getSupportActionBar() != null){
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(getString(R.string.dashboard_title));
             getSupportActionBar().setIcon(R.mipmap.ic_launcher);
@@ -118,7 +121,10 @@ public class DashboardActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+
 
 
 }

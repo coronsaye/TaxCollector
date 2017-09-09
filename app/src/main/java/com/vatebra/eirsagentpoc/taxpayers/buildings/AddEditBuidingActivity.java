@@ -47,6 +47,7 @@ import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -112,7 +113,7 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     LocationManager locationManager;
     double longitudeNetwork;
     double latitudeNetwork;
-    List<String> options = Arrays.asList("Existing Business", "New Business");
+    List<String> options = Collections.singletonList("New Business");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -230,15 +231,13 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                             .itemsCallbackSingleChoice(-1, new MaterialDialog.ListCallbackSingleChoice() {
                                 @Override
                                 public boolean onSelection(MaterialDialog dialog, View view, int which, CharSequence text) {
+                                    data.setID(data.Id);
                                     /**
                                      * If you use alwaysCallSingleChoiceCallback(), which is discussed below,
                                      * returning false here won't allow the newly selected radio button to actually be selected.
                                      **/
                                     switch (which) {
                                         case 0:
-
-                                            break;
-                                        case 1:
                                             FlowController.launchAddEditBusinessActivity(AddEditBuidingActivity.this, data);
                                             break;
                                     }
@@ -269,6 +268,15 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
             add_streetname.setText(building.getStreetName());
             add_latitude.setText(building.getLatitude());
             add_longitude.setText(building.getLongitude());
+            add_town_spinner.setVisibility(View.GONE);
+            add_lga_spinner.setVisibility(View.GONE);
+            ward_spinner.setVisibility(View.GONE);
+            buildingtype_spinner.setVisibility(View.GONE);
+            buildingcompletion_spinner.setVisibility(View.GONE);
+            buildingpurpose_spinner.setVisibility(View.GONE);
+            buildingownership_spinner.setVisibility(View.GONE);
+            buildingoccupancy_spinner.setVisibility(View.GONE);
+            buildingoccupancy_type_spinner.setVisibility(View.GONE);
         }
         buildingRepository.getTowns(new BusinessDataSource.GetObjectCallback<Town>() {
             @Override
