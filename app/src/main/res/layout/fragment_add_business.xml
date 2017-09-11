@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="8dp"
-            android:text="Asset Type"
+            android:text="* Asset Type"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="8dp"
-            android:text="LGA"
+            android:text="* LGA"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="8dp"
-            android:text="Category"
+            android:text="* Category"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="8dp"
-            android:text="Sector"
+            android:text="* Sector"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="8dp"
-            android:text="Sub Sector"
+            android:text="* Sub Sector"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -109,7 +109,7 @@
             android:layout_height="wrap_content"
             android:paddingTop="10dp"
             android:paddingStart="8dp"
-            android:text="Structure"
+            android:text="* Structure"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 

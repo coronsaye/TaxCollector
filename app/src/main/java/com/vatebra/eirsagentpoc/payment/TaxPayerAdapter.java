@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.vatebra.eirsagentpoc.util.Constants.formatStringToNaira;
+
 /**
  * Created by David Eti on 27/08/2017.
  */
@@ -28,7 +30,6 @@ public class TaxPayerAdapter extends BaseAdapter {
 
     List<Bill> bills;
     OnBillClickListener onBillClickListener;
-    Spanned nairaSymbol = Html.fromHtml("&#8358");
 
     public TaxPayerAdapter(List<Bill> bills, OnBillClickListener onBillClickListener) {
         this.bills = bills;
@@ -100,9 +101,13 @@ public class TaxPayerAdapter extends BaseAdapter {
         TextView assessmentRefTextView = (TextView) rowView.findViewById(R.id.assessmentRefTextView);
         assessmentRefTextView.setText("#" + bill.getAssessmentRef());
         TextView paymentAmount = (TextView) rowView.findViewById(R.id.paymentAmount);
-        TextView paymentAmountLeft = (TextView) rowView.findViewById(R.id.paymentAmountLeft);
-        paymentAmount.setText("ASSESSMENT: " + nairaSymbol + bill.getAsssessmentAmount());
-        paymentAmountLeft.setText("AMOUNT PAID: " + nairaSymbol + bill.getAmountPaid());
+        TextView paymentAmountLeft = (TextView) rowView.findViewById(R.id.paymentAmountLeft);//changed to amount paid
+
+
+//        paymentAmount.setText("ASSESSMENT: " + nairaSymbol + bill.getAsssessmentAmount());
+        paymentAmount.setText("ASSESSMENT: " + formatStringToNaira(bill.getAsssessmentAmount()));
+//        paymentAmountLeft.setText("AMOUNT PAID: " + nairaSymbol + bill.getAmountPaid());
+        paymentAmountLeft.setText("AMOUNT PAID: " + formatStringToNaira(bill.getAmountPaid()));
 
 
         rowView.setOnClickListener(new View.OnClickListener() {

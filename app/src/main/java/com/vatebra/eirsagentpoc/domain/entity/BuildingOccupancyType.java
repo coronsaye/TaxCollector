@@ -1,6 +1,7 @@
 package com.vatebra.eirsagentpoc.domain.entity;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by David Eti on 25/08/2017.
@@ -8,6 +9,7 @@ import io.realm.RealmObject;
 
 public class BuildingOccupancyType extends RealmObject {
 
+    @PrimaryKey
     private int ID;
 
     private String BuildingOccupancy;

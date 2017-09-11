@@ -39,6 +39,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.vatebra.eirsagentpoc.util.Constants.formatStringToNaira;
 import static com.vatebra.eirsagentpoc.util.Constants.nairaSymbol;
 
 public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.OnTransactionListener {
@@ -73,7 +74,6 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
     private GlobalRepository globalRepository;
     TaxPayerAdapter taxPayerAdapter;
 
-    Spanned nairaSymbol = Html.fromHtml("&#8358");
     List<String> paymentOptions;
     VatEventSharedHelper helper;
     int selectedBillPosition;
@@ -102,7 +102,9 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 //            getSupportActionBar().setTitle("Manage Bills");
             double amount = helper.getAmount();
-            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+//            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+            getSupportActionBar().setTitle(("My Account: " + formatStringToNaira(amount)));
+
             getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         }
 
@@ -121,7 +123,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
         paymentOptions = new ArrayList<>();
 
         paymentOptions.add("Scratch Card");
-        paymentOptions.add("ATM");
+        paymentOptions.add("ATM Debit Card");
         paymentOptions.add("POS");
         paymentOptions.add("Agent Wallet");
         new MaterialDialog.Builder(this)
@@ -186,8 +188,8 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
 
     private void populateFields() {
 
-        accountText.setText("Taxpayer Account: " + nairaSymbol + taxPayer.getAccountBalance());
-
+//        accountText.setText("Taxpayer Account: " + nairaSymbol + taxPayer.getAccountBalance());
+        accountText.setText("Taxpayer Account: " + formatStringToNaira(taxPayer.getAccountBalance()));
         taxpayerTextView.setText(taxPayer.getTaxPayerName());
         tinTextView.setText(taxPayer.getTIN());
         if (taxPayer.getBills() != null) {
@@ -303,8 +305,12 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                     taxPayerAdapter.removeBill(bill);
                     if (isAgentWallet) {
                         double amount = helper.getAmount();
-                        if (getSupportActionBar() != null)
-                            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+                        if (getSupportActionBar() != null) {
+                            getSupportActionBar().setTitle(("My Account: " + formatStringToNaira(amount)));
+
+                        }
+//                            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+
                     }
 
 
@@ -319,7 +325,7 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                 }
             });
         } else {
-            globalRepository.partialPayment(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), new BusinessRepository.OnApiReceived<String>() {
+            globalRepository.partialPayment(bill.getAssessmentID(), bill.getAsssessmentAmount(), taxPayer.getTIN(), amountToBePaid, new BusinessRepository.OnApiReceived<String>() {
                 @Override
                 public void OnSuccess(String data) {
                     if (dialogLoad != null & dialogLoad.isShowing()) {
@@ -339,7 +345,9 @@ public class TaxPayerActivity extends AppCompatActivity implements AtmFragment.O
                     if (isAgentWallet) {
                         double amount = helper.getAmount();
                         if (getSupportActionBar() != null)
-                            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+//                            getSupportActionBar().setTitle("My Account: " + nairaSymbol + amount);
+                            getSupportActionBar().setTitle(("My Account: " + formatStringToNaira(amount)));
+
                     }
                 }
 

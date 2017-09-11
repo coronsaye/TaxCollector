@@ -253,7 +253,6 @@ public class FlowController {
     public static void launchProfilingActivity(Context context, AssetProfile profile, Business business) {
         Intent intent = new Intent(context, ProfilingActivity.class);
         Bundle bund = new Bundle();
-
         bund.putSerializable(ProfilingActivity.EXTRA_PROFILE_KEY, profile);
         bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUSINESS_KEY, Parcels.wrap(business));
         intent.putExtras(bund);

@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.vatebra.eirsagentpoc.R;
@@ -23,10 +24,13 @@ public class BusinessAdapter extends BaseAdapter {
     private List<Business> mBusinesses;
     private List<Business> searchBusinessList = new ArrayList<>();
     private BusinessItemListener businessItemListener;
+    private boolean isBusinessChooser;
+    public Business selectedBusiness;
 
-    public BusinessAdapter(List<Business> businesses, BusinessItemListener itemListener) {
+    public BusinessAdapter(List<Business> businesses, BusinessItemListener itemListener, boolean isBusinessChooser) {
         setList(businesses);
         businessItemListener = itemListener;
+        this.isBusinessChooser = isBusinessChooser;
     }
 
 
@@ -84,6 +88,9 @@ public class BusinessAdapter extends BaseAdapter {
         TextView subTitleTextView = (TextView) rowView.findViewById(R.id.subTitle);
         subTitleTextView.setText(business.getLga());
 
+        CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.selectCheckbox);
+        if (isBusinessChooser)
+            checkBox.setVisibility(View.VISIBLE);
 
         TextView rinTextView = (TextView) rowView.findViewById(R.id.rinTextView);
         rinTextView.setText("#" + business.getRin());
@@ -94,7 +101,12 @@ public class BusinessAdapter extends BaseAdapter {
                 businessItemListener.onBusinessClick(business);
             }
         });
-
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedBusiness = business;
+            }
+        });
         return rowView;
     }
 

@@ -18,7 +18,7 @@
     <string name="load_business_errors">Error While Loading Businesses</string>
     <string name="edit_business_title">Edit Business</string>
     <string name="add_business_title">Add New Business</string>
-    <string name="business_name_hint">Business Name</string>
+    <string name="business_name_hint">* Business Name </string>
     <string name="add_business_error">Could not add name, ensure all fields are filled</string>
     <string name="business_success_message">Business Successfully Added</string>
     <string name="empty_string_text">none</string>

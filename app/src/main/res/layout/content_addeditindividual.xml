@@ -92,10 +92,10 @@
                     android:id="@+id/add_dob"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingStart="4dp"
                     android:fontFamily="sans-serif"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                    android:text="SELECT DATE" />
+                    android:paddingStart="4dp"
+                    android:text="SELECT DATE"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
             </LinearLayout>
         </LinearLayout>
 
@@ -116,8 +116,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Mobile Number 1"
+                    android:hint="Mobile Number 1 (+234)"
                     android:inputType="phone"
+                    android:text="234"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
@@ -135,8 +136,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Mobile Number 2"
+                    android:hint="Mobile Number 2 (+234)"
                     android:inputType="phone"
+                    android:text="234"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
@@ -190,6 +192,7 @@
             android:layout_height="wrap_content"
             android:paddingEnd="4dp"
             android:paddingStart="4dp"
+            android:visibility="gone"
             app:counterEnabled="true"
             app:counterMaxLength="50">
 
@@ -200,15 +203,15 @@
                 android:fontFamily="sans-serif"
                 android:hint="Bio Metric Details"
                 android:maxLines="3"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                tools:text="@string/lorem_ipsum_medium" />
+                android:text="none"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
         </android.support.design.widget.TextInputLayout>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:paddingStart="8dp"
+            android:paddingTop="10dp"
             android:text="Tax Office"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
@@ -221,8 +224,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:paddingStart="8dp"
+            android:paddingTop="10dp"
             android:text="Gender"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
@@ -236,8 +239,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:paddingStart="8dp"
+            android:paddingTop="10dp"
             android:text="Marital Status"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
@@ -251,8 +254,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingTop="10dp"
             android:paddingStart="8dp"
+            android:paddingTop="10dp"
             android:text="Economic Activity"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />

@@ -25,12 +25,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="Building Name"
+                android:hint="Building Name (Optional)"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="@string/lorem_ipsum_short" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
+            android:id="@+id/buildingNo_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingEnd="4dp"
@@ -41,7 +42,24 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="Building Number"
+                android:hint="* Building Number"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:text="@string/lorem_ipsum_short" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/street_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingEnd="4dp"
+            android:paddingStart="4dp">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/add_streetname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:hint="* Street Name"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="@string/lorem_ipsum_short" />
         </android.support.design.widget.TextInputLayout>
@@ -53,11 +71,11 @@
             android:paddingStart="4dp">
 
             <android.support.design.widget.TextInputEditText
-                android:id="@+id/add_streetname"
+                android:id="@+id/add_offstreetname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
-                android:hint="Street Name"
+                android:hint="Off Street Name (Optional)"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="@string/lorem_ipsum_short" />
         </android.support.design.widget.TextInputLayout>
@@ -72,7 +90,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:paddingStart="8dp"
-                android:text="Town"
+                android:text="* Town"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/colorAccent" />
 
@@ -88,7 +106,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:paddingEnd="8dp"
-                android:text="Lga"
+                android:text="* Lga"
                 android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 android:textColor="@color/colorAccent" />
 
@@ -104,7 +122,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Ward"
+            android:text="* Ward"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -133,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Building Type"
+            android:text="* Building Type"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -147,7 +165,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Building Completion"
+            android:text="* Building Completion"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -161,7 +179,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Building Purpose"
+            android:text="* Building Purpose"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -175,7 +193,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Building Ownership"
+            android:text="Building Ownership (Optional)"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -189,7 +207,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Building Occupancy"
+            android:text="* Building Occupancy"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -203,7 +221,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:text="Building Occupancy Type"
+            android:text="* Building Occupancy Type"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -229,7 +247,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Longitude"
+                    android:hint="Longitude (Optional)"
                     android:inputType="numberDecimal"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
@@ -246,7 +264,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Latitude"
+                    android:hint="Latitude (Optional)"
                     android:inputType="numberDecimal"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />

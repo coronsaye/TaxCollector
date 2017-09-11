@@ -19,6 +19,7 @@
         android:background="@drawable/transparent_button"
         android:drawingCacheQuality="high"
         android:elevation="8dp"
+        android:visibility="gone"
         android:gravity="center"
         tools:text="Account Balance: N2000"
         android:textColor="@color/colorPrimaryDark" />

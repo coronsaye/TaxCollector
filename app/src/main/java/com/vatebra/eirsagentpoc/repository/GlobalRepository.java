@@ -182,8 +182,8 @@ public class GlobalRepository {
         });
     }
 
-    public void partialPayment(int AssessmentId, double SettlementAmount, String tin, final BusinessRepository.OnApiReceived<String> callback) {
-        retrofitProxyService.partialPayment(AssessmentId, SettlementAmount, tin).enqueue(new Callback<ApiSingleResponse<String>>() {
+    public void partialPayment(int AssessmentId, double SettlementAmount, String tin, double amountToBePaid, final BusinessRepository.OnApiReceived<String> callback) {
+        retrofitProxyService.partialPayment(AssessmentId, SettlementAmount, tin, amountToBePaid).enqueue(new Callback<ApiSingleResponse<String>>() {
             @Override
             public void onResponse(Call<ApiSingleResponse<String>> call, Response<ApiSingleResponse<String>> response) {
                 if (response.isSuccessful() && response.code() == 200) {

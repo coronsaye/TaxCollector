@@ -22,11 +22,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
+import com.vatebra.eirsagentpoc.building.domain.entity.Building;
+import com.vatebra.eirsagentpoc.domain.entity.AssetProfile;
+import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import com.vatebra.eirsagentpoc.util.ScrollChildSwipeRefreshLayout;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +74,13 @@ public class BusinessFragment extends Fragment implements BusinessContract.View,
 
     FloatingActionButton floatingActionButton;
 
+    Boolean isBusinessChooser = false;
+
+    Building attachedBuilding;
+    BusinessRepository businessRepository;
+    private static final String ATTACHED_BUILDING_PARAMS = "attachedBuilding";
+    private static final String IS_CHOOSER_PARAMS = "isBusinessChooser";
+
     public BusinessFragment() {
         // Required empty public constructor
     }
@@ -75,10 +89,23 @@ public class BusinessFragment extends Fragment implements BusinessContract.View,
         return new BusinessFragment();
     }
 
+    public static BusinessFragment newInstance(boolean isBusinessChooser, Building building) {
+        BusinessFragment businessFragment = new BusinessFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(IS_CHOOSER_PARAMS, isBusinessChooser);
+        args.putParcelable(ATTACHED_BUILDING_PARAMS, Parcels.wrap(building));
+        businessFragment.setArguments(args);
+        return businessFragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mListAdapter = new BusinessAdapter(new ArrayList<Business>(0), businessItemListener);
+        if (getArguments() != null) {
+            isBusinessChooser = getArguments().getBoolean(IS_CHOOSER_PARAMS);
+            attachedBuilding = Parcels.unwrap(getArguments().getParcelable(ATTACHED_BUILDING_PARAMS));
+        }
+        mListAdapter = new BusinessAdapter(new ArrayList<Business>(0), businessItemListener, isBusinessChooser);
     }
 
     @Override
@@ -100,6 +127,8 @@ public class BusinessFragment extends Fragment implements BusinessContract.View,
         ButterKnife.bind(this, root);
         setHasOptionsMenu(true);
         listView.setAdapter(mListAdapter);
+        businessRepository = Injection.providesBusinessRepository(getContext());
+
         mNoBusinessAddView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,11 +136,20 @@ public class BusinessFragment extends Fragment implements BusinessContract.View,
             }
         });
         floatingActionButton = (FloatingActionButton) getActivity().findViewById(R.id.fab_add_business);
+        if (isBusinessChooser) {
+            floatingActionButton.setImageResource(R.drawable.ic_right_cheron);
+        } else {
+            floatingActionButton.setVisibility(View.INVISIBLE);
+        }
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.addNewBusiness();
+                if (isBusinessChooser) {
+                    attachBusinessToBuilding();
+                } else {
+                    presenter.addNewBusiness();
+                }
             }
         });
         swipeRefreshLayout.setColorSchemeColors(
@@ -130,6 +168,34 @@ public class BusinessFragment extends Fragment implements BusinessContract.View,
         });
 
         return root;
+
+    }
+
+
+    private void attachBusinessToBuilding() {
+        if (!isAdded() || mListAdapter == null) {
+            return;
+        }
+        if (mListAdapter.selectedBusiness == null) {
+            Toast.makeText(getContext(), "Please select a business to attach to the building", Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (attachedBuilding != null) {
+            businessRepository.GetBusinessProfile(mListAdapter.selectedBusiness, new BusinessRepository.OnApiReceived<AssetProfile>() {
+                @Override
+                public void OnSuccess(AssetProfile data) {
+
+                }
+
+                @Override
+                public void OnFailed(String message) {
+                    if (!isAdded())
+                        return;
+                    Snackbar.make(floatingActionButton, message, Snackbar.LENGTH_LONG).show();
+                }
+            });
+            //launch profile
+        }
 
     }
 

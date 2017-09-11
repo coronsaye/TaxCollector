@@ -152,7 +152,7 @@ public interface RetrofitProxyService {
 
     @POST("profile/partialPayment")
     @FormUrlEncoded
-    Call<ApiSingleResponse<String>> partialPayment(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin);
+    Call<ApiSingleResponse<String>> partialPayment(@Field("AssessmentID") int assessmentId, @Field("SettlementAmount") double amount, @Field("userTin") String tin, @Field("amountPaid") double amountPaid);
 
     @GET("profile/getAgentAccountBalance")
     Call<ApiSingleResponse<String>> getAgentAccountBalance(@Query("userId") String userId);

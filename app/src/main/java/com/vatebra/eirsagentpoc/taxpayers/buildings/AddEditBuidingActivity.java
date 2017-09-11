@@ -12,11 +12,13 @@ import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -24,6 +26,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.common.base.Strings;
 import com.vatebra.eirsagentpoc.App;
 import com.vatebra.eirsagentpoc.Injection;
 import com.vatebra.eirsagentpoc.R;
@@ -106,6 +109,12 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     @BindView(R.id.fab_edit_done)
     FloatingActionButton fabDone;
 
+    @BindView(R.id.buildingNo_Layout)
+    TextInputLayout buildingNo_Layout;
+
+    @BindView(R.id.street_Layout)
+    TextInputLayout street_Layout;
+
     String buildingRin;
     Building building;
     NewBuildingRepository buildingRepository;
@@ -113,7 +122,8 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     LocationManager locationManager;
     double longitudeNetwork;
     double latitudeNetwork;
-    List<String> options = Collections.singletonList("New Business");
+    //    List<String> options = Collections.singletonList("New Business");
+    List<String> options = new ArrayList<>(Arrays.asList("New Business", "Existing Business"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +163,14 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                     building = new Building();
                 } else {
                     building.setRin(buildingRin);
+                }
+                if (Strings.isNullOrEmpty(add_tagname.getText().toString())) {
+                    buildingNo_Layout.setError("Building No is required");
+                    return;
+                }
+                if (Strings.isNullOrEmpty(add_streetname.getText().toString())) {
+                    street_Layout.setError("Street Name is Required");
+                    return;
                 }
                 building.setName(add_buildingname.getText().toString());
                 building.setTagNumber(add_tagname.getText().toString());
@@ -238,6 +256,9 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                                      **/
                                     switch (which) {
                                         case 0:
+                                            FlowController.launchAddEditBusinessActivity(AddEditBuidingActivity.this, data);
+                                            break;
+                                        case 1:
                                             FlowController.launchAddEditBusinessActivity(AddEditBuidingActivity.this, data);
                                             break;
                                     }

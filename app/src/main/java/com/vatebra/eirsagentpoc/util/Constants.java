@@ -3,6 +3,9 @@ package com.vatebra.eirsagentpoc.util;
 import android.text.Html;
 import android.text.Spanned;
 
+import java.text.NumberFormat;
+import java.util.Currency;
+
 import retrofit2.http.PUT;
 
 /**
@@ -11,8 +14,8 @@ import retrofit2.http.PUT;
 
 public class Constants {
 
-    public  static Spanned nairaSymbol = Html.fromHtml("&#8358");
-    public  static String userId = "30044";
+    public static Spanned nairaSymbol = Html.fromHtml("&#8358");
+    public static String userId = "30044";
 
     public enum MaritalStatus {
         Single(1), married(2);
@@ -52,5 +55,13 @@ public class Constants {
         }
     }
 
+    public static String formatStringToNaira(double number) {
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setCurrency(Currency.getInstance("NGN"));
+        String formatedNumber = format.format(number);
+        formatedNumber = formatedNumber.replace("NGN", nairaSymbol);
+        return formatedNumber;
+
+    }
 
 }

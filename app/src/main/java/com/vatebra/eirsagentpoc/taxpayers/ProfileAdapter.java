@@ -16,6 +16,8 @@ import com.vatebra.eirsagentpoc.taxpayers.buildings.BuildingAdapter;
 
 import java.util.List;
 
+import static com.vatebra.eirsagentpoc.util.Constants.formatStringToNaira;
+
 /**
  * Created by David Eti on 26/08/2017.
  */
@@ -23,7 +25,6 @@ import java.util.List;
 public class ProfileAdapter extends BaseAdapter {
 
     List<ProfileAssement> assements;
-    Spanned nairaSymbol = Html.fromHtml("&#8358");
 
 
     public ProfileAdapter(List<ProfileAssement> assements) {
@@ -68,8 +69,9 @@ public class ProfileAdapter extends BaseAdapter {
 
 
         TextView amountTextView = (TextView) rowView.findViewById(R.id.amountTextView);
-        amountTextView.setText(nairaSymbol + assement.getAssessmentAmount());
-
+//        amountTextView.setText(nairaSymbol + assement.getAssessmentAmount());
+        double assessmentAmount = Double.parseDouble(assement.getAssessmentAmount());
+        amountTextView.setText(formatStringToNaira(assessmentAmount));
         return rowView;
     }
 }

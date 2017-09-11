@@ -47,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Mobile Number 1"
+                    android:hint="Mobile Number 1 (+234)"
                     android:inputType="phone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Mobile Number 2"
+                    android:hint="Mobile Number 2 (+234)"
                     android:inputType="phone"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />

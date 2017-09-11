@@ -76,11 +76,10 @@ public class ProfilingActivity extends AppCompatActivity {
 
         options = new ArrayList<>();
 
-            options.add("New Individual");
-            options.add("Existing Individual");
-            options.add("New Company");
-            options.add("Existing Company");
-
+        options.add("New Individual");
+        options.add("Existing Individual");
+        options.add("New Company");
+        options.add("Existing Company");
 
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {

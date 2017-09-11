@@ -32,6 +32,7 @@ import com.vatebra.eirsagentpoc.util.VatEventSharedHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.vatebra.eirsagentpoc.util.Constants.formatStringToNaira;
 import static com.vatebra.eirsagentpoc.util.Constants.nairaSymbol;
 
 /**
@@ -66,7 +67,7 @@ public class DashboardFragment extends Fragment {
         globalRepository = GlobalRepository.getInstance();
         businessRepository = Injection.providesBusinessRepository(getContext());
         helper = VatEventSharedHelper.getInstance(getContext());
-        account_balance.setText("MY ACCOUNT: " + nairaSymbol + String.valueOf(helper.getAmount()));
+        account_balance.setText("MY ACCOUNT: " + formatStringToNaira(helper.getAmount()));
         createDashboard();
         getAccountBalance();
         dialogLoad = new MaterialDialog.Builder(getContext())
@@ -269,7 +270,7 @@ public class DashboardFragment extends Fragment {
                 try {
                     Double amount = Double.parseDouble(data);
                     helper.saveAmount(amount);
-                    account_balance.setText("MY ACCOUNT: " + nairaSymbol + String.valueOf(helper.getAmount()));
+                    account_balance.setText("MY ACCOUNT: " + formatStringToNaira(helper.getAmount()));
                 } catch (Exception e) {
                     Log.e("getAccountBalance", "OnSuccess: ", e);
                 }
