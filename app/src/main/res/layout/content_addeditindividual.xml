@@ -20,6 +20,7 @@
 
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/firstName_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -30,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="First Name"
+                    android:hint="@string/first_name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
@@ -46,7 +47,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Middle Name"
+                    android:hint="Middle Name (Optional)"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
@@ -58,6 +59,7 @@
             android:orientation="horizontal">
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/lastname_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -68,7 +70,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Last Name"
+                    android:hint="* Last Name"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
@@ -84,7 +86,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="8dp"
-                    android:text="Date Of Birth"
+                    android:text="* Date Of Birth"
                     android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                     android:textColor="@color/colorAccent" />
 
@@ -94,7 +96,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif"
                     android:paddingStart="4dp"
-                    android:text="SELECT DATE"
+                    android:text="@string/select_date"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
             </LinearLayout>
         </LinearLayout>
@@ -136,9 +138,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Mobile Number 2 (+234)"
+                    android:hint="Mobile Number 2 (Optional)"
                     android:inputType="phone"
-                    android:text="234"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
@@ -161,13 +162,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Email 1"
+                    android:hint="* Email 1"
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/emailLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -179,7 +181,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif"
-                    android:hint="Email 2"
+                    android:hint="Email 2 (Optional)"
                     android:inputType="textEmailAddress"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="@string/lorem_ipsum_short" />
@@ -212,7 +214,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingTop="10dp"
-            android:text="Tax Office"
+            android:text="Tax Office (Optional)"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -226,7 +228,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingTop="10dp"
-            android:text="Gender"
+            android:text="* Gender"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -241,7 +243,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingTop="10dp"
-            android:text="Marital Status"
+            android:text="Marital Status (Optional)"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
@@ -256,12 +258,26 @@
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
             android:paddingTop="10dp"
-            android:text="Economic Activity"
+            android:text="* Economic Activity"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
             android:textColor="@color/colorAccent" />
 
         <Spinner
             android:id="@+id/economic_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="8dp"
+            android:paddingTop="10dp"
+            android:text="* Preferred Notification Method"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textColor="@color/colorAccent" />
+
+        <Spinner
+            android:id="@+id/notification_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 

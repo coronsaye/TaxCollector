@@ -50,4 +50,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="first_name">* First Name</string>
+    <string name="select_date">SELECT DATE</string>
 </resources>

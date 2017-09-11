@@ -29,6 +29,7 @@ import com.vatebra.eirsagentpoc.UseCaseHandler;
 import com.vatebra.eirsagentpoc.building.domain.entity.Building;
 import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import com.vatebra.eirsagentpoc.domain.entity.Business;
+import com.vatebra.eirsagentpoc.domain.entity.BusinessDataSource;
 import com.vatebra.eirsagentpoc.domain.entity.Individual;
 import com.vatebra.eirsagentpoc.flowcontroller.FlowController;
 import com.vatebra.eirsagentpoc.repository.BusinessRepository;
@@ -77,6 +78,7 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
     Business business;
     Building building;
     NewBuildingRepository newBuildingRepository;
+    BusinessRepository businessRepository;
     private UseCaseHandler mUseCaseHandler;
     private SaveBusiness saveBusiness;
     private static final String INDIVIDUAL_PARAMS = "isChooseTaxPayerInd";
@@ -133,6 +135,7 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
         ButterKnife.bind(this, view);
         setHasOptionsMenu(true);
         newBuildingRepository = NewBuildingRepository.getInstance();
+        businessRepository = Injection.providesBusinessRepository(getContext());
         saveBusiness = Injection.provideSaveBusiness(getContext());
         mUseCaseHandler = Injection.provideUseCaseHandler();
         individualRepository = IndividualRepository.getInstance();
@@ -221,26 +224,43 @@ public class IndividualFragment extends Fragment implements android.support.v7.w
             return;
         }
         if (business != null) {
-
             business.setIndividualID(mListAdapter.selectedIndividual.getId());
-            mUseCaseHandler.execute(saveBusiness, new SaveBusiness.RequestValues(business), new UseCase.UseCaseCallback<SaveBusiness.ResponseValue>() {
+            businessRepository.addBusiness(business, new BusinessDataSource.UpdateBusinessCallback() {
                 @Override
-                public void onSuccess(SaveBusiness.ResponseValue response) {
-
-                    if (!isAdded()) {
-                        return;
-                    }
-                    Toast.makeText(getContext(), "Business Profiling Complete", Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                    FlowController.launchDashboardctivity(getContext());
+                public void onUpdateSuccessful(String message) {
+                    Snackbar.make(listView, "Building Profiling Complete", Snackbar.LENGTH_INDEFINITE).setAction("Complete", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            getActivity().finish();
+                            FlowController.launchDashboardctivity(getContext());
+                        }
+                    }).show();
                 }
 
                 @Override
-                public void onError() {
-                    Toast.makeText(getContext(), "Business Profiling Failed", Toast.LENGTH_LONG).show();
+                public void onUpdateFailed() {
+                    Snackbar.make(listView, "Creation Of Business Failed. ", Snackbar.LENGTH_LONG).show();
 
                 }
             });
+//            mUseCaseHandler.execute(saveBusiness, new SaveBusiness.RequestValues(business), new UseCase.UseCaseCallback<SaveBusiness.ResponseValue>() {
+//                @Override
+//                public void onSuccess(SaveBusiness.ResponseValue response) {
+//
+//                    if (!isAdded()) {
+//                        return;
+//                    }
+//                    Toast.makeText(getContext(), "Business Profiling Complete", Toast.LENGTH_LONG).show();
+//                    getActivity().finish();
+//                    FlowController.launchDashboardctivity(getContext());
+//                }
+//
+//                @Override
+//                public void onError() {
+//                    Toast.makeText(getContext(), "Business Profiling Failed", Toast.LENGTH_LONG).show();
+//
+//                }
+//            });
 //            String message = mListAdapter.selectedIndividual.getFullName() + "\nBusiness: " + business.getName();
 //            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         } else {

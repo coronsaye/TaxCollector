@@ -55,6 +55,18 @@ public class Constants {
         }
     }
 
+    public enum NotificationMethod {
+        SMS(1), EMAIL(2);
+        private int value;
+        private NotificationMethod(int value){
+            this.value = value;
+        }
+
+        @Override
+        public String toString() {
+            return this.name();
+        }
+    }
     public static String formatStringToNaira(double number) {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setCurrency(Currency.getInstance("NGN"));

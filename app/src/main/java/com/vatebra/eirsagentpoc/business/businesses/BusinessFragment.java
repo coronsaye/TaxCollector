@@ -181,10 +181,14 @@ public class BusinessFragment extends Fragment implements BusinessContract.View,
             return;
         }
         if (attachedBuilding != null) {
-            businessRepository.GetBusinessProfile(mListAdapter.selectedBusiness, new BusinessRepository.OnApiReceived<AssetProfile>() {
+            final Business selectedBusiness = mListAdapter.selectedBusiness;
+            selectedBusiness.setBuildingID(attachedBuilding.getID());
+            selectedBusiness.setBuildingRIN(attachedBuilding.getRin());
+
+            businessRepository.GetBusinessProfile(selectedBusiness, new BusinessRepository.OnApiReceived<AssetProfile>() {
                 @Override
                 public void OnSuccess(AssetProfile data) {
-
+                    FlowController.launchProfilingActivity(getContext(), data, selectedBusiness);
                 }
 
                 @Override

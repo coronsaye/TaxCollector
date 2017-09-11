@@ -122,8 +122,8 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
     LocationManager locationManager;
     double longitudeNetwork;
     double latitudeNetwork;
-    //    List<String> options = Collections.singletonList("New Business");
-    List<String> options = new ArrayList<>(Arrays.asList("New Business", "Existing Business"));
+    List<String> options = Collections.singletonList("New Business");
+//    List<String> options = new ArrayList<>(Arrays.asList("New Business", "Existing Business"));
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -259,7 +259,7 @@ public class AddEditBuidingActivity extends AppCompatActivity implements NewBuil
                                             FlowController.launchAddEditBusinessActivity(AddEditBuidingActivity.this, data);
                                             break;
                                         case 1:
-                                            FlowController.launchAddEditBusinessActivity(AddEditBuidingActivity.this, data);
+                                            //not being used
                                             break;
                                     }
 

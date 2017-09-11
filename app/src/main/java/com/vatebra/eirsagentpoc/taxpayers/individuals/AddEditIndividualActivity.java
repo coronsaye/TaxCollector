@@ -6,10 +6,13 @@ import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -98,6 +101,23 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
 
     @BindView(R.id.fab_edit_done)
     FloatingActionButton fabDone;
+
+    @BindView(R.id.notification_spinner)
+    Spinner notification_spinner;
+
+    @BindView(R.id.firstName_Layout)
+    TextInputLayout firstName_Layout;
+
+
+    @BindView(R.id.lastname_Layout)
+    TextInputLayout lastname_Layout;
+
+
+    @BindView(R.id.emailLayout)
+    TextInputLayout emailLayout;
+
+    @BindView(R.id.mobile_one_layout)
+    TextInputLayout mobile_one_layout;
 
     String userRin;
 
@@ -188,20 +208,45 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
                 if (isNewIndividual()) {
                     individual = new Individual();
                 }
-
                 if (!add_mobile.getText().toString().startsWith(phonePretext)) {
-                    add_mobile.setError("Ensure Phone Number Starts with 234");
+                    mobile_one_layout.setError("Ensure Phone Number Starts with 234");
                     return;
-                } else if (TextUtils.isEmpty(add_firstname.getText().toString())) {
-                    add_firstname.setError("Ensure First Name is filled");
+                } else {
+                    mobile_one_layout.setErrorEnabled(false);
+                }
+
+                if (add_mobile.getText().toString().equals(phonePretext)) {
+                    mobile_one_layout.setError("Kindly provide a proper Phone Number");
                     return;
-                } else if (TextUtils.isEmpty(add_lastname.getText().toString())) {
-                    add_lastname.setError("Ensure Last Name is filled");
+                } else {
+                    mobile_one_layout.setErrorEnabled(false);
+                }
+
+                if (TextUtils.isEmpty(add_firstname.getText().toString())) {
+                    firstName_Layout.setError("Ensure First Name is filled");
                     return;
-                } else if (TextUtils.isEmpty(add_email.getText().toString())) {
-                    add_email.setError("Ensure Email is filled");
+                } else {
+                    mobile_one_layout.setErrorEnabled(false);
+                }
+
+                if (TextUtils.isEmpty(add_lastname.getText().toString())) {
+                    lastname_Layout.setError("Ensure Last Name is filled");
+                    return;
+                } else {
+                    lastname_Layout.setErrorEnabled(false);
+                }
+
+                if (TextUtils.isEmpty(add_email.getText().toString())) {
+                    emailLayout.setError("Ensure Email is filled");
+                    return;
+                } else {
+                    emailLayout.setErrorEnabled(false);
+                }
+                if (add_dob.getText().toString().equals(getString(R.string.select_date))) {
+                    Snackbar.make(add_dob, "Ensure a date of birth is selected", Snackbar.LENGTH_LONG).show();
                     return;
                 }
+
                 individual.setFirstName(add_firstname.getText().toString());
                 individual.setMiddleName(add_middlename.getText().toString());
                 individual.setLastName(add_lastname.getText().toString());
@@ -387,6 +432,9 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
         genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         gender_spinner.setAdapter(genderAdapter);
 
+        ArrayAdapter<Constants.NotificationMethod> notificationMethodArrayAdapter = new ArrayAdapter<>(AddEditIndividualActivity.this, android.R.layout.simple_spinner_item, Constants.NotificationMethod.values());
+        notificationMethodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        notification_spinner.setAdapter(notificationMethodArrayAdapter);
 
         individualRepository.getEconomicActivities(new BusinessDataSource.GetObjectCallback<EconomicActivity>() {
             @Override
@@ -430,4 +478,6 @@ public class AddEditIndividualActivity extends AppCompatActivity implements Indi
 
         add_dob.setText(sdf.format(calendar.getTime()));
     }
+
+
 }

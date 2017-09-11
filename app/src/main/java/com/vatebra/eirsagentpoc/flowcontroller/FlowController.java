@@ -45,6 +45,14 @@ public class FlowController {
         context.startActivity(intent);
     }
 
+    public static void launchBusinessActivity(Context context, Building building) {
+        Intent intent = new Intent(context, BusinessActivity.class);
+        Bundle bund = new Bundle();
+        bund.putParcelable(ProfilingActivity.EXTRA_OBJECT_BUILDING_KEY, Parcels.wrap(building));
+        intent.putExtras(bund);
+        context.startActivity(intent);
+    }
+
     public static void launchAddEditBusinessActivity(Context context) {
         Intent intent = new Intent(context, AddEditBusinessActivity.class);
         context.startActivity(intent);

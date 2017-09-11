@@ -44,6 +44,7 @@ import com.vatebra.eirsagentpoc.repository.NewBuildingRepository;
 import com.vatebra.eirsagentpoc.taxpayers.ProfilingActivity;
 import com.vatebra.eirsagentpoc.taxpayers.buildings.AddEditBuidingActivity;
 import com.vatebra.eirsagentpoc.taxpayers.individuals.AddEditIndividualActivity;
+import com.vatebra.eirsagentpoc.util.Constants;
 
 import org.parceler.Parcels;
 
@@ -86,6 +87,9 @@ public class AddEditCompanyActivity extends AppCompatActivity implements Company
 
     @BindView(R.id.fab_edit_done)
     FloatingActionButton fabDone;
+
+    @BindView(R.id.notification_spinner)
+    Spinner notification_spinner;
 
     String companyRin;
 
@@ -223,6 +227,11 @@ public class AddEditCompanyActivity extends AppCompatActivity implements Company
                 add_companyname.setText(attachedBusiness.getName());
             }
         }
+
+        ArrayAdapter<Constants.NotificationMethod> notificationMethodArrayAdapter = new ArrayAdapter<>(AddEditCompanyActivity.this, android.R.layout.simple_spinner_item, Constants.NotificationMethod.values());
+        notificationMethodArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        notification_spinner.setAdapter(notificationMethodArrayAdapter);
+
         individualRepository.getTaxOffice(new BusinessDataSource.GetObjectCallback<TaxOffice>() {
             @Override
             public void onObjectsLoaded(List<TaxOffice> objects) {
