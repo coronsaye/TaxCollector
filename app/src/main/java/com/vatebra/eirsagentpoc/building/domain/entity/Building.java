@@ -114,7 +114,7 @@ public class Building extends RealmObject {
     }
 
     public String getBuildingNumber() {
-        return buildingNumber;
+        return (buildingNumber != null ) ? buildingNumber : "";
     }
 
     public void setBuildingNumber(String buildingNumber) {

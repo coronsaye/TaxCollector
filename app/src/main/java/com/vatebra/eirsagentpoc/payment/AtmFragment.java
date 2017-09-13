@@ -54,6 +54,7 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
     MaterialDialog dialogLoad;
     Boolean isFullPayment;
     private double amountToBePaid;
+
     public AtmFragment() {
 
     }
@@ -124,8 +125,13 @@ public class AtmFragment extends Fragment implements View.OnClickListener {
         }
 
         charge.setEmail(email);
+        Double amountInDouble;
+        if (isFullPayment) {
+            amountInDouble = bill.getAsssessmentAmount();
+        } else {
+            amountInDouble = amountToBePaid;
 
-        Double amountInDouble = amountToBePaid;
+        }
 
         int amount = -1;
         try {

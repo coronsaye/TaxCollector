@@ -64,7 +64,7 @@ public class BuildingAdapter extends BaseAdapter {
             checkBox.setVisibility(View.VISIBLE);
 
         titleTextView.setText(building.getName());
-        taxOfficeTextView.setText(building.getStreetName());
+        taxOfficeTextView.setText(building.getBuildingNumber() + ", " + building.getStreetName());
         phoneTextView.setText(building.getLga());
         rinTextView.setText("#" + building.getRin());
         rowView.setOnClickListener(new View.OnClickListener() {
