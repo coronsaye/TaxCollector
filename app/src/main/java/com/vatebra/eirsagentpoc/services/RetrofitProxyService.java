@@ -37,7 +37,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 /**
- * Created by David Eti on 22/08/2017.
+ * Created by Collins Oronsaye on 22/08/2017.
  */
 
 public interface RetrofitProxyService {

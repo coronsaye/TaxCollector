@@ -10,7 +10,7 @@ import java.util.List;
 import io.realm.RealmObject;
 
 /**
- * Created by David Eti on 17/08/2017.
+ * Created by Collins Oronsaye on 17/08/2017.
  */
 
 public class FakeBusinessRemoteDataSource implements BusinessDataSource {

@@ -3,7 +3,7 @@ package com.vatebra.eirsagentpoc.domain.entity;
 import java.io.Serializable;
 
 /**
- * Created by David Eti on 27/08/2017.
+ * Created by Collins Oronsaye on 27/08/2017.
  */
 
 public class Bill implements Serializable {

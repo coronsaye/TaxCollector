@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 
 
 /**
- * Created by David Eti on 05/06/2017.
+ * Created by Collins Oronsaye on 05/06/2017.
  */
 
 public class VatEventSharedHelper {

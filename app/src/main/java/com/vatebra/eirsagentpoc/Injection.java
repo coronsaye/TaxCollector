@@ -14,7 +14,7 @@ import com.vatebra.eirsagentpoc.business.businesses.usecase.SaveBusiness;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 17/08/2017.
+ * Created by Collins Oronsaye on 17/08/2017.
  */
 
 /**

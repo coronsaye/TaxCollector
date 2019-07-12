@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by David Eti on 25/08/2017.
+ * Created by Collins Oronsaye on 25/08/2017.
  */
 
 public class BuildingCompletion extends RealmObject {

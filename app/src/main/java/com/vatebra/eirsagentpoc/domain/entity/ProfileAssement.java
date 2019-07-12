@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 /**
- * Created by David Eti on 26/08/2017.
+ * Created by Collins Oronsaye on 26/08/2017.
  */
 
 public class ProfileAssement implements Serializable {

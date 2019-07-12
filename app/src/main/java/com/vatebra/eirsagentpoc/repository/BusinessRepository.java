@@ -20,7 +20,7 @@ import io.realm.RealmObject;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 16/08/2017.
+ * Created by Collins Oronsaye on 16/08/2017.
  */
 
 public class BusinessRepository implements BusinessDataSource {

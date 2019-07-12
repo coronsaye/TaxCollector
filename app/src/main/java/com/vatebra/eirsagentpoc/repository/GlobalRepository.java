@@ -18,7 +18,7 @@ import retrofit2.Response;
 import static com.vatebra.eirsagentpoc.services.RetrofitClient.getRetrofitInstance;
 
 /**
- * Created by David Eti on 27/08/2017.
+ * Created by Collins Oronsaye on 27/08/2017.
  */
 
 public class GlobalRepository {

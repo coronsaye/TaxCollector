@@ -5,7 +5,7 @@ import android.support.annotation.NonNull;
 import java.util.List;
 
 /**
- * Created by David Eti on 21/08/2017.
+ * Created by Collins Oronsaye on 21/08/2017.
  */
 
 public interface BuildingDataSource {

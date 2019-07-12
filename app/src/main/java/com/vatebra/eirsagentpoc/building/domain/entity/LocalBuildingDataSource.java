@@ -14,7 +14,7 @@ import io.realm.RealmResults;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 21/08/2017.
+ * Created by Collins Oronsaye on 21/08/2017.
  */
 
 public class LocalBuildingDataSource implements BuildingDataSource {

@@ -6,7 +6,7 @@ import com.vatebra.eirsagentpoc.BasePresenter;
 import com.vatebra.eirsagentpoc.BaseView;
 
 /**
- * Created by David Eti on 18/08/2017.
+ * Created by Collins Oronsaye on 18/08/2017.
  */
 
 public interface BusinessDetailContract {

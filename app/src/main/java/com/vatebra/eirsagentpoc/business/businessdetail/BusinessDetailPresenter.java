@@ -12,7 +12,7 @@ import com.vatebra.eirsagentpoc.business.businesses.usecase.GetBusiness;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 18/08/2017.
+ * Created by Collins Oronsaye on 18/08/2017.
  */
 
 public class BusinessDetailPresenter implements BusinessDetailContract.Presenter {

@@ -103,7 +103,7 @@
             android:hint="Name on Card"
             android:inputType="textPersonName"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            tools:text="David Eti" />
+            tools:text="Collins Oronsaye" />
     </android.support.design.widget.TextInputLayout>
 
     <Button

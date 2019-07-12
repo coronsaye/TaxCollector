@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by David Eti on 27/08/2017.
+ * Created by Collins Oronsaye on 27/08/2017.
  */
 
 public class TaxPayer implements Serializable {

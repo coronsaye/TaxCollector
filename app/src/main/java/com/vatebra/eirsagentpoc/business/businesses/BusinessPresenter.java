@@ -12,7 +12,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 17/08/2017.
+ * Created by Collins Oronsaye on 17/08/2017.
  */
 
 public class BusinessPresenter implements BusinessContract.Presenter {

@@ -23,7 +23,7 @@ import java.util.Locale;
 import static com.vatebra.eirsagentpoc.util.Constants.formatStringToNaira;
 
 /**
- * Created by David Eti on 27/08/2017.
+ * Created by Collins Oronsaye on 27/08/2017.
  */
 
 public class TaxPayerAdapter extends BaseAdapter {

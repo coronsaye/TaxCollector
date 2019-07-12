@@ -3,7 +3,7 @@ package com.vatebra.eirsagentpoc.domain.entity;
 import java.util.List;
 
 /**
- * Created by David Eti on 22/08/2017.
+ * Created by Collins Oronsaye on 22/08/2017.
  */
 
 public class BusinessResponse {

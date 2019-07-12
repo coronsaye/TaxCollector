@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * Created by David Eti on 26/08/2017.
+ * Created by Collins Oronsaye on 26/08/2017.
  */
 
 public class AssetProfile implements Serializable {

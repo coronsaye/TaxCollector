@@ -6,7 +6,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by David Eti on 24/08/2017.
+ * Created by Collins Oronsaye on 24/08/2017.
  */
 
 public class EconomicActivity extends RealmObject {

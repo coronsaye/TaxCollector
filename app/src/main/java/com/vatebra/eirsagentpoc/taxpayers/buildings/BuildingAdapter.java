@@ -19,7 +19,7 @@ import java.util.Locale;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 25/08/2017.
+ * Created by Collins Oronsaye on 25/08/2017.
  */
 
 public class BuildingAdapter extends BaseAdapter {

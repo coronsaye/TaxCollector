@@ -31,7 +31,7 @@ import co.paystack.android.model.Charge;
 import static android.text.TextUtils.isEmpty;
 
 /**
- * Created by David Eti on 30/08/2017.
+ * Created by Collins Oronsaye on 30/08/2017.
  */
 
 public class AtmFragment extends Fragment implements View.OnClickListener {

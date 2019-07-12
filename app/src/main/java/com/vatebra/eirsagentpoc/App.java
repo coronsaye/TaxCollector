@@ -10,7 +10,7 @@ import co.paystack.android.PaystackSdk;
 import io.realm.Realm;
 
 /**
- * Created by David Eti on 16/08/2017.
+ * Created by Collins Oronsaye on 16/08/2017.
  */
 
 public class App extends Application {

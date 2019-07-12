@@ -12,7 +12,7 @@ import com.vatebra.eirsagentpoc.domain.entity.Lga;
 import java.util.List;
 
 /**
- * Created by David Eti on 17/08/2017.
+ * Created by Collins Oronsaye on 17/08/2017.
  */
 
 public class AddBusinessContract {

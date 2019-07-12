@@ -4,7 +4,7 @@ import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
- * Created by David Eti on 22/08/2017.
+ * Created by Collins Oronsaye on 22/08/2017.
  */
 
 public class BusinessStruture extends RealmObject {

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by David Eti on 21/08/2017.
+ * Created by Collins Oronsaye on 21/08/2017.
  */
 
 public class RemoteBuildingDataSource implements BuildingDataSource {

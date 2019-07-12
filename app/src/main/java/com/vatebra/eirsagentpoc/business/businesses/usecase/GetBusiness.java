@@ -10,7 +10,7 @@ import com.vatebra.eirsagentpoc.repository.BusinessRepository;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by David Eti on 17/08/2017.
+ * Created by Collins Oronsaye on 17/08/2017.
  */
 
 public class GetBusiness extends UseCase<GetBusiness.RequestValues, GetBusiness.ResponseValue> {

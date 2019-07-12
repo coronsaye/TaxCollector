@@ -18,7 +18,7 @@ import retrofit2.Response;
 import static com.vatebra.eirsagentpoc.services.RetrofitClient.getRetrofitInstance;
 
 /**
- * Created by David Eti on 22/08/2017.
+ * Created by Collins Oronsaye on 22/08/2017.
  */
 
 public class RemoteBusinessDataSource implements BusinessDataSource {

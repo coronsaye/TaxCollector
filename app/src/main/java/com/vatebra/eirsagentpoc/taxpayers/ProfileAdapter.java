@@ -19,7 +19,7 @@ import java.util.List;
 import static com.vatebra.eirsagentpoc.util.Constants.formatStringToNaira;
 
 /**
- * Created by David Eti on 26/08/2017.
+ * Created by Collins Oronsaye on 26/08/2017.
  */
 
 public class ProfileAdapter extends BaseAdapter {
